@@ -1,0 +1,57 @@
+version: '3.8'
+name: second-nest-api
+services:
+  
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the 
+  # address of this container.
+  #api:
+  #  container_name: nest-app
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - ${APP_PORT}:${APP_PORT}
+  postgres:
+    container_name: nest-postgres
+    image: janlibal/pg-multipledb # postgres:16.3-alpine
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - boilerplate-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      #POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
+  # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
+  pgadmin-compose:
+    container_name: nest-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      #- "16543:80"
+      - ${PGADMIN_PORT}:80
+    depends_on:
+      - postgres
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: redis-server --requirepass root
+    ports:
+      - "6379:6379"
+    restart: unless-stopped   
+    volumes:
+      - redis:/data
+    #environment:
+    #  - ALLOW_EMPTY_PASSWORD=yes
+    #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
+    
+volumes:
+  boilerplate-db:
+  redis:
+    driver: local
+      
