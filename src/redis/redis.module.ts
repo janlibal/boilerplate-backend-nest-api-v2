@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { redisClientFactory } from './redis.client.factory'
 import { RedisRepository } from './redis.repository'
 import { RedisService } from './redis.service'
 
+@Global()
 @Module({
   imports: [],
   controllers: [],

@@ -34,7 +34,6 @@ export class AuthService {
     private jwtService: JwtService,
     private userService: UserService,
     private sessionService: SessionService,
-
     private readonly userRepository: UserRepository,
     private configService: ConfigService<AllConfigType>,
   ) {}

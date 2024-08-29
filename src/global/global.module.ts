@@ -12,7 +12,6 @@ import { getCorrelationId } from 'src/utils/get.correlation.id'
 import { Request } from 'express'
 import { AppLoggerMiddleware } from 'src/middleware/requests.log.middleware'
 import pino from 'pino'
-import { RedisModule } from 'src/redis/redis.module'
 
 @Module({
   imports: [
@@ -54,7 +53,6 @@ import { RedisModule } from 'src/redis/redis.module'
     UserModule,
     SessionModule,
     AuthModule,
-    RedisModule,
   ],
   controllers: [],
   providers: [Logger],

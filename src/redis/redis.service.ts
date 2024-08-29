@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ProductInterface } from './interfaces/product.interface'
 import { RedisPrefixEnum } from './enums/redis.prefix.enum'
 import { RedisRepository } from './redis.repository'
+import { Session } from 'src/session/domain/session.domain'
 
 const oneDayInSeconds = 60 * 60 * 24
 const tenMinutesInSeconds = 60 * 10
