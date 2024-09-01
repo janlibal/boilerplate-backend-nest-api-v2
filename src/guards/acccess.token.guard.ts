@@ -76,14 +76,12 @@ export class AccessTokenGuard implements CanActivate {
         secret: authSecret,
       })
 
-      console.log('id:' + data.id)
+      console.log('userId:' + data.id)
       console.log('sessionId:' + data.sessionId)
       console.log('issuedAt:' + data.iat)
       console.log('expiresIn:' + data.exp)
 
-      const userId = data.id
-
-      const redisObject = await this.redisService.getSession(userId)
+      const redisObject = await this.redisService.getSession(data.id)
 
       const isTokenFromCacheSameAsTokenFromHeaders = redisObject === accessToken
 
@@ -113,7 +111,7 @@ export class AccessTokenGuard implements CanActivate {
 
       request.user = decodedToken*/
 
-      request.data = data
+      request.user = data
 
       return true
     } catch (error: any) {

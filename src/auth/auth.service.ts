@@ -27,6 +27,7 @@ import { JwtRefreshPayloadType } from './strategies/types/jwt.refresh.payload.ty
 import { JwtPayloadType } from './strategies/types/jwt.payload.type'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { StatusEnum } from 'src/statuses/statuses.enum'
+import { RedisService } from 'src/redis/redis.service'
 
 @Injectable()
 export class AuthService {
@@ -34,6 +35,7 @@ export class AuthService {
     private jwtService: JwtService,
     private userService: UserService,
     private sessionService: SessionService,
+    private redisService: RedisService,
     private readonly userRepository: UserRepository,
     private configService: ConfigService<AllConfigType>,
   ) {}
@@ -101,6 +103,8 @@ export class AuthService {
       hash,
     })
 
+    await this.redisService.saveSession(user.id, token)
+
     return {
       refreshToken,
       token,
@@ -142,7 +146,8 @@ export class AuthService {
     return this.userService.findById(userJwtPayload.id)
   }
 
-  async logout(data: Pick<JwtRefreshPayloadType, 'sessionId'>) {
+  async logout(data: Pick<JwtRefreshPayloadType, 'sessionId' | 'userId'>) {
+    await this.redisService.releaseSession(data.userId.toString())
     return this.sessionService.deleteById(data.sessionId)
   }
 

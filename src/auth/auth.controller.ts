@@ -26,6 +26,7 @@ import { LoginResponseDto } from './dto/login.response.dto'
 import { AuthEmailLoginDto } from './dto/auth.email.login.dto'
 import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
+import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 
 @ApiTags('Auth')
 @Controller({
@@ -58,7 +59,8 @@ export class AuthController {
     groups: ['me'],
   })
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
+  @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.OK)
   public me(@Request() request): Promise<NullableType<User>> {
     return this.authService.me(request.user)
@@ -66,11 +68,13 @@ export class AuthController {
 
   @ApiBearerAuth()
   @Post('logout')
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
+  @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   public async logout(@Request() request): Promise<void> {
     await this.authService.logout({
       sessionId: request.user.sessionId,
+      userId: request.user.id,
     })
   }
 

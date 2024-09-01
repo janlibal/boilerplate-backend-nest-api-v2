@@ -12,8 +12,9 @@ export class RedisRepository
     this.redisClient.disconnect()
   }
 
-  async get(prefix: string, key: string): Promise<string | null> {
-    return this.redisClient.get(`${prefix}:${key}`)
+  async get(prefix: string, key: string | number): Promise<string | null> {
+    const f = key.toLocaleString()
+    return this.redisClient.get(`${prefix}:${f}`)
   }
 
   async del(prefix: string, key: string): Promise<number> {
@@ -39,10 +40,10 @@ export class RedisRepository
 
   async setUserWithExpiry(
     prefix: string,
-    key: string,
+    key: string | number,
     value: string,
     expiry: number,
   ): Promise<void> {
-    await this.redisClient.set(`${prefix}:${key}`, value, 'EX', expiry)
+    await this.redisClient.set(`${prefix}:${key}`, value, 'PX', expiry)
   }
 }
