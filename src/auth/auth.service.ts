@@ -106,7 +106,7 @@ export class AuthService {
 
     const expiry = 900000
     const prefix = RedisPrefixEnum.USER
-    await this.redisService.crateSession({ prefix, user, token, expiry })
+    await this.redisService.createSession({ prefix, user, token, expiry })
     //await this.redisService.saveSession(user.id, token)
 
     return {
@@ -151,7 +151,8 @@ export class AuthService {
   }
 
   async logout(data: Pick<JwtRefreshPayloadType, 'sessionId' | 'userId'>) {
-    await this.redisService.releaseSession(data.userId.toString())
+    //await this.redisService.releaseSession(data.userId.toString())
+    await this.redisService.releaseByUserId(data)
     return this.sessionService.deleteById(data.sessionId)
   }
 

@@ -14,7 +14,7 @@ export class RedisService {
     @Inject(RedisRepository) private readonly redisRepository: RedisRepository,
   ) {}
 
-  async crateSession(data: RedisDomain): Promise<void> {
+  async createSession(data: RedisDomain): Promise<void> {
     return await this.redisRepository.createUserWithExpiry(data)
   }
 
