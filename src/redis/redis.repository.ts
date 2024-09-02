@@ -1,6 +1,7 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common'
 import { Redis } from 'ioredis'
 import { RedisRepositoryInterface } from './interfaces/redis.repository.interface'
+import { RedisDomain } from './domain/redis.domain'
 
 @Injectable()
 export class RedisRepository
@@ -25,7 +26,7 @@ export class RedisRepository
     await this.redisClient.set(`${prefix}:${key}`, value)
   }
 
-  async delete(prefix: string, key: string): Promise<void> {
+  async delete(prefix: string, key: string | number): Promise<void> {
     await this.redisClient.del(`${prefix}:${key}`)
   }
 
@@ -45,5 +46,15 @@ export class RedisRepository
     expiry: number,
   ): Promise<void> {
     await this.redisClient.set(`${prefix}:${key}`, value, 'PX', expiry)
+  }
+
+  // NEW:
+  async createUserWithExpiry(data: RedisDomain): Promise<void> {
+    await this.redisClient.set(
+      `${data.prefix}:${data.user.id}`,
+      data.token,
+      'PX',
+      data.expiry,
+    )
   }
 }

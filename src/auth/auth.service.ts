@@ -28,6 +28,7 @@ import { JwtPayloadType } from './strategies/types/jwt.payload.type'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { StatusEnum } from 'src/statuses/statuses.enum'
 import { RedisService } from 'src/redis/redis.service'
+import { RedisPrefixEnum } from 'src/redis/enums/redis.prefix.enum'
 
 @Injectable()
 export class AuthService {
@@ -103,7 +104,10 @@ export class AuthService {
       hash,
     })
 
-    await this.redisService.saveSession(user.id, token)
+    const expiry = 900000
+    const prefix = RedisPrefixEnum.USER
+    await this.redisService.crateSession({ prefix, user, token, expiry })
+    //await this.redisService.saveSession(user.id, token)
 
     return {
       refreshToken,

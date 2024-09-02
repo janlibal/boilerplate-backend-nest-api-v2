@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Session } from './domain/session.domain'
 import { SessionRepository } from './session.repository'
 import { NullableType } from 'src/utils/types/nullable.type'
-import { User } from '@prisma/client'
+import { User } from 'src/users/domain/user.domain'
 
 @Injectable()
 export class SessionService {
