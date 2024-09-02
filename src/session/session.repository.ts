@@ -29,7 +29,7 @@ export class SessionRepository {
   async deleteById(id: Session['id']): Promise<void> {
     await this.prismaService.session.delete({
       where: {
-        id: Number(id),
+        id: id,
       },
     })
   }
@@ -40,7 +40,7 @@ export class SessionRepository {
         user: true,
       },
       where: {
-        id: Number(id), //).toString()),
+        id: id, //).toString()),
       },
     })
   }
@@ -67,7 +67,7 @@ export class SessionRepository {
         user: true,
       },
       where: {
-        id: Number(id), //.toString()),
+        id: id, //.toString()),
       },
       data: {
         hash: payload.hash,
