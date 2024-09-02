@@ -19,7 +19,7 @@ export class SessionRepository {
         hash: data.hash,
         user: {
           connect: {
-            id: data.user.id.toString(),
+            id: data.user.id, //.toString(),
           },
         },
       },
@@ -40,7 +40,7 @@ export class SessionRepository {
         user: true,
       },
       where: {
-        id: Number(id.toString()),
+        id: Number(id), //).toString()),
       },
     })
   }
@@ -67,13 +67,13 @@ export class SessionRepository {
         user: true,
       },
       where: {
-        id: Number(id.toString()),
+        id: Number(id), //.toString()),
       },
       data: {
         hash: payload.hash,
         user: {
           connect: {
-            id: payload.user.id.toString(),
+            id: payload.user.id, //.toString(),
           },
         },
       },

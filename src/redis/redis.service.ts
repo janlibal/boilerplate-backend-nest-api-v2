@@ -18,12 +18,11 @@ export class RedisService {
     return await this.redisRepository.createUserWithExpiry(data)
   }
 
-  async saveSession(userId: string | number, token: string): Promise<void> {
-    await this.redisRepository.setUserWithExpiry(
+  async releaseByUserId(conditions: { userId: User['id'] }): Promise<void> {
+    //const userId = conditions.userId.toString()
+    return await this.redisRepository.delete(
       RedisPrefixEnum.USER,
-      userId,
-      token,
-      900000, //15 minues
+      conditions.userId,
     )
   }
 
@@ -32,12 +31,12 @@ export class RedisService {
     return session //JSON.parse(product);
   }
 
-  // NEW :
-  async releaseByUserId(conditions: { userId: User['id'] }): Promise<void> {
-    const userId = conditions.userId.toString()
-    return await this.redisRepository.delete(
+  /*async saveSession(userId: string | number, token: string): Promise<void> {
+    await this.redisRepository.setUserWithExpiry(
       RedisPrefixEnum.USER,
-      conditions.userId,
+      userId,
+      token,
+      900000, //15 minues
     )
   }
 
@@ -79,5 +78,5 @@ export class RedisService {
 
   async getResetToken(token: string): Promise<string | null> {
     return await this.redisRepository.get(RedisPrefixEnum.RESET_TOKEN, token)
-  }
+  }*/
 }

@@ -37,7 +37,7 @@ export class UserRepository {
   async remove(id: User['id']): Promise<void> {
     await this.prismaService.user.delete({
       where: {
-        id: String(id),
+        id: id, //String(id),
       },
     })
   }

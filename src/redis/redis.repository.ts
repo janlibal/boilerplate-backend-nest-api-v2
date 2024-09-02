@@ -13,9 +13,34 @@ export class RedisRepository
     this.redisClient.disconnect()
   }
 
-  async get(prefix: string, key: string | number): Promise<string | null> {
+  // NEW AND IN USE:
+  async createUserWithExpiry(data: RedisDomain): Promise<void> {
+    await this.redisClient.set(
+      `${data.prefix}:${data.user.id}`,
+      data.token,
+      'PX',
+      data.expiry,
+    )
+  }
+
+  //UPDATED AND IN USE:
+  async get(prefix: string, key: string): Promise<string | null> {
     const f = key.toLocaleString()
     return this.redisClient.get(`${prefix}:${f}`)
+  }
+
+  //UPDATED AND IN USE:
+  async delete(prefix: string, key: string): Promise<void> {
+    await this.redisClient.del(`${prefix}:${key}`)
+  }
+
+  /*async setUserWithExpiry(
+    prefix: string,
+    key: string | number,
+    value: string,
+    expiry: number,
+  ): Promise<void> {
+    await this.redisClient.set(`${prefix}:${key}`, value, 'PX', expiry)
   }
 
   async del(prefix: string, key: string): Promise<number> {
@@ -25,11 +50,7 @@ export class RedisRepository
   async set(prefix: string, key: string, value: string): Promise<void> {
     await this.redisClient.set(`${prefix}:${key}`, value)
   }
-
-  async delete(prefix: string, key: string | number): Promise<void> {
-    await this.redisClient.del(`${prefix}:${key}`)
-  }
-
+  
   async setWithExpiry(
     prefix: string,
     key: string,
@@ -37,24 +58,5 @@ export class RedisRepository
     expiry: number,
   ): Promise<void> {
     await this.redisClient.set(`${prefix}:${key}`, value, 'EX', expiry)
-  }
-
-  async setUserWithExpiry(
-    prefix: string,
-    key: string | number,
-    value: string,
-    expiry: number,
-  ): Promise<void> {
-    await this.redisClient.set(`${prefix}:${key}`, value, 'PX', expiry)
-  }
-
-  // NEW:
-  async createUserWithExpiry(data: RedisDomain): Promise<void> {
-    await this.redisClient.set(
-      `${data.prefix}:${data.user.id}`,
-      data.token,
-      'PX',
-      data.expiry,
-    )
-  }
+  }*/
 }
