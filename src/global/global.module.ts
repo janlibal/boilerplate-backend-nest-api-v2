@@ -12,12 +12,13 @@ import { getCorrelationId } from 'src/utils/get.correlation.id'
 import { Request } from 'express'
 import { AppLoggerMiddleware } from 'src/middleware/requests.log.middleware'
 import pino from 'pino'
+import redisConfig from 'src/redis/config/redis.config'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, authConfig, swaggerConfig],
+      load: [appConfig, authConfig, swaggerConfig, redisConfig],
       envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`,
       //envFilePath: ['.env'],
     }),

@@ -64,22 +64,14 @@ export class AccessTokenGuard implements CanActivate {
       if (jwt !== 'jwt')
         throw new HttpException('No jwt', HttpStatus.UNAUTHORIZED)
 
-      const tokenExpiresIn = '15m'
-      const refreshTokenExpires = '3650d'
       const authSecret = this.configService.getOrThrow('auth.secret', {
         infer: true,
       })
-      const refrestSecret = 'app-refresh-sercer'
 
       //verify token using jwt service
       const data = await this.jwtService.verifyAsync(accessToken, {
         secret: authSecret,
       })
-
-      console.log('userId:' + data.id)
-      console.log('sessionId:' + data.sessionId)
-      console.log('issuedAt:' + data.iat)
-      console.log('expiresIn:' + data.exp)
 
       const redisObject = await this.redisService.getSession(data.id)
 
@@ -89,8 +81,6 @@ export class AccessTokenGuard implements CanActivate {
         throw new HttpException('Nice Try', HttpStatus.UNAUTHORIZED)
 
       /*     
-
-
       //verify token using jwt service
       const decodedToken = this.jwtService.verify<DecodedTokenI>(accessToken, {
         secret: this.configService.get<string>('USER_ACCESS_TOKEN_SECRET')!,

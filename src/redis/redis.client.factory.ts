@@ -1,16 +1,18 @@
-import { FactoryProvider } from '@nestjs/common'
+import { FactoryProvider, Injectable } from '@nestjs/common'
 import { Redis } from 'ioredis'
 import { redisStatus } from './redis.status'
+import { AllConfigType } from 'src/global/config/config.type'
+import { ConfigService } from '@nestjs/config'
 
 export const redisClientFactory: FactoryProvider<Redis> = {
   provide: 'RedisClient',
-  useFactory: () => {
+  useFactory: (configService: ConfigService<AllConfigType>) => {
     const redisInstance = new Redis({
-      host: '127.0.0.1',
-      password: 'root',
-      username: 'default',
-      db: 1,
-      port: +6379,
+      host: configService.getOrThrow('redis.redisUrl', { infer: true }), //'127.0.0.1',
+      username: configService.getOrThrow('redis.username', { infer: true }), //'default',
+      password: configService.getOrThrow('redis.password', { infer: true }), //'root',
+      db: configService.getOrThrow('redis.dbNumber', { infer: true }), //1,
+      port: configService.getOrThrow('redis.port', { infer: true }), //+6379,
     })
 
     redisInstance.on('connect', redisStatus.handleConnect.bind(this))
@@ -22,5 +24,5 @@ export const redisClientFactory: FactoryProvider<Redis> = {
 
     return redisInstance
   },
-  inject: [],
+  inject: [ConfigService],
 }
