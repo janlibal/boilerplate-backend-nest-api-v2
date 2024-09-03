@@ -1,6 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { AppService } from './app.service'
 import { ApiTags } from '@nestjs/swagger'
+import { ControllerResponseDto } from './dto/controller.resonse.dto'
 
 @ApiTags('App')
 @Controller({
@@ -13,9 +14,7 @@ export class AppController {
 
   @Get('/info')
   @HttpCode(HttpStatus.OK)
-  public async getApiInfo() {
-    const data = await this.appService.compileData()
-
-    return data
+  public async getApiInfo(): Promise<ControllerResponseDto> {
+    return await this.appService.compileData()
   }
 }

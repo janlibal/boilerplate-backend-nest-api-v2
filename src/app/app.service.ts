@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import * as pkginfo from '../../package.json'
 import { AppRepository } from './app.reposiroty'
+import { ServiceResponseDto } from './dto/service.response.dto'
 
 @Injectable()
 export class AppService {
   constructor(private readonly appRepository: AppRepository) {}
-  public async compileData() {
+  public async compileData(): Promise<ServiceResponseDto> {
     const env = await this.appRepository.getEnv()
 
     const data = {
