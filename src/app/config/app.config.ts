@@ -1,5 +1,6 @@
 import { registerAs } from '@nestjs/config'
 import {
+  IsBoolean,
   IsEnum,
   IsInt,
   IsOptional,
@@ -53,6 +54,15 @@ class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   APP_HEADER_LANGUAGE: string
+
+  @IsString()
+  @IsOptional()
+  LOG_LEVEL: string
+
+  @IsString()
+  @IsOptional()
+  LOG_SERVICE: string
+ 
 }
 
 export default registerAs<AppConfig>('app', () => {
@@ -73,5 +83,19 @@ export default registerAs<AppConfig>('app', () => {
     apiPrefix: API_PREFIX || 'api',
     fallbackLanguage: process.env.APP_FALLBACK_LANGUAGE || 'en',
     headerLanguage: process.env.APP_HEADER_LANGUAGE || 'x-custom-lang',
+
+    logLevel: process.env.LOG_LEVEL || 'debug',
+    logService: process.env.LOG_SERVICE || 'console'
+
   }
 })
+
+ /*
+
+ LOG_LEVEL=debug
+LOG_SERVICE=console
+DEBUG=false
+  const logLevel = configService.get('app.logLevel', { infer: true }); //'debug'
+  const logService = configService.get('app.logService', { infer: true }); //'console' // 
+  const isDebug =  configService.get('app.debug', { infer: true }); //false 
+  */
