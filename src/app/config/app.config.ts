@@ -62,7 +62,6 @@ class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   LOG_SERVICE: string
- 
 }
 
 export default registerAs<AppConfig>('app', () => {
@@ -85,12 +84,11 @@ export default registerAs<AppConfig>('app', () => {
     headerLanguage: process.env.APP_HEADER_LANGUAGE || 'x-custom-lang',
 
     logLevel: process.env.LOG_LEVEL || 'debug',
-    logService: process.env.LOG_SERVICE || 'console'
-
+    logService: process.env.LOG_SERVICE || 'console',
   }
 })
 
- /*
+/*
 
  LOG_LEVEL=debug
 LOG_SERVICE=console

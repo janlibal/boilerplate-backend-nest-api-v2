@@ -58,7 +58,7 @@ export default registerAs<RedisConfig>('redis', () => {
   return {
     redisUrl: process.env.REDIS_HOST,
     username: process.env.REDIS_USERNAME,
-    password: process.env.REDIS_password,
+    password: process.env.REDIS_PASSWORD,
     dbNumber: process.env.REDIS_DB
       ? parseInt(process.env.REDIS_DB, 10)
       : process.env.REDIS_DB

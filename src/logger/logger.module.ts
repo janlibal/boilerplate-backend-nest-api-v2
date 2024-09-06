@@ -1,34 +1,31 @@
-import { ModuleMetadata } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { LoggerModule } from 'nestjs-pino';
-import path from 'path';
+import { ModuleMetadata } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { LoggerModule } from 'nestjs-pino'
+import path from 'path'
 
-
-
-import loggerFactory from './logger.factory';
-import { GlobalModule } from 'src/global/global.module';
+import loggerFactory from './logger.factory'
+import { GlobalModule } from 'src/global/global.module'
+import redisConfig from 'src/redis/config/redis.config'
+import swaggerConfig from 'src/swagger/config/swagger.config'
+import authConfig from 'src/auth/config/auth.config'
+import appConfig from 'src/app/config/app.config'
 
 function loggerModuleSetup() {
-  
-  
-    /*const imports: ModuleMetadata['imports'] = [
+  /*const imports: ModuleMetadata['imports'] = [
     ConfigModule.forRoot({
       isGlobal: true,
-      //load: [appConfig, databaseConfig, authConfig, mailConfig],
+      load: [appConfig, authConfig, swaggerConfig, redisConfig],
       envFilePath: ['.env'],
     }),
-  ];*/
+  ]
 
-  //let customModules: ModuleMetadata['imports'] = [];
-
-  
-
+  let meda: ModuleMetadata['imports'] = [];*/
 
   const loggerModule = LoggerModule.forRootAsync({
-    //imports: [ConfigModule],
-    //inject: [ConfigService],
+    imports: [ConfigModule],
+    inject: [ConfigService],
     useFactory: loggerFactory,
-  });
+  })
 
   //const modulesSet = process.env.MODULES_SET || 'monolith';
 
@@ -61,7 +58,7 @@ function loggerModuleSetup() {
   }*/
 
   //return imports.concat(customModules);
-  return loggerModule;
+  return loggerModule
 }
 
 export default loggerModuleSetup

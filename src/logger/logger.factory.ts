@@ -1,11 +1,14 @@
-import { ConfigService } from '@nestjs/config';
-import { type IncomingMessage, type ServerResponse } from 'http';
-import { Params } from 'nestjs-pino';
-import { GenReqId, Options, type ReqId } from 'pino-http';
-import { AllConfigType } from 'src/global/config/config.type';
-import { loggingRedactPaths, LogService } from 'src/shared/constants/global.constants';
+import { ConfigService } from '@nestjs/config'
+import { type IncomingMessage, type ServerResponse } from 'http'
+import { Params } from 'nestjs-pino'
+import { GenReqId, Options, type ReqId } from 'pino-http'
+import { AllConfigType } from 'src/global/config/config.type'
+import {
+  loggingRedactPaths,
+  LogService,
+} from 'src/shared/constants/global.constants'
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
 const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
@@ -15,42 +18,42 @@ const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
   warn: 'WARNING',
   error: 'ERROR',
   fatal: 'CRITICAL',
-});
+})
 
 const genReqId: GenReqId = (
   req: IncomingMessage,
   res: ServerResponse<IncomingMessage>,
 ) => {
-  const id: ReqId = req.headers['x-request-id'] || uuidv4();
-  res.setHeader('X-Request-Id', id.toString());
-  return id;
-};
+  const id: ReqId = req.headers['x-request-id'] || uuidv4()
+  res.setHeader('X-Request-Id', id.toString())
+  return id
+}
 
 const customSuccessMessage = (
   req: IncomingMessage,
   res: ServerResponse<IncomingMessage>,
   responseTime: number,
 ) => {
-  return `[${req.id || '*'}] "${req.method} ${req.url}" ${res.statusCode} - "${req.headers['host']}" "${req.headers['user-agent']}" - ${responseTime} ms`;
-};
+  return `[${req.id || '*'}] "${req.method} ${req.url}" ${res.statusCode} - "${req.headers['host']}" "${req.headers['user-agent']}" - ${responseTime} ms`
+}
 
 const customReceivedMessage = (req: IncomingMessage) => {
-  return `[${req.id || '*'}] "${req.method} ${req.url}"`;
-};
+  return `[${req.id || '*'}] "${req.method} ${req.url}"`
+}
 
 const customErrorMessage = (req, res, err) => {
-  return `[${req.id || '*'}] "${req.method} ${req.url}" ${res.statusCode} - "${req.headers['host']}" "${req.headers['user-agent']}" - message: ${err.message}`;
-};
+  return `[${req.id || '*'}] "${req.method} ${req.url}" ${res.statusCode} - "${req.headers['host']}" "${req.headers['user-agent']}" - message: ${err.message}`
+}
 
 function logServiceConfig(logService: string): Options {
   switch (logService) {
     case LogService.GOOGLE_LOGGING:
-      return googleLoggingConfig();
+      return googleLoggingConfig()
     case LogService.AWS_CLOUDWATCH:
-      return cloudwatchLoggingConfig();
+      return cloudwatchLoggingConfig()
     case LogService.CONSOLE:
     default:
-      return consoleLoggingConfig();
+      return consoleLoggingConfig()
   }
 }
 
@@ -58,7 +61,7 @@ function cloudwatchLoggingConfig(): Options {
   // FIXME: Implement AWS CloudWatch logging configuration
   return {
     messageKey: 'message',
-  };
+  }
 }
 
 function googleLoggingConfig(): Options {
@@ -71,10 +74,10 @@ function googleLoggingConfig(): Options {
             PinoLevelToGoogleLoggingSeverityLookup[label] ||
             PinoLevelToGoogleLoggingSeverityLookup['info'],
           level: number,
-        };
+        }
       },
     },
-  };
+  }
 }
 
 function consoleLoggingConfig(): Options {
@@ -88,15 +91,15 @@ function consoleLoggingConfig(): Options {
           'req.id,req.method,req.url,req.headers,req.remoteAddress,req.remotePort,res.headers',
       },
     },
-  };
+  }
 }
 
 async function loggerFactory(
   configService: ConfigService<AllConfigType>,
 ): Promise<Params> {
-  const logLevel = configService.get('app.logLevel', { infer: true }); //'debug'
-  const logService = configService.get('app.logService', { infer: true }); //'console' // 
-  const isDebug =  false //configService.get('app.debug', { infer: true }); //false
+  const logLevel = configService.get('app.logLevel', { infer: true }) //'debug'
+  const logService = configService.get('app.logService', { infer: true }) //'console' //
+  const isDebug = false //configService.get('app.debug', { infer: true }); //false
 
   /*
   const logLevel = configService.get('app.logLevel', { infer: true }); //'debug'
@@ -110,8 +113,8 @@ async function loggerFactory(
     serializers: isDebug
       ? {
           req: (req) => {
-            req.body = req.raw.body;
-            return req;
+            req.body = req.raw.body
+            return req
           },
         }
       : undefined,
@@ -123,11 +126,11 @@ async function loggerFactory(
       censor: '**GDPR COMPLIANT**',
     }, // Redact sensitive information
     ...logServiceConfig(logService),
-  };
+  }
 
   return {
     pinoHttp: pinoHttpOptions,
-  };
+  }
 }
 
-export default loggerFactory;
+export default loggerFactory

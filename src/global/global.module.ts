@@ -9,6 +9,7 @@ import { Request } from 'express'
 import { AppLoggerMiddleware } from 'src/middleware/requests.log.middleware'
 import configModuleSetup from 'src/config/config.module'
 import loggerModuleSetup from 'src/logger/logger.module'
+import { RedisModule } from 'src/redis/redis.module'
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import loggerModuleSetup from 'src/logger/logger.module'
     UserModule,
     SessionModule,
     AuthModule,
+    RedisModule,
   ],
   controllers: [],
   providers: [Logger],
