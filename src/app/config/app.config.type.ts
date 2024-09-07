@@ -11,4 +11,5 @@ export type AppConfig = {
   headerLanguage: string
   logLevel: string
   logService: string
+  debug: boolean
 }

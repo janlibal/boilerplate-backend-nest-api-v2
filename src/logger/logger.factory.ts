@@ -97,9 +97,9 @@ function consoleLoggingConfig(): Options {
 async function loggerFactory(
   configService: ConfigService<AllConfigType>,
 ): Promise<Params> {
-  const logLevel = configService.get('app.logLevel', { infer: true }) //'debug'
-  const logService = configService.get('app.logService', { infer: true }) //'console' //
-  const isDebug = false //configService.get('app.debug', { infer: true }); //false
+  const logLevel = configService.getOrThrow('app.logLevel', { infer: true }) //'debug'
+  const logService = configService.getOrThrow('app.logService', { infer: true }) //'console' //
+  const isDebug = configService.getOrThrow('app.debug', { infer: true }) //false
 
   /*
   const logLevel = configService.get('app.logLevel', { infer: true }); //'debug'
@@ -123,7 +123,7 @@ async function loggerFactory(
     customErrorMessage,
     redact: {
       paths: loggingRedactPaths,
-      censor: '**GDPR COMPLIANT**',
+      censor: '**GDPR/CCPA COMPLIANT**',
     }, // Redact sensitive information
     ...logServiceConfig(logService),
   }

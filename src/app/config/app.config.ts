@@ -85,6 +85,7 @@ export default registerAs<AppConfig>('app', () => {
 
     logLevel: process.env.LOG_LEVEL || 'debug',
     logService: process.env.LOG_SERVICE || 'console',
+    debug: process.env.DEBUG && process.env.DEBUG == 'false',
   }
 })
 
