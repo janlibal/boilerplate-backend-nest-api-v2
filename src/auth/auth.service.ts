@@ -104,8 +104,11 @@ export class AuthService {
       hash,
     })
 
-    const expiry = 900000
     const prefix = RedisPrefixEnum.USER
+    const expiry = this.configService.getOrThrow('redis.expiry', {
+      infer: true,
+    })
+
     await this.redisService.createSession({ prefix, user, token, expiry })
     //await this.redisService.saveSession(user.id, token)
 

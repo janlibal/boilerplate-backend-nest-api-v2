@@ -26,9 +26,9 @@ export default class HttpExceptionFilter implements ExceptionFilter {
       //'1. info': 'from HTTP exception filter',
       '1. timestamp': new Date().toISOString(),
       '2. path': request.url,
-      //'4. message1': exception.message,
       '3. status': exception.getStatus(),
-      ...(exception.getResponse() as HttpErrorResponse),
+      '4. message1': exception.message,
+      //...(exception.getResponse() as HttpErrorResponse),
     })
   }
 }

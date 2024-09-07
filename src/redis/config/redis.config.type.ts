@@ -4,4 +4,5 @@ export type RedisConfig = {
   password: string
   port: number
   dbNumber: number
+  expiry: number
 }

@@ -20,7 +20,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp()
 
-    //const logger = new Logger();
+    //const logger = new PinoLogger();
 
     this.logger.setContext(exception['name'])
     this.logger.error(exception['message'])
