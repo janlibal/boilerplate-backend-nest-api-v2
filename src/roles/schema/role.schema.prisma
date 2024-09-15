@@ -1,0 +1,11 @@
+
+enum RoleEnum {
+  admin
+  user
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  role      RoleEnum @default(user)
+  User      User[]
+}

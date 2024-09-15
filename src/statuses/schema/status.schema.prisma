@@ -1,0 +1,11 @@
+
+enum StatusEnum {
+  active
+  inactive
+}
+
+model Status {
+  id        Int        @id @default(autoincrement())
+  title     StatusEnum @default(inactive)
+  User      User[]
+}

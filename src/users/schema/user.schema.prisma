@@ -1,0 +1,22 @@
+
+enum ProviderEnum {
+  email
+  apple
+  facebook
+  twitter
+  google
+}
+
+model User {
+  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firstName     String
+  lastName      String
+  password      String
+  email         String @unique
+  provider      ProviderEnum @default(email)
+  roleId        Int @default(2)   
+  role          Role @relation(fields: [roleId], references: [id])
+  statusId      Int @default(2)   
+  status        Status @relation(fields: [statusId], references: [id])  
+  Session       Session[]
+}

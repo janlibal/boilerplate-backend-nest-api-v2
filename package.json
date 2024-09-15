@@ -14,6 +14,7 @@
     "rebuild": "yarn run clean && yarn run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prisma:generate": "prisma generate",
+    "generate-schema": "cat src/*/*/*.prisma > src/database/schema.prisma",
     "migrate:dev": "dotenv -e ./src/config/env/.env.dev npx prisma migrate dev",
     "migrate:init": "dotenv -e ./src/config/env/.env.dev npx prisma --datasource-provider postgresql",
     "migrate:test": "dotenv -e ./src/config/env/.env.test npx prisma migrate dev",
