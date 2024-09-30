@@ -1,18 +1,16 @@
-version: '3.8'
 name: second-nest-api
 services:
-  
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
   # to  `host: "postgres"` that value is mapped on the network to the 
   # address of this container.
-  #api:
-  #  container_name: nest-app
-  #  build:
-  #    context: .
-  #    dockerfile: Dockerfile
-  #  ports:
-  #    - ${APP_PORT}:${APP_PORT}
+  app:
+    container_name: nest-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${APP_PORT}:${APP_PORT}
   postgres:
     container_name: nest-postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine

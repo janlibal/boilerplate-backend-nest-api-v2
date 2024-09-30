@@ -2,5 +2,6 @@
 set -e
 
 /opt/wait-for-it.sh postgres:5432
-yarn run migrate:dev
-yarn run seed:dev
+yarn run migrate:prod
+yarn run seed:prod
+yarn run start:prod

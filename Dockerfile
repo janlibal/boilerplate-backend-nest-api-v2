@@ -3,6 +3,8 @@ FROM node:20.15.1-alpine
 RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli typescript ts-node
 
+COPY /src/database /tmp/prisma
+
 COPY package*.json /tmp/app/
 RUN cd /tmp/app && yarn install
 
