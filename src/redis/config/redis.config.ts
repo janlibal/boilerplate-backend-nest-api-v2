@@ -21,7 +21,7 @@ class EnvironmentVariablesValidator {
   @IsOptional()
   REDIS_PORT: number
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
   REDIS_HOST: string
 

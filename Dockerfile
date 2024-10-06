@@ -1,4 +1,4 @@
-FROM node:20.15.1-alpine
+FROM node:20.17.0-alpine
 
 RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli typescript ts-node
@@ -19,6 +19,8 @@ RUN sed -i 's/\r//g' /opt/startup.relational.dev.sh
 
 WORKDIR /usr/src/app
 RUN if [ ! -f .env ]; then cp env-example-relational .env; fi
+RUN npx prisma generate
+
 RUN yarn run rebuild
 
 CMD ["/opt/startup.relational.dev.sh"]

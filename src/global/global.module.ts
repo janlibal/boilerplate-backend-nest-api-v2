@@ -10,6 +10,7 @@ import { AppLoggerMiddleware } from 'src/middleware/requests.log.middleware'
 import configModuleSetup from 'src/config/config.module'
 import loggerModuleSetup from 'src/logger/logger.module'
 import { RedisModule } from 'src/redis/redis.module'
+import { PrismaModule } from 'nestjs-prisma'
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { RedisModule } from 'src/redis/redis.module'
     UserModule,
     SessionModule,
     AuthModule,
+    PrismaModule,
     RedisModule,
   ],
   controllers: [],
