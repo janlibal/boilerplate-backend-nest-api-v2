@@ -16,7 +16,7 @@ import * as pkginfo from '../../../package.json'
 import validateConfig from 'src/utils/validatate.config'
 enum Environment {
   Development = 'dev',
-  Production = 'production',
+  Production = 'prod',
   Test = 'test',
 }
 

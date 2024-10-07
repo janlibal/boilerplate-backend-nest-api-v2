@@ -3,7 +3,8 @@ FROM node:20.17.0-alpine
 RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli typescript ts-node
 
-COPY /src/database /tmp/prisma
+ARG NODE_ENV="prod"
+ENV NODE_ENV="${NODE_ENV}"
 
 COPY package*.json /tmp/app/
 RUN cd /tmp/app && yarn install
@@ -19,7 +20,7 @@ RUN sed -i 's/\r//g' /opt/startup.relational.dev.sh
 
 WORKDIR /usr/src/app
 RUN if [ ! -f .env ]; then cp env-example-relational .env; fi
-RUN npx prisma generate
+RUN yarn run prisma:generate
 
 RUN yarn run rebuild
 
