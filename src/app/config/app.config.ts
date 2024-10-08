@@ -41,7 +41,7 @@ class EnvironmentVariablesValidator {
 
   @IsString()
   @IsOptional()
-  DATABASE_HOST: string
+  DATABASE_URL: string
 
   @IsString()
   @IsOptional()
@@ -78,7 +78,7 @@ export default registerAs<AppConfig>('app', () => {
       : process.env.PORT
         ? parseInt(process.env.PORT, 10)
         : 3000,
-    dbUrl: process.env.DATABASE_HOST || 'unknown',
+    dbUrl: process.env.DATABASE_URL || 'unknown',
     apiPrefix: API_PREFIX || 'api',
     fallbackLanguage: process.env.APP_FALLBACK_LANGUAGE || 'en',
     headerLanguage: process.env.APP_HEADER_LANGUAGE || 'x-custom-lang',
