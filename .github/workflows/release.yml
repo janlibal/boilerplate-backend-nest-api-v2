@@ -76,3 +76,33 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.image_repository_name }}:${{ env.TAG_NAME }}
+  deploy_via_ssh:
+    needs: push_to_registry
+    runs-on: ubuntu-22.04
+    name: Starting deployment via ssh
+    if: ${{ github.event.workflow_run.conclusion != 'failure' }}
+    steps:
+      # Checkout latest or specific tag
+      - name: checkout
+        if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}
+        uses: actions/checkout@v3
+        with:
+          node-version: 20
+      - name: checkout tag
+        if: ${{ github.event.inputs.version != '' && github.event.inputs.version != 'latest' }}
+        uses: actions/checkout@v3
+        with:
+          ref: refs/tags/${{ github.event.inputs.version }}
+          node-version: 20
+      - name: repository name fix and env
+        run: |
+          echo "image_repository_name=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "domain=${{ secrets.HOST }}" >> $GITHUB_ENV
+          echo "letsencrypt_email=${{ secrets.LETSENCRYPT_EMAIL }}" >> $GITHUB_ENV
+          echo "TAG_NAME=latest" >> $GITHUB_ENV
+          if [ "${{ github.event.release.tag_name }}" != "" ]; then
+            echo "TAG_NAME=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          fi;
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          fi;
