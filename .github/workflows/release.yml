@@ -127,4 +127,26 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           source: "./docker-compose.yml,./.env"
           target: "~/.deploy/${{ github.event.repository.name }}/"
-          
+      # Deploy Docker image with your application using `docker compose up app` remotely
+      - name: remote docker-compose up via ssh
+        uses: appleboy/ssh-action@v0.1.5
+        env:
+          APPTOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ secrets.EC2_USERNAME }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          port: 22
+          envs: APPTOKEN,USERNAME
+          script: |
+            echo $APPTOKEN | docker login ghcr.io -u $USERNAME --password-stdin
+            cd ~/.deploy/${{ github.event.repository.name }}
+            sudo docker-compose -f ./docker-compose.yml down
+            sudo docker-compose -f ./docker-compose.yml rm -f
+            sudo docker-compose -f ./docker-compose.yml --env-file .env up -d
+            sudo docker image prune -af
+      - name: The message of completion
+        run: |
+          echo "We have made it this far"
+
