@@ -6,12 +6,10 @@ import redisConfig from 'src/redis/config/redis.config'
 import swaggerConfig from 'src/swagger/config/swagger.config'
 
 function configModuleSetup() {
-  const ENV = process.env.NODE_ENV
   const configModule = ConfigModule.forRoot({
     isGlobal: true,
     load: [appConfig, authConfig, swaggerConfig, redisConfig],
-    //envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`,
-    envFilePath: !ENV ? '/src/config/env.env' : `/src/config/env.env.${ENV}`
+    envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`    
   })
 
   return configModule
