@@ -9,6 +9,8 @@ services:
     image: "ghcr.io/janlibal/boilerplate-backend-nest-api-v2:latest"
     ports:
       - ${APP_PORT}:${APP_PORT}
+    env_file:
+      - .env.prod
     depends_on:
       - postgres
   #app:
@@ -25,6 +27,8 @@ services:
   postgres:
     container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
+    env_file:
+      - .env.prod
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -52,6 +56,8 @@ services:
     image: redis:latest
     container_name: redis
     command: redis-server --requirepass root
+    env_file:
+      - .env.prod
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
     restart: unless-stopped   
