@@ -79,6 +79,7 @@ async function bootstrap() {
   const redisUrl = configService.getOrThrow('redis.redisUrl', { infer: true })
   const nodeEnv = configService.getOrThrow('app.nodeEnv', { infer: true })
   const pkgInfo = configService.getOrThrow('app.name', { infer: true })
+  const apiPrefix = configService.getOrThrow('app.apiPrefix', { infer: true })
 
   await app.listen(port, async () =>
   logger.info(`
@@ -87,7 +88,7 @@ async function bootstrap() {
   pkgINfo: ${pkgInfo} \n
   dbUrl: ${db} \n
   redisUrl: ${redisUrl} \n
-  apiPrefix: ${port} \n
+  apiPrefix: ${apiPrefix} \n
   `, 'Main')  
     //logger.info(`Server started listening on ${port} w/ db ${db}`, 'Main')  
   )
