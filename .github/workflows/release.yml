@@ -144,7 +144,7 @@ jobs:
             cd ~/.deploy/${{ github.event.repository.name }}
             sudo docker-compose -f ./docker-compose.yaml down
             sudo docker-compose -f ./docker-compose.yaml rm -f
-            sudo docker-compose -f ./docker-compose.yaml --env-file .env up -d
+            sudo docker-compose -f ./docker-compose.yaml up -d
             sudo docker image prune -af
       - name: The message of completion
         run: |
