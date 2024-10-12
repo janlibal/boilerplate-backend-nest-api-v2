@@ -19,7 +19,7 @@ RUN sed -i 's/\r//g' /opt/wait-for-it.sh
 RUN sed -i 's/\r//g' /opt/startup.relational.dev.sh
 
 WORKDIR /usr/src/app
-RUN if [ ! -f .env.prod ]; then cp env-example-relational .env.prod; fi
+RUN if [ ! -f .env ]; then cp env-example-relational .env; fi
 RUN yarn run prisma:generate
 
 RUN yarn run rebuild
