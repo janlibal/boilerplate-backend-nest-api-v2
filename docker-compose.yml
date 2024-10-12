@@ -9,6 +9,8 @@ services:
     image: "ghcr.io/janlibal/boilerplate-backend-nest-api-v2:latest"
     ports:
       - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - postgres
   #app:
   #  container_name: nest-app
   #  build:
@@ -21,7 +23,7 @@ services:
     #env_file:
     #  - .env
   postgres:
-    container_name: nest-postgres
+    container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
     ports:
       - ${DB_PORT}:${DB_PORT}
