@@ -67,7 +67,7 @@ async function bootstrap() {
   })
 
   app.enableCors({
-    origin: frontEnd,
+    origin: '*',//frontEnd,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   })
