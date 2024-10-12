@@ -1,4 +1,4 @@
-name: second-nest-api
+#name: second-nest-api
 services:
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
@@ -7,6 +7,8 @@ services:
   api:
     container_name: application
     image: "ghcr.io/janlibal/boilerplate-backend-nest-api-v2:latest"
+    env_file:
+      - '.env'
     ports:
       - ${PORT}:${PORT}
   #  depends_on:

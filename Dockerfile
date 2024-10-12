@@ -1,7 +1,7 @@
 FROM node:20.17.0-alpine
 
 RUN apk add --no-cache bash
-RUN yarn global add @nestjs/cli typescript ts-node
+#RUN yarn global add @nestjs/cli typescript ts-node
 
 ARG NODE_ENV="prod"
 ENV NODE_ENV="${NODE_ENV}"
@@ -11,11 +11,11 @@ RUN cd /tmp/app && yarn install
 
 COPY . /usr/src/app
 RUN cp -a /tmp/app/node_modules /usr/src/app
-COPY ./wait-for-it.sh /opt/wait-for-it.sh
-RUN chmod +x /opt/wait-for-it.sh
+#COPY ./wait-for-it.sh /opt/wait-for-it.sh
+#RUN chmod +x /opt/wait-for-it.sh
 COPY ./startup.relational.dev.sh /opt/startup.relational.dev.sh
 RUN chmod +x /opt/startup.relational.dev.sh
-RUN sed -i 's/\r//g' /opt/wait-for-it.sh
+#RUN sed -i 's/\r//g' /opt/wait-for-it.sh
 RUN sed -i 's/\r//g' /opt/startup.relational.dev.sh
 
 WORKDIR /usr/src/app
