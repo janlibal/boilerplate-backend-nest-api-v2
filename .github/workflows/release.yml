@@ -126,7 +126,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           port: 22
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          source: "./docker-compose.yaml,./.env"
+          source: "./docker-compose.yml,./.env"
           target: "~/.deploy/${{ github.event.repository.name }}/"
       # Deploy Docker image with your application using `docker compose up app` remotely
       - name: remote docker-compose up via ssh
