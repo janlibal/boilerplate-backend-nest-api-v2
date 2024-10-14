@@ -7,8 +7,8 @@ set -e
 #yarn run prisma:generate
 
 #yarn run rebuild
-#---yarn run migrate:deploy
-#---yarn run seed:prod
+yarn run migrate:deploy
+yarn run seed:prod
 yarn run start:prod
 
 #RUN npx prisma generate
