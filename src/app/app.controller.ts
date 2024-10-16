@@ -8,7 +8,6 @@ import { ControllerResponseDto } from './dto/controller.resonse.dto'
   path: 'app',
   version: '1',
 })
-@Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

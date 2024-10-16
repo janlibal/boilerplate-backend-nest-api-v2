@@ -19,7 +19,10 @@ import { SessionService } from 'src/session/session.service'
 import { Session } from 'src/session/domain/session.domain'
 
 @ApiTags('Users')
-@Controller('/users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UserController {
   constructor(
     private userService: UserService,
