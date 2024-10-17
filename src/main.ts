@@ -19,6 +19,7 @@ import HttpExceptionFilter from './filters/http.exception.filter'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
+    forceCloseConnections: false, // << remove?
     bufferLogs: true,
     cors: true,
   })
