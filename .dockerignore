@@ -3,3 +3,4 @@
 /dist
 /files
 docker-compose.db.yml
+docker-compose.test.yml
