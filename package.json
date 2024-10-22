@@ -56,7 +56,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:new": "env-cmd jest --config ./test/jest-e2e.json",
+    "test:e2e:relational:docker": "docker compose -f docker-compose.test.yml --env-file env-example-relational -p tests up -d --build && docker compose -f docker-compose.test.yml -p tests exec api /opt/wait-for-it.sh -t 0 localhost:4300 -- yarn run test:e2e:new -- --watchAll --runInBand && docker compose -f docker-compose.test.yml -p tests down && docker compose -p tests rm -svf"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
