@@ -96,9 +96,9 @@
     "pino-http": "^10.2.0",
     "pino-pretty": "^11.2.2",
     "prisma": "5.20.0",
-    "ts-node": "^10.9.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "ts-node": "^10.9.1",
     "twitter": "^1.7.1",
     "uuid": "^10.0.0"
   },
@@ -121,6 +121,7 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
