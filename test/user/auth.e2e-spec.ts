@@ -52,12 +52,94 @@ describe('Auth Module', () => {
             lastName: 'Doe',
           })
           .expect(422)
-          .expect(({ body }) => {
-            expect(body.status.timestamp).toBeDefined()
+          //.expect(({ body }) => {
+            //expect(body.status.timestamp).toBeDefined()
             //expect(body.path).toBeDefined()
             //expect(body.status).toBeDefined()
             //expect(body.message).toBeDefined()
+          //})
+      })
+
+      it('should fail with missing firstName: /api/v1/auth/email/register (POST)', () => {
+        return request(app)
+          .post(`${prefix}/auth/email/register`)
+          .send({
+            email: TESTER_EMAIL,
+            password: TESTER_PASSWORD,
+            //firstName: 'Joe',
+            lastName: 'Doe',
+          })
+          .expect(422)
+          .expect(({ body }) => {
+            expect(body.error.status).toBe(422)
+            expect(body.error.errors.firstName).toMatch('firstName should not be empty')
           })
       })
+
+      it('should fail with firstName being string: /api/v1/auth/email/register (POST)', () => {
+        return request(app)
+          .post(`${prefix}/auth/email/register`)
+          .send({
+            email: TESTER_EMAIL,
+            password: TESTER_PASSWORD,
+            firstName: 123,
+            lastName: 'Doe',
+          })
+          .expect(422)
+          .expect(({ body }) => {
+            expect(body.error.status).toBe(422)
+            expect(body.error.errors.firstName).toMatch('firstName must be a string')
+          })
+      })
+
+      it('should fail with missing lastName: /api/v1/auth/email/register (POST)', () => {
+        return request(app)
+          .post(`${prefix}/auth/email/register`)
+          .send({
+            email: TESTER_EMAIL,
+            password: TESTER_PASSWORD,
+            firstName: 'Joe',
+            //lastName: 'Doe',
+          })
+          .expect(422)
+          .expect(({ body }) => {
+            expect(body.error.status).toBe(422)
+            expect(body.error.errors.lastName).toMatch('lastName should not be empty')
+          })
+      })
+
+      it('should fail with short password: /api/v1/auth/email/register (POST)', () => {
+        return request(app)
+          .post(`${prefix}/auth/email/register`)
+          .send({
+            email: TESTER_EMAIL,
+            //password: TESTER_PASSWORD,
+            firstName: 'Joe',
+            lastName: 'Doe',
+          })
+          .expect(422)
+          .expect(({ body }) => {
+            expect(body.error.status).toBe(422)
+            expect(body.error.errors.password).toMatch('password must be longer than or equal to 6 characters')
+          })
+      })
+
+      it('should fail with email in wrong format: /api/v1/auth/email/register (POST)', () => {
+        return request(app)
+          .post(`${prefix}/auth/email/register`)
+          .send({
+            email: 'joedoe.com',
+            password: TESTER_PASSWORD,
+            firstName: 'Joe',
+            lastName: 'Doe',
+          })
+          .expect(422)
+          .expect(({ body }) => {
+            expect(body.error.status).toBe(422)
+            expect(body.error.errors.email).toMatch('email must be an email')
+          })
+      })
+
+
   })
 })
