@@ -57,7 +57,7 @@ import { BookModule } from 'src/book/book.module'
     AuthModule,
     PrismaModule,
     RedisModule,
-    BookModule
+    BookModule,
   ],
   controllers: [],
   providers: [Logger],

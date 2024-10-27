@@ -12,10 +12,10 @@ import compression from 'compression'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import { Logger, LoggerErrorInterceptor, PinoLogger } from 'nestjs-pino'
-import { AllExceptionsFilter } from './filters/all.exceptions.filter'
-import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.filter'
 import { PasswordSanitizerInterceptor } from './utils/password.interceptor'
+import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
+import BadRequest from './exceptions/bad.request.exception'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
@@ -33,14 +33,26 @@ async function bootstrap() {
 
   const logger = await app.resolve(PinoLogger)
 
-  /*app.useGlobalFilters(
-    new AllExceptionsFilter(app.get(HttpAdapterHost), logger),
-    new InvalidFormExceptionFilter(),
-  )*/
+  //app.useGlobalGuards(new AuthGuard())
 
-  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      exceptionFactory: (errors) => {
+        const messages = errors.reduce((acc, error) => {
+          if (error.constraints) {
+            acc.push(...Object.values(error.constraints))
+          }
+          return acc
+        }, [])
+        return new BadRequest(messages)
+      },
+    }),
+  )
 
-  app.useGlobalPipes(new ValidationPipe(validationOptions))
+  app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter())
+
+  //app.useGlobalPipes(new ValidationPipe(validationOptions))
   app.useGlobalInterceptors(
     // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549
@@ -55,19 +67,19 @@ async function bootstrap() {
   app.use(compression())
 
   // protect app from brute-force attacks
-  app.use(
+  /*wapp.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     }),
-  )
+  )*/
 
   const frontEnd = configService.getOrThrow('app.frontendDomain', {
     infer: true,
   })
 
   app.enableCors({
-    origin: '*',//frontEnd,
+    origin: '*', //frontEnd,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   })
@@ -81,16 +93,21 @@ async function bootstrap() {
   const pkgInfo = configService.getOrThrow('app.name', { infer: true })
   const apiPrefix = configService.getOrThrow('app.apiPrefix', { infer: true })
 
-  await app.listen(port, async () =>
-  logger.info(`
+  await app.listen(
+    port,
+    async () =>
+      logger.info(
+        `
   Port: ${port} \n
   NodeNev: ${nodeEnv} \n
   pkgINfo: ${pkgInfo} \n
   dbUrl: ${db} \n
   redisUrl: ${redisUrl} \n
   apiPrefix: ${apiPrefix} \n
-  `, 'Main')  
-    //logger.info(`Server started listening on ${port} w/ db ${db}`, 'Main')  
+  `,
+        'Main',
+      ),
+    //logger.info(`Server started listening on ${port} w/ db ${db}`, 'Main')
   )
 }
 void bootstrap()

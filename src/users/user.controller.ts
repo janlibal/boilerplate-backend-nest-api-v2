@@ -14,9 +14,10 @@ import { UserService } from './user.service'
 import { User } from './domain/user.domain'
 import { CreateUserDto } from './dto/create.user.dto'
 import { NullableType } from 'src/utils/types/nullable.type'
-import { ValidateIdPipe } from 'src/pipes/validate.id.pipe'
 import { SessionService } from 'src/session/session.service'
 import { Session } from 'src/session/domain/session.domain'
+import { ValidateUuidPipe } from 'src/pipes/validate.uuid.pipe'
+import { ValidateIdPipe } from 'src/pipes/validate.id.pipe'
 
 @ApiTags('Users')
 @Controller({
@@ -31,15 +32,13 @@ export class UserController {
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  findOneOld(
-    @Param('id', ValidateIdPipe) id: string,
-  ): Promise<NullableType<User>> {
+  findOneOld(@Param('id', ValidateUuidPipe) id: string,): Promise<NullableType<User>> {
     return this.userService.findById(id)
   }
 
   @Get('/session/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: number): Promise<NullableType<Session>> {
+  findOne(@Param('id', ValidateIdPipe) id: number): Promise<NullableType<Session>> {
     return this.sessionService.findById(id)
   }
 

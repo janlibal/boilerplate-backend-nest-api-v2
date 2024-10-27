@@ -11,6 +11,7 @@ import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
 import crypto from 'src/utils/crypto'
 import { RoleEnum } from 'src/roles/roles.enum'
 import { StatusEnum } from 'src/statuses/statuses.enum'
+import ResourceExistsError from 'src/exceptions/already.exists.exception'
 //import * as crypto from 'crypto'
 //import * as bcrypt from 'bcrypt'
 
@@ -79,15 +80,11 @@ export class UserService {
     const userObject = await this.userRepository.findByEmail(
       clonedPayload.email,
     )
-    if (userObject) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          email: 'emailAlreadyExists',
-        },
-      })
-    }
 
+    if(userObject) {
+      throw new ResourceExistsError(userObject.email)
+   }
+  
     return await this.userRepository.create(clonedPayload)
   }
 

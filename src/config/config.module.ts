@@ -10,7 +10,7 @@ function configModuleSetup() {
   const configModule = ConfigModule.forRoot({
     isGlobal: true,
     load: [appConfig, redisConfig, authConfig, swaggerConfig, redisConfig],
-    envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`    
+    envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`,
     //envFilePath: ['.env']
   })
 

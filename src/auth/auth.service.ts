@@ -29,6 +29,8 @@ import { NullableType } from 'src/utils/types/nullable.type'
 import { StatusEnum } from 'src/statuses/statuses.enum'
 import { RedisService } from 'src/redis/redis.service'
 import { RedisPrefixEnum } from 'src/redis/enums/redis.prefix.enum'
+import UnprocessableError from 'src/exceptions/unprocessable.exception'
+import UnauthorizedError from 'src/exceptions/unauthorized.exception'
 
 @Injectable()
 export class AuthService {
@@ -44,49 +46,25 @@ export class AuthService {
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     const user = await this.userRepository.findByEmail(loginDto.email)
 
-    if (!user) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.NOT_FOUND,
-        errors: {
-          email: 'notFound',
-        },
-      })
+    if(!user) { 
+      throw new UnauthorizedError('Invalid email or password')
     }
 
     if (user.provider !== AuthProvidersEnum.email) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          email: `needLoginViaProvider:${user.provider}`,
-        },
-      })
+      throw new UnprocessableError(`hasToLoginViaProvider:${user.provider}`)
     }
 
     if (!user.password) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          password: 'incorrectPassword',
-        },
-      })
+      throw new UnprocessableError('missingPassword')
     }
 
     const isValidPassword = await crypto.comparePasswords(
       loginDto.password,
       user.password,
     )
-    /*const isValidPassword = await bcrypt.compare(
-      loginDto.password,
-      user.password,
-    )*/
 
     if (!isValidPassword) {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          password: 'incorrectPassword',
-        },
-      })
+      throw new UnauthorizedError('Invalid email or password')
     }
 
     const hash = crypto.makeHash()

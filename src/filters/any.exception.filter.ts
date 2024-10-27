@@ -19,7 +19,6 @@ export default class AnyExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR
 
     response.status(status).json({
-      info: 'from ANY exception filter',
       timestamp: new Date().toISOString(),
       instance: request.url,
       title: 'Internal Server Error',

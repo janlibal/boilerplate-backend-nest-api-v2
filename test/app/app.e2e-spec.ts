@@ -1,6 +1,5 @@
-import request from 'supertest';
+import request from 'supertest'
 import { API_PREFIX, APP_URL } from '../utils/constants'
-
 
 describe('App', () => {
   const app = APP_URL

@@ -3,7 +3,6 @@ import { BookModel } from './model/book.model'
 
 @Injectable()
 export class BookService {
-
   async create(): Promise<BookModel> {
     const book = {
       title: 'My Book',
