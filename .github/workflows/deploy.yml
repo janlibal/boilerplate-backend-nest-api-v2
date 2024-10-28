@@ -14,7 +14,7 @@ jobs:
       
       - name: Run e2e tests
         id: relational
-        run: docker compose -f docker-compose.ci.yml --env-file env-example-relational -p ci-relational up --build --exit-code-from api
+        run: docker compose -f docker-compose.ci.yml --env-file .env -p ci-relational up --build --exit-code-from api
 
       - name: Copy prod.log from container to host
         if: ${{ failure() && steps.relational.conclusion == 'failure' }}
