@@ -6,4 +6,4 @@ yarn run migrate:test
 yarn run seed:test
 yarn run start:prod > prod.log 2>&1 &
 /opt/wait-for-it.sh localhost:4300
-yarn run test:e2e:new -- --runInBand
+yarn run test:e2e -- --runInBand
