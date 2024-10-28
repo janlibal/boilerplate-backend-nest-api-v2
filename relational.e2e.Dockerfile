@@ -3,7 +3,7 @@ FROM node:20.18.0-alpine
 RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli typescript ts-node
 
-ARG NODE_ENV="test"
+ARG NODE_ENV="prod"
 ENV NODE_ENV="${NODE_ENV}"
 
 COPY package*.json /tmp/app/
