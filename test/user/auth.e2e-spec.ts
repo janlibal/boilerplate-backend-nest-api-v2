@@ -47,7 +47,8 @@ describe('Auth Module', () => {
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
           expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
+          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
         })
     })
     it('should fail with missing email and password: /api/v1/auth/email/login (POST)', () => {
@@ -64,8 +65,9 @@ describe('Auth Module', () => {
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
           expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email cannot be empty'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Password cannot be empty'})
+          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
+          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[3]).toMatchSnapshot({ message: 'Password cannot be empty'})
         })
     })
     it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)', () => {

@@ -7,6 +7,8 @@ services:
   postgres:
     container_name: nest-postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
+    env_file:
+      - src/config/env/.env.dev
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -20,6 +22,8 @@ services:
   pgadmin-compose:
     container_name: nest-pgadmin
     image: dpage/pgadmin4
+    env_file:
+      - src/config/env/.env.dev
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -30,6 +34,8 @@ services:
   redis:
     image: redis:latest
     container_name: redis
+    env_file:
+      - src/config/env/.env.dev
     command: redis-server --requirepass root
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}

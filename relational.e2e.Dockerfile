@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 RUN echo "" > .env
 #??RUN if [ ! -f .env ]; then cp env-example-relational .env; fi
 
-#RUN yarn run prisma:generate
+RUN yarn run prisma:generate
 RUN yarn run rebuild
 
 CMD ["/opt/startup.relational.ci.sh"]

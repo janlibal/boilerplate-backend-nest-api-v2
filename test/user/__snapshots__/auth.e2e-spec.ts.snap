@@ -14,11 +14,17 @@ exports[`Auth Module Login should fail with missing email and password: /api/v1/
 
 exports[`Auth Module Login should fail with missing email and password: /api/v1/auth/email/login (POST) 2`] = `
 {
-  "message": "Email cannot be empty",
+  "message": "Email must be a string",
 }
 `;
 
 exports[`Auth Module Login should fail with missing email and password: /api/v1/auth/email/login (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Auth Module Login should fail with missing email and password: /api/v1/auth/email/login (POST) 4`] = `
 {
   "message": "Password cannot be empty",
 }
@@ -31,6 +37,12 @@ exports[`Auth Module Login should fail with missing email: /api/v1/auth/email/lo
 `;
 
 exports[`Auth Module Login should fail with missing email: /api/v1/auth/email/login (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Auth Module Login should fail with missing email: /api/v1/auth/email/login (POST) 3`] = `
 {
   "message": "Email cannot be empty",
 }
