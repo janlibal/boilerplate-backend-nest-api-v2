@@ -81,10 +81,10 @@ export class UserService {
       clonedPayload.email,
     )
 
-    if(userObject) {
+    if (userObject) {
       throw new ResourceExistsError(userObject.email)
-   }
-  
+    }
+
     return await this.userRepository.create(clonedPayload)
   }
 

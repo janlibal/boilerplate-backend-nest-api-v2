@@ -24,7 +24,7 @@ export class CreateUserDto {
     message: 'Email must be in proper format',
   })
   readonly email: string | null
-  
+
   @ApiProperty()
   @IsDefined({ message: 'Password has to be defined' })
   @IsString({ message: 'Password must be a string' })

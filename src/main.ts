@@ -12,7 +12,12 @@ import compression from 'compression'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import { Logger, LoggerErrorInterceptor, PinoLogger } from 'nestjs-pino'
-import { PasswordSanitizerInterceptor } from './utils/password.interceptor'
+import {
+  IdSanitizerInterceptor,
+  PasswordSanitizerInterceptor,
+  RoleSanitizerInterceptor,
+  StatusSanitizerInterceptor,
+} from './utils/password.interceptor'
 import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
 import BadRequest from './exceptions/bad.request.exception'
@@ -59,6 +64,9 @@ async function bootstrap() {
     new ResolvePromisesInterceptor(),
     new LoggerErrorInterceptor(),
     new PasswordSanitizerInterceptor(),
+    new IdSanitizerInterceptor(),
+    new StatusSanitizerInterceptor(),
+    new RoleSanitizerInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   )
 

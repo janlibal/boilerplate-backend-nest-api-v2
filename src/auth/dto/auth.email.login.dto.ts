@@ -15,6 +15,6 @@ export class AuthEmailLoginDto {
   readonly email: string
 
   @ApiProperty()
-  @IsNotEmpty({ message: 'Password cannot be empty'})
+  @IsNotEmpty({ message: 'Password cannot be empty' })
   readonly password: string
 }

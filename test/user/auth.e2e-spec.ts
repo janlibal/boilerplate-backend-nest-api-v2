@@ -14,6 +14,51 @@ describe('Auth Module', () => {
   const newUserEmail = `User.${Date.now()}@example.com`
   const newUserPassword = 'Password123!'
 
+  describe('Logged in user', () => {
+    let newUserApiToken: any
+
+    beforeAll(async () => {
+      await request(app)
+        .post(`${prefix}/auth/email/login`)
+        .send({ email: TESTER_EMAIL, password: TESTER_PASSWORD })
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.token).toMatch(
+            /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+          )
+        })
+        .then(({ body }) => {
+          newUserApiToken = 'jwt ' + body.token
+        })
+    })
+
+    it('should retrieve your own profile: /api/v1/auth/me (GET)', () => {
+      request(app)
+        .get(`${prefix}/auth/me`)
+        .auth(newUserApiToken, {
+          type: 'bearer',
+        })
+        .send()
+        .expect(200)
+      expect(({ body }) => {
+        expect(typeof body.firstName).toBe('string')
+        expect(typeof body.lastName).toBe('string')
+        expect(typeof body.email).toMatch(/^\S+@\S+\.\S+$/)
+        expect(typeof body.provider).toBe('string')
+      })
+    })
+
+    it('should logout user: /api/v1/auth/logout (POST)', () => {
+      request(app)
+      .get(`${prefix}/auth/logout`)
+        .auth(newUserApiToken, {
+          type: 'bearer',
+        })
+        .send()
+        .expect(204)
+    })
+  })
+
   describe('Login', () => {
     it('should successfully return data for logged user: /api/v1/auth/email/login (POST)', () => {
       return request(app)
@@ -27,10 +72,13 @@ describe('Auth Module', () => {
           expect(body.refreshToken).toMatch(
             /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
           )
-          expect(body.tokenExpires).toBeDefined()
+          expect(typeof body.tokenExpires).toBe('number')
           expect(body.user.email).toMatch(/^\S+@\S+\.\S+$/)
           expect(body.user.hash).not.toBeDefined()
           expect(body.user.password).not.toBeDefined()
+          expect(body.user.statusId).not.toBeDefined()
+          expect(body.user.roleId).not.toBeDefined()
+          expect(body.user.id).not.toBeDefined()
         })
     })
     it('should fail with missing email: /api/v1/auth/email/login (POST)', () => {
@@ -38,17 +86,25 @@ describe('Auth Module', () => {
         .post(`${prefix}/auth/email/login`)
         .send({
           //email: TESTER_EMAIL,
-          password: TESTER_PASSWORD
+          password: TESTER_PASSWORD,
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/login')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
     it('should fail with missing email and password: /api/v1/auth/email/login (POST)', () => {
@@ -60,14 +116,24 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/login')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Password cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Password cannot be empty',
+          })
         })
     })
     it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)', () => {
@@ -75,15 +141,19 @@ describe('Auth Module', () => {
         .post(`${prefix}/auth/email/login`)
         .send({
           email: 'joe.doejoedoe.com', // TESTER_EMAIL,
-          password: TESTER_PASSWORD
+          password: TESTER_PASSWORD,
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/login')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
   })
@@ -92,11 +162,11 @@ describe('Auth Module', () => {
       return request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
-            email: newUserEmail,
-            password: newUserPassword,
-            firstName: newUserFirstName,
-            lastName: newUserLastName,
-          })
+          email: newUserEmail,
+          password: newUserPassword,
+          firstName: newUserFirstName,
+          lastName: newUserLastName,
+        })
         .expect(204)
     })
 
@@ -111,14 +181,24 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
         })
     })
     it('should fail with firstName not being string: /api/v1/auth/email/register (POST)', () => {
@@ -132,12 +212,18 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
         })
     })
 
@@ -152,14 +238,24 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
         })
     })
     it('should fail with lastName not being string: /api/v1/auth/email/register (POST)', () => {
@@ -173,12 +269,18 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
         })
     })
 
@@ -193,13 +295,21 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -214,11 +324,15 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -233,15 +347,27 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
 
@@ -256,12 +382,18 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
         })
     })
 
@@ -276,11 +408,15 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
         })
     })
 
@@ -295,17 +431,33 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -320,15 +472,27 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -343,16 +507,23 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
-    
 
     it('should fail with lastName and email missing: /api/v1/auth/email/register (POST)', () => {
       return request(app)
@@ -365,21 +536,39 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -394,15 +583,27 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -417,13 +618,21 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -438,18 +647,36 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
         })
     })
 
@@ -464,17 +691,30 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
         })
     })
 
@@ -489,16 +729,30 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
         })
     })
 
@@ -513,17 +767,33 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -538,15 +808,27 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -561,13 +843,21 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -582,24 +872,41 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[8]).toMatchSnapshot({ message: 'Password must be a string'})
-         
-          
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[8]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
-
 
     it('should fail with firstName and weak password: /api/v1/auth/email/register (POST)', () => {
       return request(app)
@@ -612,18 +919,30 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          
-          
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
         })
     })
 
@@ -638,17 +957,33 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Email cannot be empty'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
         })
     })
 
@@ -663,15 +998,27 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -686,13 +1033,21 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email must be in proper format'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
         })
     })
 
@@ -707,22 +1062,41 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[8]).toMatchSnapshot({ message: 'Password must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[8]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
-
 
     it('should fail with lastName missing and weak password: /api/v1/auth/email/register (POST)', () => {
       return request(app)
@@ -735,16 +1109,30 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
         })
     })
 
@@ -759,19 +1147,36 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Email cannot be empty'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Password must be a string'})
-          
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
 
@@ -786,16 +1191,30 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Password must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
 
@@ -810,13 +1229,21 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
         })
     })
 
@@ -831,26 +1258,60 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[8]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[9]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[10]).toMatchSnapshot({ message: 'Email cannot be empty'})
-          expect(body.errors[11]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[12]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[13]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[14]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[15]).toMatchSnapshot({ message: 'Password must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[8]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[9]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[10]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
+          expect(body.errors[11]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[12]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[13]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[14]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[15]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
 
@@ -865,24 +1326,51 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[8]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[9]).toMatchSnapshot({ message: 'Email must be a string'})
-          expect(body.errors[10]).toMatchSnapshot({ message: 'Email cannot be empty'})
-          expect(body.errors[11]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[12]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[8]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[9]).toMatchSnapshot({
+            message: 'Email must be a string',
+          })
+          expect(body.errors[10]).toMatchSnapshot({
+            message: 'Email cannot be empty',
+          })
+          expect(body.errors[11]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[12]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
         })
     })
 
@@ -897,24 +1385,54 @@ describe('Auth Module', () => {
         })
         .expect(400)
         .expect(({ body }) => {
-          expect(body.timestamp).toMatch(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.path).toMatch('/auth/email/register')
           expect(body.title).toMatch('Bad Request')
           expect(body.status).toBe(400)
-          expect(body.errors[0]).toMatchSnapshot({ message: 'Firstname has to be defined'})      
-          expect(body.errors[1]).toMatchSnapshot({ message: 'Firstname must be longer than 1 char'})
-          expect(body.errors[2]).toMatchSnapshot({ message: 'Firstname must be a string'})
-          expect(body.errors[3]).toMatchSnapshot({ message: 'Firstname cannot be empty'})
-          expect(body.errors[4]).toMatchSnapshot({ message: 'Lastname has to be defined'})
-          expect(body.errors[5]).toMatchSnapshot({ message: 'Lastname must be longer than 1 char'})
-          expect(body.errors[6]).toMatchSnapshot({ message: 'Lastname must be a string'})
-          expect(body.errors[7]).toMatchSnapshot({ message: 'Lastname cannot be empty'})
-          expect(body.errors[8]).toMatchSnapshot({ message: 'Email must be in proper format'})
-          expect(body.errors[9]).toMatchSnapshot({ message: 'Password has to be defined'})
-          expect(body.errors[10]).toMatchSnapshot({ message: 'Password is too weak'})
-          expect(body.errors[11]).toMatchSnapshot({ message: 'Password can contain 20 characters at the most'})
-          expect(body.errors[12]).toMatchSnapshot({ message: 'Password must contain at least 6 characters'})
-          expect(body.errors[13]).toMatchSnapshot({ message: 'Password must be a string'})
+          expect(body.errors[0]).toMatchSnapshot({
+            message: 'Firstname has to be defined',
+          })
+          expect(body.errors[1]).toMatchSnapshot({
+            message: 'Firstname must be longer than 1 char',
+          })
+          expect(body.errors[2]).toMatchSnapshot({
+            message: 'Firstname must be a string',
+          })
+          expect(body.errors[3]).toMatchSnapshot({
+            message: 'Firstname cannot be empty',
+          })
+          expect(body.errors[4]).toMatchSnapshot({
+            message: 'Lastname has to be defined',
+          })
+          expect(body.errors[5]).toMatchSnapshot({
+            message: 'Lastname must be longer than 1 char',
+          })
+          expect(body.errors[6]).toMatchSnapshot({
+            message: 'Lastname must be a string',
+          })
+          expect(body.errors[7]).toMatchSnapshot({
+            message: 'Lastname cannot be empty',
+          })
+          expect(body.errors[8]).toMatchSnapshot({
+            message: 'Email must be in proper format',
+          })
+          expect(body.errors[9]).toMatchSnapshot({
+            message: 'Password has to be defined',
+          })
+          expect(body.errors[10]).toMatchSnapshot({
+            message: 'Password is too weak',
+          })
+          expect(body.errors[11]).toMatchSnapshot({
+            message: 'Password can contain 20 characters at the most',
+          })
+          expect(body.errors[12]).toMatchSnapshot({
+            message: 'Password must contain at least 6 characters',
+          })
+          expect(body.errors[13]).toMatchSnapshot({
+            message: 'Password must be a string',
+          })
         })
     })
   })

@@ -32,13 +32,17 @@ export class UserController {
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  findOneOld(@Param('id', ValidateUuidPipe) id: string,): Promise<NullableType<User>> {
+  findOneOld(
+    @Param('id', ValidateUuidPipe) id: string,
+  ): Promise<NullableType<User>> {
     return this.userService.findById(id)
   }
 
   @Get('/session/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id', ValidateIdPipe) id: number): Promise<NullableType<Session>> {
+  findOne(
+    @Param('id', ValidateIdPipe) id: number,
+  ): Promise<NullableType<Session>> {
     return this.sessionService.findById(id)
   }
 
