@@ -4,8 +4,9 @@ import {
   ValidationError,
   ValidationPipeOptions,
 } from '@nestjs/common'
+import BadRequest from 'src/exceptions/bad.request.exception'
 
-function generateErrors(errors: ValidationError[]) {
+/*function generateErrors(errors: ValidationError[]) {
   return errors.reduce(
     (accumulator, currentValue) => ({
       ...accumulator,
@@ -28,6 +29,19 @@ const validationOptions: ValidationPipeOptions = {
       errors: generateErrors(errors),
     })
   },
-}
+}*/
 
+const validationOptions: ValidationPipeOptions = {
+  transform: true,
+  exceptionFactory: (errors) => {
+    const messages = errors.reduce((acc, error) => {
+      if (error.constraints) {
+        acc.push(...Object.values(error.constraints))
+      }
+      return acc
+    }, [])
+    return new BadRequest(messages)
+  },
+}
+  
 export default validationOptions

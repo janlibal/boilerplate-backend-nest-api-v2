@@ -40,24 +40,10 @@ async function bootstrap() {
 
   //app.useGlobalGuards(new AuthGuard())
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      exceptionFactory: (errors) => {
-        const messages = errors.reduce((acc, error) => {
-          if (error.constraints) {
-            acc.push(...Object.values(error.constraints))
-          }
-          return acc
-        }, [])
-        return new BadRequest(messages)
-      },
-    }),
-  )
+  app.useGlobalPipes(new ValidationPipe(validationOptions))
 
   app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter())
 
-  //app.useGlobalPipes(new ValidationPipe(validationOptions))
   app.useGlobalInterceptors(
     // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549
