@@ -50,7 +50,7 @@ describe('Auth Module', () => {
 
     it('should logout user: /api/v1/auth/logout (POST)', () => {
       request(app)
-      .get(`${prefix}/auth/logout`)
+        .get(`${prefix}/auth/logout`)
         .auth(newUserApiToken, {
           type: 'bearer',
         })

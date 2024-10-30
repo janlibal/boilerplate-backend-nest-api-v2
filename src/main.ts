@@ -21,6 +21,7 @@ import {
 import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
 import BadRequest from './exceptions/bad.request.exception'
+import { ResponseInterceptor } from './interceptors/response.interceptor'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
@@ -44,6 +45,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter())
 
+  //app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
   app.useGlobalInterceptors(
     // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549

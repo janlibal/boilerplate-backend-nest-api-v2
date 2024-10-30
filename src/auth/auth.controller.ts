@@ -27,6 +27,7 @@ import { AuthEmailLoginDto } from './dto/auth.email.login.dto'
 import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
+import { Serialize } from 'src/interceptors/serialize.decorator'
 
 @ApiTags('Auth')
 @Controller({
@@ -44,6 +45,7 @@ export class AuthController {
     type: LoginResponseDto,
   })
   @HttpCode(HttpStatus.OK)
+  //@Serialize(LoginResponseDto)
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return this.authService.validateLogin(loginDto)
   }

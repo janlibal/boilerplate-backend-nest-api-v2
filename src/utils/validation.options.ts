@@ -1,4 +1,4 @@
-import {  ValidationPipeOptions} from '@nestjs/common'
+import { ValidationPipeOptions } from '@nestjs/common'
 import BadRequest from 'src/exceptions/bad.request.exception'
 
 const validationOptions: ValidationPipeOptions = {
@@ -13,5 +13,5 @@ const validationOptions: ValidationPipeOptions = {
     return new BadRequest(messages)
   },
 }
-  
+
 export default validationOptions
