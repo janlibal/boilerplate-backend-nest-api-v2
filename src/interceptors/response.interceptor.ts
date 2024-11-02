@@ -8,15 +8,16 @@ import {
 } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
+import HttpExceptionFilter from 'src/filters/http.exception.filter'
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     return next.handle().pipe(
       map((res: unknown) => this.responseHandler(res, context)),
-      catchError((err: HttpException) =>
-        throwError(() => this.errorHandler(err, context)),
-      ),
+      /*catchError((err: HttpException) =>
+        throwError(() => this.errorHandler(err, context))
+      ),*/
     )
   }
 

@@ -9,7 +9,8 @@ export class User {
   @ApiProperty({
     type: isUUID,
   })
-  id?: string = uuid() //number | string
+  @Exclude()
+  id?: string //= uuid() //number | string
 
   @ApiProperty({
     type: String,
@@ -25,28 +26,32 @@ export class User {
     type: String,
     example: 'Joe',
   })
+  @Expose()
   firstName: string | null
 
   @ApiProperty({
     type: String,
     example: 'Doe',
   })
+  @Expose()
   lastName: string | null
 
   @ApiProperty({
     type: String,
     example: 'email',
   })
-  @Expose({ groups: ['me', 'admin'] })
+  @Expose() //({ groups: ['me', 'admin'] })
   provider: string
 
   @ApiProperty({
     type: () => Role,
   })
+  @Expose({ name: 'roleId' })
   role?: Role | null
 
   @ApiProperty({
     type: () => Status,
   })
+  @Expose({ name: 'statusId' })
   status?: Status
 }

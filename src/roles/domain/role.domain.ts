@@ -1,4 +1,5 @@
 import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger'
+import { Expose } from 'class-transformer'
 import { Allow } from 'class-validator'
 
 const idType = Number
@@ -8,6 +9,7 @@ export class Role {
   @ApiProperty({
     type: idType,
   })
+  @Expose()
   id: number //number| string;
 
   @Allow()
@@ -15,5 +17,6 @@ export class Role {
     type: String,
     example: 'admin',
   })
+  @Expose()
   name?: string
 }

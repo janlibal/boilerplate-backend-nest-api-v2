@@ -37,15 +37,15 @@ import { Serialize } from 'src/interceptors/serialize.decorator'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('email/login')
   @SerializeOptions({
     groups: ['me'],
   })
-  @Post('email/login')
   @ApiOkResponse({
     type: LoginResponseDto,
   })
   @HttpCode(HttpStatus.OK)
-  //@Serialize(LoginResponseDto)
+  @Serialize(LoginResponseDto)
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return this.authService.validateLogin(loginDto)
   }
@@ -64,6 +64,7 @@ export class AuthController {
   //@UseGuards(AuthGuard('jwt'))
   @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.OK)
+  @Serialize(User)
   public me(@Request() request): Promise<NullableType<User>> {
     return this.authService.me(request.user)
   }

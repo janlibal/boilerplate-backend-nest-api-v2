@@ -47,6 +47,10 @@ async function bootstrap() {
 
   //app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
   app.useGlobalInterceptors(
+    new ResponseInterceptor(),
+    new LoggerErrorInterceptor(),
+  )
+  /*app.useGlobalInterceptors(
     // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549
     new ResolvePromisesInterceptor(),
@@ -56,7 +60,7 @@ async function bootstrap() {
     new StatusSanitizerInterceptor(),
     new RoleSanitizerInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
-  )
+  )*/
 
   app.use(helmet())
 

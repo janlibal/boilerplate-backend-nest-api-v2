@@ -19,11 +19,19 @@ export default class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>()
     const request = ctx.getRequest<Request>()
     const status = exception.getStatus()
+    const stack = exception.stack
+      ? exception.stack.split('\n')
+      : exception.stack
 
     response.status(status).json({
+      status: false,
+      statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      ...(exception.getResponse() as HttpErrorResponse),
+      title: exception['response']['title'],
+      detail: exception['response']['detail'],
+      errors: exception['response']['errors'],
+      stack: stack && stack.length > 2 ? `${stack[0]}  ${stack[1]}` : stack,
     })
   }
 }
