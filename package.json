@@ -67,7 +67,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^4.0.2",
-    "@nestjs/swagger": "^7.3.1",
+    "@nestjs/swagger": "^8.0.1",
     "@prisma/client": "^5.20.0",
     "apple-signin-auth": "^1.7.6",
     "bcrypt": "^5.1.1",
@@ -97,6 +97,7 @@
     "prisma": "5.20.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.1",
     "twitter": "^1.7.1",
     "uuid": "^10.0.0"
