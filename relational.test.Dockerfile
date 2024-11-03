@@ -1,4 +1,6 @@
 FROM node:20.17.0-alpine
+LABEL maintainer="jan.libal@yahoo.com"
+LABEL build_date="2024-11-03"
 
 RUN apk add --no-cache bash
 RUN yarn global add @nestjs/cli typescript ts-node
