@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { AppService } from './app.service'
 import { ApiTags } from '@nestjs/swagger'
 import { ControllerResponseDto } from './dto/controller.resonse.dto'
-import { getApiInfoDecorator } from './decorators/controller.decorator'
+import { getApiInfoDecorator } from './decorators/app.controller.decorator'
 
 @ApiTags('App')
 @Controller({

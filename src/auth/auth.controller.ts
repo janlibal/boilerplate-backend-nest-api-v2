@@ -28,6 +28,7 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
+import { loginDecorator, logoutDecorator, meDecorator, registerDecorator } from './decorators/auth.controller.decorator'
 
 @ApiTags('Auth')
 @Controller({
@@ -41,39 +42,28 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @ApiOkResponse({
-    type: LoginResponseDto,
-  })
-  @HttpCode(HttpStatus.OK)
-  @Serialize(LoginResponseDto)
+  @loginDecorator()
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return this.authService.validateLogin(loginDto)
   }
 
   @Post('email/register')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @registerDecorator()
   async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
     return this.authService.register(createUserDto)
   }
-
-  @ApiBearerAuth()
+  
+  @Get('me')
   @SerializeOptions({
     groups: ['me'],
   })
-  @Get('me')
-  //@UseGuards(AuthGuard('jwt'))
-  @UseGuards(AccessTokenGuard)
-  @HttpCode(HttpStatus.OK)
-  @Serialize(User)
+  @meDecorator()
   public me(@Request() request): Promise<NullableType<User>> {
     return this.authService.me(request.user)
   }
 
-  @ApiBearerAuth()
   @Post('logout')
-  //@UseGuards(AuthGuard('jwt'))
-  @UseGuards(AccessTokenGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @logoutDecorator()
   public async logout(@Request() request): Promise<void> {
     await this.authService.logout({
       sessionId: request.user.sessionId,
@@ -81,19 +71,16 @@ export class AuthController {
     })
   }
 
-  @ApiBearerAuth()
+  @Post('refresh')
   @SerializeOptions({
     groups: ['me'],
   })
-  @Post('refresh')
-  @UseGuards(AuthGuard('jwt-refresh'))
-  @HttpCode(HttpStatus.OK)
   public refresh(@Request() request): Promise<RefreshResponseDto> {
-    return this.authService.refreshToken({
-      sessionId: request.user.sessionId,
-      hash: request.user.hash,
-    })
-  }
+  return this.authService.refreshToken({
+    sessionId: request.user.sessionId,
+    hash: request.user.hash,
+  })
+}
 
   /*@Post('email/confirm')
   @HttpCode(HttpStatus.NO_CONTENT)
