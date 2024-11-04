@@ -42,6 +42,8 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
+  @HttpCode(HttpStatus.OK)
+  @Serialize(LoginResponseDto)
   @loginDecorator()
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return this.authService.validateLogin(loginDto)

@@ -2,12 +2,11 @@ import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger'
 import { Expose } from 'class-transformer'
 import { Allow, isUUID } from 'class-validator'
 
-const idType = Number
-
 export class Status {
   @Allow()
   @ApiProperty({
-    type: idType,
+    type: Number,
+    example: 1
   })
   @Expose()
   id: number //number | string;

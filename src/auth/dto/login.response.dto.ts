@@ -1,4 +1,4 @@
-import { ApiResponseProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger'
 import { Expose, Type } from 'class-transformer'
 import { User } from 'src/users/domain/user.domain'
 

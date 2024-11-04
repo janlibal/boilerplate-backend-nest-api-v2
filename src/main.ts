@@ -62,7 +62,13 @@ async function bootstrap() {
     new ClassSerializerInterceptor(app.get(Reflector)),
   )*/
 
-  app.use(helmet())
+  app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            upgradeInsecureRequests: null
+        },
+    },
+  }))
 
   app.use(compression())
 
@@ -96,9 +102,12 @@ async function bootstrap() {
   // Swagger Options
   const options = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Nest-js Swagger Example API')
-    .setDescription('Swagger Example API API description')
-    .setVersion('1.0')
+    .setTitle('Nesjs Boilerplate API')
+    .setDescription('Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.')
+    .setVersion('2.0')
+    .setTermsOfService('http://swagger.io/terms/')
+    .setContact('Jan Libal', 'github.com/janlibal', 'jan.libal@yahoo.com')
+    .setLicense('Apache 2.0', 'http://www.apache.org/licenses/LICENSE-2.0.html')
     .build()
   const document = SwaggerModule.createDocument(app, options)
   // Swagger path: http://localhost:3200/api/docs
