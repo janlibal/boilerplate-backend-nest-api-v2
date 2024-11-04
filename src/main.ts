@@ -108,6 +108,17 @@ async function bootstrap() {
     .setTermsOfService('http://swagger.io/terms/')
     .setContact('Jan Libal', 'github.com/janlibal', 'jan.libal@yahoo.com')
     .setLicense('Apache 2.0', 'http://www.apache.org/licenses/LICENSE-2.0.html')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
     .build()
   const document = SwaggerModule.createDocument(app, options)
   // Swagger path: http://localhost:3200/api/docs
