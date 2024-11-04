@@ -18,6 +18,7 @@ import { SessionService } from 'src/session/session.service'
 import { Session } from 'src/session/domain/session.domain'
 import { ValidateUuidPipe } from 'src/pipes/validate.uuid.pipe'
 import { ValidateIdPipe } from 'src/pipes/validate.id.pipe'
+import { createDecorator, deleteDecorator, findOneDecorator, findOneOldDecorator } from './decorators/user.controller.decorator'
 
 @ApiTags('Users')
 @Controller({
@@ -31,7 +32,7 @@ export class UserController {
   ) {}
 
   @Get('/:id')
-  @HttpCode(HttpStatus.OK)
+  @findOneOldDecorator()
   findOneOld(
     @Param('id', ValidateUuidPipe) id: string,
   ): Promise<NullableType<User>> {
@@ -39,32 +40,25 @@ export class UserController {
   }
 
   @Get('/session/:id')
-  @HttpCode(HttpStatus.OK)
+  @findOneDecorator()
   findOne(
     @Param('id', ValidateIdPipe) id: number,
   ): Promise<NullableType<Session>> {
     return this.sessionService.findById(id)
   }
 
-  @ApiCreatedResponse({
-    type: User,
-  })
+  
+  @Post()
   @SerializeOptions({
     groups: ['admin'],
   })
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
+  @createDecorator()  
   create(@Body() createProfileDto: CreateUserDto): Promise<User> {
     return this.userService.create(createProfileDto)
   }
 
   @Delete('/:id')
-  @ApiParam({
-    name: 'id',
-    type: String,
-    required: true,
-  })
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @deleteDecorator()
   remove(@Param('id') id: User['id']): Promise<void> {
     return this.userService.remove(id)
   }
