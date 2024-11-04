@@ -93,6 +93,17 @@ async function bootstrap() {
   const pkgInfo = configService.getOrThrow('app.name', { infer: true })
   const apiPrefix = configService.getOrThrow('app.apiPrefix', { infer: true })
 
+  // Swagger Options
+  const options = new DocumentBuilder()
+    .addBearerAuth()
+    .setTitle('Nest-js Swagger Example API')
+    .setDescription('Swagger Example API API description')
+    .setVersion('1.0')
+    .build()
+  const document = SwaggerModule.createDocument(app, options)
+  // Swagger path: http://localhost:3200/api/docs
+  SwaggerModule.setup(`${apiPrefix}/docs`, app, document)
+
   await app.listen(
     port,
     async () =>
