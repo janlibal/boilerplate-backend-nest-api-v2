@@ -11,8 +11,7 @@ import {
   Delete,
   SerializeOptions,
 } from '@nestjs/common'
-
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
 import { AuthUpdateDto } from './dto/auth.update.dto'
 import { User } from 'src/users/domain/user.domain'
@@ -45,6 +44,7 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
+  @ApiResponse({status: 201, description: 'Successful operation'})
   @HttpCode(HttpStatus.OK)
   @Serialize(LoginResponseDto)
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
