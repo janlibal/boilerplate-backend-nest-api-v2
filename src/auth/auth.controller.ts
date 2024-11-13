@@ -12,7 +12,7 @@ import {
   SerializeOptions,
 } from '@nestjs/common'
 
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
 import { AuthUpdateDto } from './dto/auth.update.dto'
 import { User } from 'src/users/domain/user.domain'
@@ -28,7 +28,6 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
-import { loginDecorator, logoutDecorator, meDecorator, registerDecorator } from './decorators/auth.controller.decorator'
 
 @ApiTags('Auth')
 @Controller({
@@ -39,18 +38,21 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('email/login')
+  @ApiOperation({
+    summary: 'Logs in User',
+    description: 'Returns user data with token, refresh token and expiration',
+  })
   @SerializeOptions({
     groups: ['me'],
   })
   @HttpCode(HttpStatus.OK)
   @Serialize(LoginResponseDto)
-  @loginDecorator()
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     return this.authService.validateLogin(loginDto)
   }
 
   @Post('email/register')
-  @registerDecorator()
+  @HttpCode(HttpStatus.NO_CONTENT)
   async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
     return this.authService.register(createUserDto)
   }
@@ -59,13 +61,20 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @meDecorator()
+  //@UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.OK)
+  @Serialize(User)
   public me(@Request() request): Promise<NullableType<User>> {
     return this.authService.me(request.user)
   }
 
   @Post('logout')
-  @logoutDecorator()
+  @ApiBearerAuth()
+  //@UseGuards(AuthGuard('jwt'))
+  @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async logout(@Request() request): Promise<void> {
     await this.authService.logout({
       sessionId: request.user.sessionId,
@@ -77,6 +86,9 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt-refresh'))
+  @HttpCode(HttpStatus.OK)
   public refresh(@Request() request): Promise<RefreshResponseDto> {
   return this.authService.refreshToken({
     sessionId: request.user.sessionId,
