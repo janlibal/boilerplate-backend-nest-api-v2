@@ -28,6 +28,8 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
+import { badRequestSignInErrors, loginPath, unprocessableErrors } from './constants/decorators.constants'
+import { BadRequestError, InternalError, SuccessResponse, UnauthorizedError, UnprocessableEntityError } from 'src/swagger/all.errors.decorators'
 
 
 @ApiTags('Auth')
@@ -46,8 +48,11 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @ApiResponse({status: 200, description: 'Successful operation', type: LoginResponseDto})
-  //@ApiOkResponse({ description:'Success', type: LoginResponseDto })
+  @SuccessResponse(LoginResponseDto, 'object', loginPath, HttpStatus.OK, 'Returns user object when logged in')
+  @BadRequestError('Bad Request', loginPath, 'Something went wrong', badRequestSignInErrors, 'Bad request exception')
+  @UnauthorizedError('Unauthorized', loginPath, 'Invalid email or password', 'Unauthorized exception')
+  @UnprocessableEntityError('Unprocessabble Error', loginPath, 'Unprocessable entity error', unprocessableErrors, 'Unprocessbale entity exception')
+  @InternalError('Internal Server Error', loginPath, 'Fatal error', 'Server down')
   @HttpCode(HttpStatus.OK)
   @Serialize(LoginResponseDto)
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
