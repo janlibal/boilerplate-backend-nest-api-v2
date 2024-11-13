@@ -29,6 +29,7 @@ import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
 
+
 @ApiTags('Auth')
 @Controller({
   path: 'auth',
@@ -45,7 +46,8 @@ export class AuthController {
   @SerializeOptions({
     groups: ['me'],
   })
-  @ApiResponse({status: 201, description: 'Successful operation'})
+  @ApiResponse({status: 200, description: 'Successful operation', type: LoginResponseDto})
+  //@ApiOkResponse({ description:'Success', type: LoginResponseDto })
   @HttpCode(HttpStatus.OK)
   @Serialize(LoginResponseDto)
   public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {

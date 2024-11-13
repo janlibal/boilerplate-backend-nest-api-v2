@@ -1,5 +1,4 @@
 import { ApiResponseProperty } from '@nestjs/swagger'
-import { ServiceResponseDto } from './service.response.dto'
 
 export class ControllerResponseDto {
   @ApiResponseProperty()

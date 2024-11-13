@@ -1,7 +1,7 @@
 {
   "name": "nest-second-project",
   "version": "0.0.1",
-  "description": "",
+  "description": "Nestjs Boilerplate API",
   "private": true,
   "homepage": "https://github.com/janlibal/boilerplate-backend-nest-api-v2",
   "author": {

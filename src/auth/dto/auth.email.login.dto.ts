@@ -1,12 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
 
+@ApiSchema({name: 'Login prerequisites'})
 export class AuthEmailLoginDto {
   @ApiProperty({ example: 'joe.doe@joedoe.com', type: String })
   @Transform(lowerCaseTransformer)
-  //@IsEmail({}, { message: 'Email must be valid.' })
+  @IsEmail({}, { message: 'Email must be valid.' })
   @IsNotEmpty({ message: 'Email cannot be empty' })
   @IsString({ message: 'Email must be a string' })
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, {
@@ -14,7 +15,7 @@ export class AuthEmailLoginDto {
   })
   readonly email: string
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Password123!', default: 'Password123!', type: String})
   @IsNotEmpty({ message: 'Password cannot be empty' })
   readonly password: string
 }

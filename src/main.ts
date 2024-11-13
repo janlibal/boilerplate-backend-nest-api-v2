@@ -102,7 +102,7 @@ async function bootstrap() {
   // Swagger Options
   const options = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Nesjs Boilerplate API')
+    .setTitle('Nestjs Boilerplate API')
     .setDescription('Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.')
     .setVersion('2.0')
     .setTermsOfService('http://swagger.io/terms/')
