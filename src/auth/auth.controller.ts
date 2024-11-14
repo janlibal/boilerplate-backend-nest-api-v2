@@ -27,7 +27,7 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
-import { badRequestSignInErrors, badRequestSignUpErrors, conflictErrors, loginPath, registerPath, unprocessableErrors } from './constants/decorators.constants'
+import { badRequestSignInErrors, badRequestSignUpErrors, conflictErrors, loginPath, mePath, registerPath, unprocessableErrors } from './constants/decorators.constants'
 import { BadRequestError, ConflictError, InternalError, SuccessResponse, UnauthorizedError, UnprocessableEntityError } from 'src/swagger/all.errors.decorators'
 
 
@@ -72,6 +72,10 @@ export class AuthController {
   }
   
   @Get('me')
+  @ApiOperation({
+    summary: 'User profile',
+    description: 'Returns brief data of the user',
+  })
   @SerializeOptions({
     groups: ['me'],
   })
@@ -79,6 +83,7 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.OK)
+  @SuccessResponse(User, 'object', mePath, HttpStatus.OK, 'Returns user object when logged in')
   @Serialize(User)
   public me(@Request() request): Promise<NullableType<User>> {
     return this.authService.me(request.user)
