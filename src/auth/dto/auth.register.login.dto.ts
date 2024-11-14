@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import {
   IsDefined,
   IsEmail,
@@ -11,6 +11,7 @@ import {
 import { Transform } from 'class-transformer'
 import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
 
+@ApiSchema({name: 'Registration prerequisites'})
 export class AuthRegisterLoginDto {
   @ApiProperty({ example: 'Joe', type: String })
   @IsNotEmpty({ message: 'Firstname cannot be empty' })
