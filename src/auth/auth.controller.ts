@@ -27,8 +27,10 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
-import { badRequestSignInErrors, badRequestSignUpErrors, conflictErrors, loginPath, mePath, registerPath, unprocessableErrors } from './constants/decorators.constants'
 import { BadRequestError, ConflictError, InternalError, SuccessResponse, UnauthorizedError, UnprocessableEntityError } from 'src/swagger/all.errors.decorators'
+import { loginPath, mePath, registerPath } from './constants/paths'
+import { badRequestSignInErrors, badRequestSignUpErrors, conflictErrors, unprocessableErrors } from './constants/errors'
+import { loginDecorators } from './decorators/login.decorators'
 
 
 @ApiTags('Auth')
@@ -40,10 +42,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('email/login')
-  @ApiOperation({
-    summary: 'Logs in User',
-    description: 'Returns user data with token, refresh token and expiration',
-  })
+  @loginDecorators()
   @SerializeOptions({
     groups: ['me'],
   })
