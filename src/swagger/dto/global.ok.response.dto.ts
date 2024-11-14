@@ -1,5 +1,5 @@
 import { ApiProperty, ApiSchema } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsDate, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsDate, IsNotEmpty } from 'class-validator';
 
 @ApiSchema({name: 'Ok base response'})
 export class GlobalOkResponseDto<TData> {

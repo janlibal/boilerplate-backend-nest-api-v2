@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import * as os from 'os'
-import { RepositoryResponseDto } from './dto/repository.response.dto'
+import { EnvDto } from './dto/env.dto'
 
 @Injectable()
 export class AppRepository {
-  public async getEnv(): Promise<RepositoryResponseDto> {
+  public async getEnv(): Promise<EnvDto> {
     const environments = {
       nodeVersion: process.versions['node'],
       hostName: os.hostname(),

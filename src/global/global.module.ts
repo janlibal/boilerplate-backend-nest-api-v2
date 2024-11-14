@@ -52,12 +52,12 @@ import { BookModule } from 'src/book/book.module'
       },
     }),*/
     AppModule,
-    UserModule,
+    /*UserModule,
     SessionModule,
     AuthModule,
     PrismaModule,
     RedisModule,
-    BookModule,
+    BookModule,*/
   ],
   controllers: [],
   providers: [Logger],
