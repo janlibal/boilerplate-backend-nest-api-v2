@@ -13,6 +13,9 @@ describe('App', () => {
         .expect(({ body }) => {
           expect(body.status).toBe(true)
           expect(body.path).toMatch('/app/info')
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
           expect(body.statusCode).toBe(200)
           expect(typeof body.result.name).toBe('string')
           expect(typeof body.result.version).toBe('string')
