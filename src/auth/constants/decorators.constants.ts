@@ -1,10 +1,17 @@
 import { getSchemaPath } from "@nestjs/swagger"
 import { LoginResponseDto } from "../dto/login.response.dto"
+import { API_PREFIX } from "src/shared/constants/global.constants"
 
-export const loginPath = '/api/v1/auth/email/login'
+//export const API_PREFIX = '/api/v1'
 
-export const registerPath = '/api/v1/auth/email/register'
-export const mePath = '/api/v1/auth/me'
+//export const loginPath = '/api/v1/auth/email/login'
+export const loginPath = `${API_PREFIX}/auth/email/login`
+
+//export const registerPath = '/api/v1/auth/email/register'
+export const registerPath = `${API_PREFIX}/auth/email/register`
+
+//export const mePath = '/api/v1/auth/me'
+export const mePath = `${API_PREFIX}/auth/me`
 
 export const badRequestSignInErrors = [{ "message": "Email must be in proper format"},{"message": "Email must be a string"},{"message": "Email cannot be empty"},{"message": "Password cannot be empty"}]
 
