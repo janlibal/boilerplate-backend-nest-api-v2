@@ -22,3 +22,7 @@ export function InternalError(title: string,path: string,detail: string, descrip
 export function UnprocessableEntityError(title: string,path: string,detail: string, errors: object[], description?: string, options?: ApiResponseOptions,) {
   return ApiErrorDecorator(HttpStatus.UNPROCESSABLE_ENTITY,title,path,detail, errors, description,options,);
 }
+
+export function ConflictError(title: string,path: string,detail: string, errors: object[], description?: string, options?: ApiResponseOptions,) {
+  return ApiErrorDecorator(HttpStatus.CONFLICT,title,path,detail, errors, description,options,);
+}

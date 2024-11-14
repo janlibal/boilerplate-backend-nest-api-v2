@@ -27,8 +27,8 @@ import { AuthRegisterLoginDto } from './dto/auth.register.login.dto'
 import { Session } from 'inspector'
 import { AccessTokenGuard } from 'src/guards/acccess.token.guard'
 import { Serialize } from 'src/interceptors/serialize.decorator'
-import { badRequestSignInErrors, loginPath, unprocessableErrors } from './constants/decorators.constants'
-import { BadRequestError, InternalError, SuccessResponse, UnauthorizedError, UnprocessableEntityError } from 'src/swagger/all.errors.decorators'
+import { badRequestSignInErrors, badRequestSignUpErrors, conflictErrors, loginPath, registerPath, unprocessableErrors } from './constants/decorators.constants'
+import { BadRequestError, ConflictError, InternalError, SuccessResponse, UnauthorizedError, UnprocessableEntityError } from 'src/swagger/all.errors.decorators'
 
 
 @ApiTags('Auth')
@@ -59,6 +59,13 @@ export class AuthController {
   }
 
   @Post('email/register')
+  @ApiOperation({
+    summary: 'Registers a new user',
+    description: 'Returns no content when registration succeeds',
+  })
+  @ApiResponse({status: 204, description: 'Success, returns no content'})
+  @BadRequestError('Bad Request', registerPath, 'Something went wrong', badRequestSignUpErrors, 'Bad request exception')
+  @ConflictError('Conflict', registerPath, 'Resource already exists', conflictErrors, 'Conflict exception')
   @HttpCode(HttpStatus.NO_CONTENT)
   async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
     return this.authService.register(createUserDto)
@@ -78,10 +85,15 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiOperation({
+    summary: 'Logs out user',
+    description: 'Returns no content when logout succeeds',
+  })
   @ApiBearerAuth()
   //@UseGuards(AuthGuard('jwt'))
   @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({status: 204, description: 'Success, returns no content'})
   public async logout(@Request() request): Promise<void> {
     await this.authService.logout({
       sessionId: request.user.sessionId,
