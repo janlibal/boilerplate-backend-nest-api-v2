@@ -13,7 +13,11 @@ export class AppController {
 
   @Get('/info')
   @HttpCode(HttpStatus.OK)
-  @ApiResponse({ status: 200, description: 'Api info successfully returned' })
+  @ApiOperation({
+    summary: 'Retrieves API system info',
+    description: 'Retrieves system information of the system the API is running on',
+  })
+  @ApiResponse({ status: 200, description: 'Api info successfully returned', type: ControllerResponseDto})
   @ApiOperation({
     summary: 'Gets API Info',
     description: 'Returns API system information ',

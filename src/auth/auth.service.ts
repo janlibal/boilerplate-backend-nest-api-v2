@@ -43,6 +43,8 @@ export class AuthService {
     private configService: ConfigService<AllConfigType>,
   ) {}
 
+
+  //Promise<Omit<LoginResponseDto, 'user'>> {
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
     const user = await this.userRepository.findByEmail(loginDto.email)
 
