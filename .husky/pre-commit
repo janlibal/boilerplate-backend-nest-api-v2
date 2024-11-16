@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Examples:"
+echo "feat: (new feature for the user, not a new feature for build script)"
+echo "fix: (bug fix for the user, not a fix to a build script)"
+echo "docs: (changes to the documentation)"
+echo "style: (formatting, missing semi colons, etc; no production code change)"
+echo "refactor: (refactoring production code, eg. renaming a variable)"
+echo "test: (adding missing tests, refactoring tests; no production code change)"
+echo "chore: (updating grunt tasks etc; no production code change)"
+echo "<type>[optional scope]: <description>"
+
