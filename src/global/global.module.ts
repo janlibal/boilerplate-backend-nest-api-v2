@@ -9,6 +9,7 @@ import loggerModuleSetup from 'src/logger/logger.module'
 import { RedisModule } from 'src/redis/redis.module'
 import { PrismaModule } from 'nestjs-prisma'
 import { BookModule } from 'src/book/book.module'
+import { HealthModule } from 'src/health/health.module'
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { BookModule } from 'src/book/book.module'
     PrismaModule,
     RedisModule,
     BookModule,
+    HealthModule
   ],
   controllers: [],
   providers: [Logger],

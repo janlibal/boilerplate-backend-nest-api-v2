@@ -68,6 +68,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^4.0.2",
     "@nestjs/swagger": "^8.0.5",
+    "@nestjs/terminus": "^10.2.3",
     "@prisma/client": "^5.20.0",
     "apple-signin-auth": "^1.7.6",
     "bcrypt": "^5.1.1",
