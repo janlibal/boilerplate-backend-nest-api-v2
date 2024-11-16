@@ -9,5 +9,7 @@ echo "style: (formatting, missing semi colons, etc; no production code change)"
 echo "refactor: (refactoring production code, eg. renaming a variable)"
 echo "test: (adding missing tests, refactoring tests; no production code change)"
 echo "chore: (updating grunt tasks etc; no production code change)"
+echo "revert: (reverting recent changes)"
+echo "perf: (identify production changes)"
+echo "ci: (identify development changes)"
 echo "<type>[optional scope]: <description>"
-
