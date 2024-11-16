@@ -1,12 +1,9 @@
 import {
-  HttpStatus,
   Injectable,
   UnauthorizedException,
-  UnprocessableEntityException,
 } from '@nestjs/common'
 import ms from 'ms'
 
-import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util'
 import { JwtService } from '@nestjs/jwt'
 import crypto from 'src/utils/crypto'
 //import * as crypto from 'crypto'

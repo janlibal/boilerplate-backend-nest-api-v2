@@ -9,6 +9,7 @@ import { IRequest } from './interfaces/request.interface'
 import { IS_PUBLIC_KEY } from './decorators/public.decorator'
 import { ConfigService } from '@nestjs/config'
 import { AllConfigType } from 'src/global/config/config.type'
+import UnauthorizedError from 'src/exceptions/unauthorized.exception'
 
 /*
 @Injectable()
@@ -51,8 +52,6 @@ export class AccessTokenGuard implements CanActivate {
       if (isPublic) return true
 
       const authorization = request.headers.authorization
-
-      console.log('authorization :  ', authorization)
 
       if (
         !authorization ||
