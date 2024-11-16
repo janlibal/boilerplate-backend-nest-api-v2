@@ -1,12 +1,9 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { AppModule } from 'src/app/app.module'
 import { UserModule } from 'src/users/user.module'
 import { SessionModule } from 'src/session/session.module'
 import { AuthModule } from 'src/auth/auth.module'
-import { Logger, LoggerModule } from 'nestjs-pino'
-import { getCorrelationId } from 'src/utils/get.correlation.id'
-import { Request } from 'express'
-import { AppLoggerMiddleware } from 'src/middleware/requests.log.middleware'
+import { Logger } from 'nestjs-pino'
 import configModuleSetup from 'src/config/config.module'
 import loggerModuleSetup from 'src/logger/logger.module'
 import { RedisModule } from 'src/redis/redis.module'
@@ -57,7 +54,7 @@ import { BookModule } from 'src/book/book.module'
     AuthModule,
     PrismaModule,
     RedisModule,
-    BookModule
+    BookModule,
   ],
   controllers: [],
   providers: [Logger],

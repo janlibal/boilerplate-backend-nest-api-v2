@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import { NestMiddleware, Injectable } from '@nestjs/common'
-import { pick } from 'lodash'
+import { NestMiddleware } from '@nestjs/common'
 import { Logger } from '@nestjs/common'
 import { getCorrelationId } from 'src/utils/get.correlation.id'
-import { tryStringify } from 'src/utils/try.stringify'
 
 /*
 @Injectable()

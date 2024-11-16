@@ -52,6 +52,8 @@ export class AccessTokenGuard implements CanActivate {
 
       const authorization = request.headers.authorization
 
+      console.log('authorization :  ', authorization)
+
       if (
         !authorization ||
         Array.isArray(authorization) ||

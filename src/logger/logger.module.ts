@@ -1,14 +1,7 @@
-import { ModuleMetadata } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
-import path from 'path'
 
 import loggerFactory from './logger.factory'
-import { GlobalModule } from 'src/global/global.module'
-import redisConfig from 'src/redis/config/redis.config'
-import swaggerConfig from 'src/swagger/config/swagger.config'
-import authConfig from 'src/auth/config/auth.config'
-import appConfig from 'src/app/config/app.config'
 
 function loggerModuleSetup() {
   /*const imports: ModuleMetadata['imports'] = [

@@ -26,7 +26,6 @@ import { meDecorators } from './decorators/me.decorators'
 import { logoutDecorators } from './decorators/logout.decorators'
 import { refreshDecorators } from './decorators/refresh.decorators'
 
-
 @ApiTags('Auth')
 @Controller({
   path: 'auth',
@@ -52,7 +51,7 @@ export class AuthController {
   async register(@Body() createUserDto: AuthRegisterLoginDto): Promise<void> {
     return this.authService.register(createUserDto)
   }
-  
+
   @Get('me')
   //@UseGuards(AuthGuard('jwt'))
   @UseGuards(AccessTokenGuard)
@@ -86,11 +85,11 @@ export class AuthController {
   @refreshDecorators()
   @HttpCode(HttpStatus.OK)
   public refresh(@Request() request): Promise<RefreshResponseDto> {
-  return this.authService.refreshToken({
-    sessionId: request.user.sessionId,
-    hash: request.user.hash,
-  })
-}
+    return this.authService.refreshToken({
+      sessionId: request.user.sessionId,
+      hash: request.user.hash,
+    })
+  }
 
   /*@Post('email/confirm')
   @HttpCode(HttpStatus.NO_CONTENT)

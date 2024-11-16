@@ -1,26 +1,17 @@
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core'
+import { NestFactory } from '@nestjs/core'
 import { GlobalModule } from './global/global.module'
 import { ConfigService } from '@nestjs/config'
 import { AllConfigType } from './global/config/config.type'
 import { API_PREFIX } from './shared/constants/global.constants'
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
+import { ValidationPipe } from '@nestjs/common'
 import validationOptions from './utils/validation.options'
-import { ResolvePromisesInterceptor } from './utils/serializer.interceptor'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import rateLimit from 'express-rate-limit'
 import compression from 'compression'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import { Logger, LoggerErrorInterceptor, PinoLogger } from 'nestjs-pino'
-import {
-  IdSanitizerInterceptor,
-  PasswordSanitizerInterceptor,
-  RoleSanitizerInterceptor,
-  StatusSanitizerInterceptor,
-} from './utils/password.interceptor'
 import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
-import BadRequest from './exceptions/bad.request.exception'
 import { ResponseInterceptor } from './interceptors/response.interceptor'
 
 async function bootstrap() {
@@ -62,13 +53,15 @@ async function bootstrap() {
     new ClassSerializerInterceptor(app.get(Reflector)),
   )*/
 
-  app.use(helmet({
-    contentSecurityPolicy: {
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
         directives: {
-            upgradeInsecureRequests: null
+          upgradeInsecureRequests: null,
         },
-    },
-  }))
+      },
+    }),
+  )
 
   app.use(compression())
 
@@ -103,21 +96,23 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Nestjs Boilerplate API')
-    .setDescription('Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.')
+    .setDescription(
+      'Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.',
+    )
     .setVersion('2.0')
     .setTermsOfService('http://swagger.io/terms/')
     .setContact('Jan Libal', 'github.com/janlibal', 'jan.libal@yahoo.com')
     .setLicense('Apache 2.0', 'http://www.apache.org/licenses/LICENSE-2.0.html')
     .addBearerAuth(
       {
-        type: 'http',
+        in: 'header',
+        description: 'Please enter JWT token',
+        type: 'apiKey',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
+        name: 'Authorization',
       },
-      'JWT-auth', // This name here is important for matching up with @ApiBearerAuth() in your controller!
+      'token'
     )
     .build()
   const document = SwaggerModule.createDocument(app, options)

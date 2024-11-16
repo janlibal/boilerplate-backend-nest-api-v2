@@ -9,7 +9,7 @@ import {
   SerializeOptions,
   Param,
 } from '@nestjs/common'
-import { ApiCreatedResponse, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
 import { User } from './domain/user.domain'
 import { CreateUserDto } from './dto/create.user.dto'
@@ -18,7 +18,10 @@ import { SessionService } from 'src/session/session.service'
 import { Session } from 'src/session/domain/session.domain'
 import { ValidateUuidPipe } from 'src/pipes/validate.uuid.pipe'
 import { ValidateIdPipe } from 'src/pipes/validate.id.pipe'
-import { createDecorator, deleteDecorator } from './decorators/user.controller.decorator'
+import {
+  createDecorator,
+  deleteDecorator,
+} from './decorators/user.controller.decorator'
 
 @ApiTags('Users')
 @Controller({
@@ -52,7 +55,7 @@ export class UserController {
     groups: ['admin'],
   })
   @HttpCode(HttpStatus.CREATED)
-  @createDecorator()  
+  @createDecorator()
   create(@Body() createProfileDto: CreateUserDto): Promise<User> {
     return this.userService.create(createProfileDto)
   }

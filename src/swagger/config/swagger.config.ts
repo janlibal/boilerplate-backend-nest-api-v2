@@ -1,13 +1,8 @@
 import { registerAs } from '@nestjs/config'
 
 import {
-  IsEnum,
-  IsInt,
   IsOptional,
   IsString,
-  IsUrl,
-  Max,
-  Min,
 } from 'class-validator'
 import { SwaggerConfig } from './swagger.config.type'
 import validateConfig from 'src/utils/validatate.config'

@@ -1,8 +1,7 @@
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { Expose } from 'class-transformer'
 
-
-@ApiSchema({name: 'Env details'})
+@ApiSchema({ name: 'Env details' })
 export class EnvDto {
   @ApiProperty({
     type: String,

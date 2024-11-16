@@ -1,9 +1,5 @@
-import { applyDecorators, HttpStatus } from '@nestjs/common';
-import {
-  ApiResponse,
-  ApiResponseOptions,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { applyDecorators, HttpStatus } from '@nestjs/common'
+import { ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger'
 //import { ErrorDTO } from 'src/common/dto/error.dto';
 
 export function ApiErrorDecorator(
@@ -29,11 +25,11 @@ export function ApiErrorDecorator(
           result: {
             title: title,
             detail: detail,
-            errors: errors
-          }
+            errors: errors,
+          },
         },
         //type: getSchemaPath(ErrorDTO),
       },
     }),
-  );
+  )
 }

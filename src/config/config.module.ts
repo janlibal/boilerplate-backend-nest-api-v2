@@ -1,5 +1,4 @@
-import { ModuleMetadata } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import appConfig from 'src/app/config/app.config'
 import authConfig from 'src/auth/config/auth.config'
 import redisConfig from 'src/redis/config/redis.config'

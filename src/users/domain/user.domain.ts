@@ -1,9 +1,8 @@
-import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 import { Exclude, Expose } from 'class-transformer'
 import { isUUID } from 'class-validator'
 import { Role } from 'src/roles/domain/role.domain'
 import { Status } from 'src/statuses/domain/status.domain'
-import { v4 as uuid } from 'uuid'
 
 export class User {
   @ApiProperty({

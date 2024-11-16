@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { AppService } from './app.service'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { AppResponseDto } from './dto/app.response.dto'
 import { Serialize } from 'src/interceptors/serialize.decorator'
 import { infoDecorators } from './decorators/info.decorators'
