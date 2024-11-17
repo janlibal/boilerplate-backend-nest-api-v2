@@ -13,6 +13,7 @@ import { Logger, LoggerErrorInterceptor, PinoLogger } from 'nestjs-pino'
 import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
 import { ResponseInterceptor } from './interceptors/response.interceptor'
+import rateLimit from 'express-rate-limit'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
@@ -66,12 +67,12 @@ async function bootstrap() {
   app.use(compression())
 
   // protect app from brute-force attacks
-  /*wapp.use(
+  app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     }),
-  )*/
+  )
 
   const frontEnd = configService.getOrThrow('app.frontendDomain', {
     infer: true,
@@ -116,7 +117,6 @@ async function bootstrap() {
     )
     .build()
   const document = SwaggerModule.createDocument(app, options)
-  // Swagger path: http://localhost:3200/api/docs
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document)
 
   await app.listen(
