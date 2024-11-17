@@ -9,9 +9,12 @@ import {
 } from 'src/shared/constants/global.constants'
 
 import { v4 as uuidv4 } from 'uuid'
+import { googleLoggingConfig } from './google.logging.config'
+import { cloudwatchLoggingConfig } from './cloudwatch.logging.config'
+import { consoleLoggingConfig } from './console.logging.config'
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
-const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
+export const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
   trace: 'DEBUG',
   debug: 'DEBUG',
   info: 'INFO',
@@ -57,42 +60,6 @@ function logServiceConfig(logService: string): Options {
   }
 }
 
-function cloudwatchLoggingConfig(): Options {
-  // FIXME: Implement AWS CloudWatch logging configuration
-  return {
-    messageKey: 'message',
-  }
-}
-
-function googleLoggingConfig(): Options {
-  return {
-    messageKey: 'message',
-    formatters: {
-      level(label, number) {
-        return {
-          severity:
-            PinoLevelToGoogleLoggingSeverityLookup[label] ||
-            PinoLevelToGoogleLoggingSeverityLookup['info'],
-          level: number,
-        }
-      },
-    },
-  }
-}
-
-function consoleLoggingConfig(): Options {
-  return {
-    messageKey: 'msg',
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        singleLine: true,
-        ignore:
-          'req.id,req.method,req.url,req.headers,req.remoteAddress,req.remotePort,res.headers',
-      },
-    },
-  }
-}
 
 async function loggerFactory(
   configService: ConfigService<AllConfigType>,
