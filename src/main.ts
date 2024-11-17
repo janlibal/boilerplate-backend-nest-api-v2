@@ -14,7 +14,6 @@ import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
 import { ResponseInterceptor } from './interceptors/response.interceptor'
 import rateLimit from 'express-rate-limit'
-import { ShutdownService } from './app/shutdown.service'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
@@ -25,8 +24,6 @@ async function bootstrap() {
   const configService = app.get(ConfigService<AllConfigType>)
 
   app.enableShutdownHooks()
-
-  app.get(ShutdownService).subscribeToShutdown(() => app.close())
 
   app.setGlobalPrefix(API_PREFIX)
 

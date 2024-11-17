@@ -16,8 +16,8 @@ import { loggerSetup } from 'src/logger/logger.setup'
 @Module({
   imports: [
     ConfigModule.forRoot(configSetup),
-    LoggerModule.forRootAsync(loggerSetup),
-    //loggerModuleSetup(),
+    //LoggerModule.forRootAsync(loggerSetup),
+    loggerModuleSetup(),
     /*LoggerModule.forRootAsync({
       useFactory: async () => {
         return {

@@ -4,7 +4,6 @@ import { ApiTags } from '@nestjs/swagger'
 import { AppResponseDto } from './dto/app.response.dto'
 import { Serialize } from 'src/interceptors/serialize.decorator'
 import { infoDecorators } from './decorators/info.decorators'
-import { ShutdownService } from './shutdown.service'
 
 @ApiTags('App')
 @Controller({
@@ -12,7 +11,7 @@ import { ShutdownService } from './shutdown.service'
   version: '1',
 })
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly shutdownService: ShutdownService) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get('/info')
   @HttpCode(HttpStatus.OK)
@@ -20,10 +19,5 @@ export class AppController {
   @Serialize(AppResponseDto)
   public async getApiInfo(): Promise<AppResponseDto> {
     return await this.appService.compileData()
-  }
-
-  @Get('/shutdown')
-  public async shutdown() {
-    return await this.shutdown()
-  }
+  } 
 }
