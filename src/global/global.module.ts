@@ -10,16 +10,13 @@ import { RedisModule } from 'src/redis/redis.module'
 import { PrismaModule } from 'nestjs-prisma'
 import { BookModule } from 'src/book/book.module'
 import { HealthModule } from 'src/health/health.module'
+import { ConfigModule } from '@nestjs/config'
+import { configSetup } from 'src/config/config.setup'
 
 @Module({
   imports: [
-    /*ConfigModule.forRoot({
-      isGlobal: true,
-      load: [appConfig, authConfig, swaggerConfig, redisConfig],
-      envFilePath: `${process.cwd()}/src/config/env/.env.${process.env.NODE_ENV}`,
-      //envFilePath: ['.env'],
-    }),*/
-    configModuleSetup(),
+    ConfigModule.forRoot(configSetup),
+    //configModuleSetup(),
     loggerModuleSetup(),
     /*LoggerModule.forRootAsync({
       useFactory: async () => {
