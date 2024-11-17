@@ -3,8 +3,7 @@ import { AppModule } from 'src/app/app.module'
 import { UserModule } from 'src/users/user.module'
 import { SessionModule } from 'src/session/session.module'
 import { AuthModule } from 'src/auth/auth.module'
-import { Logger } from 'nestjs-pino'
-import configModuleSetup from 'src/config/config.module'
+import { Logger, LoggerModule } from 'nestjs-pino'
 import loggerModuleSetup from 'src/logger/logger.module'
 import { RedisModule } from 'src/redis/redis.module'
 import { PrismaModule } from 'nestjs-prisma'
@@ -12,12 +11,13 @@ import { BookModule } from 'src/book/book.module'
 import { HealthModule } from 'src/health/health.module'
 import { ConfigModule } from '@nestjs/config'
 import { configSetup } from 'src/config/config.setup'
+import { loggerSetup } from 'src/logger/logger.setup'
 
 @Module({
   imports: [
     ConfigModule.forRoot(configSetup),
-    //configModuleSetup(),
-    loggerModuleSetup(),
+    LoggerModule.forRootAsync(loggerSetup),
+    //loggerModuleSetup(),
     /*LoggerModule.forRootAsync({
       useFactory: async () => {
         return {
