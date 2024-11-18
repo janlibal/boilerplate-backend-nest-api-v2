@@ -1,4 +1,4 @@
-import { Options } from "pino-http"
+import { Options } from "pino-http";
 
 export function consoleLoggingConfig(): Options {
     return {
@@ -12,4 +12,4 @@ export function consoleLoggingConfig(): Options {
         },
       },
     }
-  }
+}
