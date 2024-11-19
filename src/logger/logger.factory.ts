@@ -42,7 +42,7 @@ async function loggerFactory(configService: ConfigService<AllConfigType>,): Prom
         timestamp: () => `,"timestamp":"${new Date(Date.now()).toISOString()}"`,
         redact: {
           paths: loggingRedactPaths,
-          censor: '**GDPR/CCPA COMPLIANT**',
+          remove: true //censor: '**GDPR/CCPA COMPLIANT**',
         }, // Redact sensitive information
         ...logServiceConfig(logService),
       }
