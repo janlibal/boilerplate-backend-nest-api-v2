@@ -14,6 +14,7 @@ import { loggerSetuo } from 'src/logger/logger.setup'
 import { AuthMiddleware } from 'src/middleware/auth-middleware'
 import { RouteInfo } from '@nestjs/common/interfaces'
 import { JwtModule } from '@nestjs/jwt'
+import { publicRoutes } from './constants/public.routes'
 
 
 @Module({
@@ -61,13 +62,8 @@ import { JwtModule } from '@nestjs/jwt'
   controllers: [],
   providers: [Logger],
 })
-//export class GlobalModule {}
 export class GlobalModule implements NestModule {
-  public publicRoutes: Array<RouteInfo> = [
-    { path: `/auth/email/login`, method: RequestMethod.POST },
-    { path: `/auth/email/register`, method: RequestMethod.POST },
-    { path: `/app/info`, method: RequestMethod.GET },
-  ];
+  public publicRoutes: Array<RouteInfo> = publicRoutes
   configure(consumer: MiddlewareConsumer) {
     // apply auth middleware to all except health check route
     consumer
@@ -79,8 +75,3 @@ export class GlobalModule implements NestModule {
       });
   }
 }
-/*export class GlobalModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AppLoggerMiddleware).forRoutes('*')
-  }
-}*/
