@@ -66,6 +66,7 @@ export class GlobalModule implements NestModule {
   public publicRoutes: Array<RouteInfo> = [
     { path: `/auth/email/login`, method: RequestMethod.POST },
     { path: `/auth/email/register`, method: RequestMethod.POST },
+    { path: `/app/info`, method: RequestMethod.GET },
   ];
   configure(consumer: MiddlewareConsumer) {
     // apply auth middleware to all except health check route

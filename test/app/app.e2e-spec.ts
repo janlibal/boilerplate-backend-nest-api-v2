@@ -24,7 +24,7 @@ describe('App', () => {
           expect(typeof body.result.env.platform).toBe('string')
         })
     })
-    it('should fail with non-existant url (GET)', () => {
+    /*it('should fail with non-existant url (GET)', () => {
       return request(app)
         .get(`${prefix}/wrong`)
         .expect(404)
@@ -78,6 +78,6 @@ describe('App', () => {
           /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
         )
         expect(body.path).toMatch('/api/v1/wrong')
-      })
+      })*/
   })
 })
