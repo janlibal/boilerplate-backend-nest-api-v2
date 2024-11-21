@@ -26,7 +26,7 @@ export class AppLoggerMiddleware implements NestMiddleware {
   }
 }*/
 
-export class AppLoggerMiddleware implements NestMiddleware {
+/*export class AppLoggerMiddleware implements NestMiddleware {
   private readonly maxDataLengthForLogging = 10000
 
   //If you don't want to log certain method requests, add the method to the list.
@@ -176,4 +176,4 @@ export class AppLoggerMiddleware implements NestMiddleware {
       return defaultEnd.apply(response, args)
     }
   }
-}
+}*/

@@ -54,7 +54,7 @@ export class AuthController {
 
   @Get('me')
   //@UseGuards(AuthGuard('jwt'))
-  @UseGuards(AccessTokenGuard)
+  //@UseGuards(AccessTokenGuard)
   @meDecorators()
   @SerializeOptions({
     groups: ['me'],
