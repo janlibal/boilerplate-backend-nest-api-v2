@@ -10,6 +10,14 @@ export const unprocessableErrors = [
   { message: 'roleIdMissing' },
   { message: 'statusIdMissing' },
 ]
+
+export const unauthorizedErrors = [
+  { message: 'Invalid headers' },
+  { message: 'No jwt' },
+  { message: 'Nice try' },
+  { message: 'Invalid email or password' },
+]
+
 export const badRequestSignUpErrors = [
   { message: 'Firstname has to be defined' },
   { message: 'Firstname must be longer than 1 char' },

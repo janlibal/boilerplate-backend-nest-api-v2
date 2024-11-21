@@ -3,6 +3,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 import {
   BadRequestError,
   ConflictError,
+  InternalError,
 } from 'src/swagger/all.errors.decorators'
 import { registerPath } from '../constants/paths'
 import { badRequestSignUpErrors, conflictErrors } from '../constants/errors'
@@ -27,6 +28,12 @@ export function registerDecorators() {
       'Resource already exists',
       conflictErrors,
       'Conflict exception',
+    ),
+    InternalError(
+      'Internal Server Error',
+      registerPath,
+      'Fatal error',
+      'Server down',
     ),
   )
 }

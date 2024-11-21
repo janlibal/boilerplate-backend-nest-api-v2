@@ -37,8 +37,8 @@ export function UnauthorizedError(
   title: string,
   path: string,
   detail: string,
+  errors: object[],
   description?: string,
-  errors?: object[],
   options?: ApiResponseOptions,
 ) {
   return ApiErrorDecorator(

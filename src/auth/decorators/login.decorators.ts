@@ -11,6 +11,7 @@ import { LoginResponseDto } from '../dto/login.response.dto'
 import { loginPath } from '../constants/paths'
 import {
   badRequestSignInErrors,
+  unauthorizedErrors,
   unprocessableErrors,
 } from '../constants/errors'
 
@@ -35,9 +36,10 @@ export function loginDecorators() {
       'Bad request exception',
     ),
     UnauthorizedError(
-      'Unauthorized',
+      'Unauthorized Error',
       loginPath,
-      'Invalid email or password',
+      'Unauthorized error',
+      unauthorizedErrors,
       'Unauthorized exception',
     ),
     UnprocessableEntityError(
@@ -50,7 +52,7 @@ export function loginDecorators() {
     InternalError(
       'Internal Server Error',
       loginPath,
-      'Fatal error',
+      'Internal server',
       'Server down',
     ),
   )

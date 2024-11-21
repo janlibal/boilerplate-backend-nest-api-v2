@@ -1,8 +1,9 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
-import { SuccessResponse } from 'src/swagger/all.errors.decorators'
+import { InternalError, SuccessResponse, UnauthorizedError,  } from 'src/swagger/all.errors.decorators'
 import { mePath } from '../constants/paths'
 import { User } from 'src/users/domain/user.domain'
+import { unauthorizedErrors } from '../constants/errors'
 
 export function meDecorators() {
   return applyDecorators(
@@ -17,6 +18,19 @@ export function meDecorators() {
       mePath,
       HttpStatus.OK,
       'Returns user object when logged in',
+    ),
+    UnauthorizedError(
+      'Unauthorized Error',
+      mePath,
+      'Unauthorized error',
+      unauthorizedErrors,
+      'Unauthorized exception',
+    ),
+    InternalError(
+      'Internal Server Error',
+      mePath,
+      'Fatal error',
+      'Server down',
     ),
   )
 }
