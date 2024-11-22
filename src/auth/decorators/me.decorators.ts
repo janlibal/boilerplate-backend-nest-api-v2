@@ -29,8 +29,8 @@ export function meDecorators() {
     InternalError(
       'Internal Server Error',
       mePath,
-      'Fatal error',
-      'Server down',
+      'Internal server exception',
+      'An unexpected error occurred. Please try again later.',
     ),
   )
 }

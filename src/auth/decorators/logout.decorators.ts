@@ -14,8 +14,8 @@ export function logoutDecorators() {
     InternalError(
       'Internal Server Error',
       logoutPath,
-      'Fatal error',
-      'Server down',
-    )
+      'Internal server exception',
+      'An unexpected error occurred. Please try again later.',
+    ),
   )
 }

@@ -52,8 +52,8 @@ export function loginDecorators() {
     InternalError(
       'Internal Server Error',
       loginPath,
-      'Internal server',
-      'Server down',
+      'Internal server exception',
+      'An unexpected error occurred. Please try again later.',
     ),
   )
 }

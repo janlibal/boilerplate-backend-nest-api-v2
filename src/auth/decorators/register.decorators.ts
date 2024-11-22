@@ -32,8 +32,8 @@ export function registerDecorators() {
     InternalError(
       'Internal Server Error',
       registerPath,
-      'Fatal error',
-      'Server down',
+      'Internal server exception',
+      'An unexpected error occurred. Please try again later.',
     ),
   )
 }
