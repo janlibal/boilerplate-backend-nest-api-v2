@@ -7,6 +7,7 @@ import {
 } from 'src/swagger/all.errors.decorators'
 import { registerPath } from '../constants/paths'
 import { badRequestSignUpErrors, conflictErrors } from '../constants/errors'
+import { badRequestResponses, conflictResponses, internalErrorResponses } from 'src/swagger/constants/decorator.responses'
 
 export function registerDecorators() {
   return applyDecorators(
@@ -16,24 +17,24 @@ export function registerDecorators() {
     }),
     ApiResponse({ status: 204, description: 'Success, returns no content' }),
     BadRequestError(
-      'Bad Request',
+      badRequestResponses.title,
       registerPath,
-      'Something went wrong',
+      badRequestResponses.detail,
       badRequestSignUpErrors,
-      'Bad request exception',
+      badRequestResponses.description,
     ),
     ConflictError(
-      'Conflict',
+      conflictResponses.title,
       registerPath,
-      'Resource already exists',
+      conflictResponses.detail,
       conflictErrors,
-      'Conflict exception',
+      conflictResponses.description
     ),
     InternalError(
-      'Internal Server Error',
+      internalErrorResponses.title,
       registerPath,
-      'Internal server exception',
-      'An unexpected error occurred. Please try again later.',
+      internalErrorResponses.detail,
+      internalErrorResponses.description
     ),
   )
 }

@@ -28,7 +28,7 @@ export const ApiOk = <TModel extends Type<unknown>>(
           statusCode: status,
           timestamp: new Date().toISOString(),
           result: {
-            type: 'object',
+            type: type,
             $ref: getSchemaPath(model),
           },
         },

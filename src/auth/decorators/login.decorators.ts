@@ -14,6 +14,7 @@ import {
   unauthorizedErrors,
   unprocessableErrors,
 } from '../constants/errors'
+import { badRequestResponses, internalErrorResponses, unauthorizedResponses, unprocessableResponses } from 'src/swagger/constants/decorator.responses'
 
 export function loginDecorators() {
   return applyDecorators(
@@ -29,31 +30,31 @@ export function loginDecorators() {
       'Returns user object when logged in',
     ),
     BadRequestError(
-      'Bad Request',
+      badRequestResponses.title,
       loginPath,
-      'Something went wrong',
+      badRequestResponses.detail,
       badRequestSignInErrors,
-      'Bad request exception',
+      badRequestResponses.description,
     ),
     UnauthorizedError(
-      'Unauthorized Error',
+      unauthorizedResponses.title,
       loginPath,
-      'Unauthorized error',
+      unauthorizedResponses.detail,
       unauthorizedErrors,
-      'Unauthorized exception',
+      unauthorizedResponses.description
     ),
     UnprocessableEntityError(
-      'Unprocessabble Error',
+      unprocessableResponses.title,
       loginPath,
-      'Unprocessable entity error',
+      unprocessableResponses.detail,
       unprocessableErrors,
-      'Unprocessbale entity exception',
+      unprocessableResponses.description,
     ),
     InternalError(
-      'Internal Server Error',
+      internalErrorResponses.title,
       loginPath,
-      'Internal server exception',
-      'An unexpected error occurred. Please try again later.',
+      internalErrorResponses.detail,
+      internalErrorResponses.description
     ),
   )
 }

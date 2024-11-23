@@ -1,7 +1,9 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { logoutPath } from '../constants/paths'
-import { InternalError } from 'src/swagger/all.errors.decorators'
+import { InternalError, UnauthorizedError } from 'src/swagger/all.errors.decorators'
+import { unauthorizedErrors } from '../constants/errors'
+import { internalErrorResponses, unauthorizedResponses } from 'src/swagger/constants/decorator.responses'
 
 export function logoutDecorators() {
   return applyDecorators(
@@ -11,11 +13,18 @@ export function logoutDecorators() {
     }),
     ApiBearerAuth('token'),
     ApiResponse({ status: 204, description: 'Success, returns no content' }),
-    InternalError(
-      'Internal Server Error',
+    UnauthorizedError(
+      unauthorizedResponses.title,
       logoutPath,
-      'Internal server exception',
-      'An unexpected error occurred. Please try again later.',
+      unauthorizedResponses.detail,
+      unauthorizedErrors,
+      unauthorizedResponses.description
+    ),
+    InternalError(
+      internalErrorResponses.title,
+      logoutPath,
+      internalErrorResponses.detail,
+      internalErrorResponses.description
     ),
   )
 }

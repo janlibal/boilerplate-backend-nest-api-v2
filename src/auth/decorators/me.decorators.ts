@@ -4,6 +4,7 @@ import { InternalError, SuccessResponse, UnauthorizedError,  } from 'src/swagger
 import { mePath } from '../constants/paths'
 import { User } from 'src/users/domain/user.domain'
 import { unauthorizedErrors } from '../constants/errors'
+import { internalErrorResponses, unauthorizedResponses } from 'src/swagger/constants/decorator.responses'
 
 export function meDecorators() {
   return applyDecorators(
@@ -20,17 +21,17 @@ export function meDecorators() {
       'Returns user object when logged in',
     ),
     UnauthorizedError(
-      'Unauthorized Error',
+      unauthorizedResponses.title,
       mePath,
-      'Unauthorized error',
+      unauthorizedResponses.detail,
       unauthorizedErrors,
-      'Unauthorized exception',
+      unauthorizedResponses.description
     ),
     InternalError(
-      'Internal Server Error',
+      internalErrorResponses.title,
       mePath,
-      'Internal server exception',
-      'An unexpected error occurred. Please try again later.',
+      internalErrorResponses.detail,
+      internalErrorResponses.description
     ),
   )
 }

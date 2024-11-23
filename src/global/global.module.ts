@@ -72,6 +72,6 @@ export class GlobalModule implements NestModule {
       .forRoutes({
         path: '*',
         method: RequestMethod.ALL,
-      });
+      })
   }
 }
