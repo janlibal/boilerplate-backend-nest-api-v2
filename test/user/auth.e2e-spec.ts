@@ -56,6 +56,66 @@ describe('Auth Module', () => {
       })
     })
 
+    it('should fail with no token: /api/v1/auth/me (GET)', () => {
+      request(app)
+        .get(`${prefix}/auth/me`)
+        /*.auth(newUserApiToken, {
+          type: 'bearer',
+        })*/
+        .send()
+        .expect(200)
+      expect(({ body }) => {
+        expect(body.status).toBe(true)
+        expect(body.path).toMatch('/auth/me')
+        expect(body.statusCode).toBe(200)
+        expect(body.timestamp).toMatch(
+          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+        )
+        expect(typeof body.result.title).toMatch('Unauthorized')
+        expect(typeof body.result.detail).toMatch('Invalid Headers')
+      })
+    })
+
+    it('should fail with with missing jwt prefix: /api/v1/auth/me (GET)', () => {
+      request(app)
+        .get(`${prefix}/auth/me`)
+        .auth('token', {
+          type: 'bearer',
+        })
+        .send()
+        .expect(200)
+      expect(({ body }) => {
+        expect(body.status).toBe(true)
+        expect(body.path).toMatch('/auth/me')
+        expect(body.statusCode).toBe(200)
+        expect(body.timestamp).toMatch(
+          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+        )
+        expect(typeof body.result.title).toMatch('Unauthorized')
+        expect(typeof body.result.detail).toMatch('No jwt')
+      })
+    })
+
+    it('should fail with expired or corrupted token: /api/v1/auth/me (GET)', () => {
+      request(app)
+        .get(`${prefix}/auth/me`)
+        .auth('jwt expiredToken', {
+          type: 'bearer',
+        })
+        .send()
+        .expect(200)
+      expect(({ body }) => {
+        expect(body.status).toBe(true)
+        expect(body.path).toMatch('/auth/me')
+        expect(body.statusCode).toBe(200)
+        expect(body.timestamp).toMatch(
+          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+        )
+        expect(typeof body.result.title).toMatch('Unauthorized')
+        expect(typeof body.result.detail).toMatch('Nice try')
+      })
+    })
+
     it('should logout user: /api/v1/auth/logout (POST)', () => {
       request(app)
         .get(`${prefix}/auth/logout`)
