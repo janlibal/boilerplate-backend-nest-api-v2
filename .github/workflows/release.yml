@@ -40,13 +40,13 @@ jobs:
         if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}
         uses: actions/checkout@v3
         with:
-          node-version: 20
+          node-version: 22
       - name: checkout tag
         if: ${{ github.event.inputs.version != '' && github.event.inputs.version != 'latest' }}
         uses: actions/checkout@v3
         with:
           ref: refs/tags/${{ github.event.inputs.version }}
-          node-version: 20
+          node-version: 22
       # Assign environment variables used in subsequent steps
       - name: Env variable assignment
         run: echo "image_repository_name=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v3
         if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}
         with:
-          node-version: 20
+          node-version: 22
           file: Dockerfile
           context: .
           push: true
@@ -87,13 +87,13 @@ jobs:
         if: ${{ github.event.inputs.version == '' || github.event.inputs.version == 'latest' }}
         uses: actions/checkout@v3
         with:
-          node-version: 20
+          node-version: 22
       - name: checkout tag
         if: ${{ github.event.inputs.version != '' && github.event.inputs.version != 'latest' }}
         uses: actions/checkout@v3
         with:
           ref: refs/tags/${{ github.event.inputs.version }}
-          node-version: 20
+          node-version: 22
       - name: repository name fix and env
         run: |
           echo "image_repository_name=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
