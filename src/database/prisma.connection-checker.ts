@@ -36,7 +36,7 @@ export async function keepAliveCheck() {
 
   setInterval(async () => {
     try {
-      console.log('Regular db connection check:')
+      console.log('Regular Postgres connection check:')
       await prisma.$queryRaw`SELECT 1` // Simple query to check if the connection is alive
       console.log('Connection is alive!')
     } catch (error) {
