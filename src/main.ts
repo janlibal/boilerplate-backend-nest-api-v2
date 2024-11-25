@@ -14,6 +14,7 @@ import AnyExceptionFilter from './filters/any.exception.filter'
 import HttpExceptionFilter from './filters/http.exception.filter'
 import { ResponseInterceptor } from './interceptors/response.interceptor'
 import rateLimit from 'express-rate-limit'
+import { keepAliveCheck } from './database/prisma.connection-checker'
 
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
@@ -119,6 +120,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document)
 
+  keepAliveCheck()
+  
   await app.listen(
     port,
     async () =>
