@@ -1,5 +1,5 @@
-import { RequestMethod } from "@nestjs/common"
-import { RouteInfo } from "@nestjs/common/interfaces"
+import { RequestMethod } from '@nestjs/common'
+import { RouteInfo } from '@nestjs/common/interfaces'
 
 export const publicRoutes: Array<RouteInfo> = [
   { path: '/auth/email/login', method: RequestMethod.POST },

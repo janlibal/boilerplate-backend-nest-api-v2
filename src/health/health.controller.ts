@@ -1,13 +1,12 @@
 import { Controller, Get } from '@nestjs/common'
 import {
-    DiskHealthIndicator,
+  DiskHealthIndicator,
   HealthCheck,
   HealthCheckService,
   MemoryHealthIndicator,
   PrismaHealthIndicator,
 } from '@nestjs/terminus'
 import { PrismaService } from 'src/database/prisma.service'
-
 
 @Controller('health')
 export class HealthController {
@@ -25,7 +24,7 @@ export class HealthController {
     const check = this.health.check([
       async () => this.prismaHealth.pingCheck('prisma', this.prisma),
     ])
-    if(!check) return console.log('PRISMA ERROR!!!!!')
+    if (!check) return console.log('PRISMA ERROR!!!!!')
     return check
   }
 
@@ -42,7 +41,8 @@ export class HealthController {
   @HealthCheck()
   diskCheck() {
     return this.health.check([
-      () => this.disk.checkStorage('storage', { path: '/', thresholdPercent: 0.5 }),
+      () =>
+        this.disk.checkStorage('storage', { path: '/', thresholdPercent: 0.5 }),
     ])
   }
 }

@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common'
 import { AppModule } from 'src/app/app.module'
 import { UserModule } from 'src/users/user.module'
 import { SessionModule } from 'src/session/session.module'
@@ -16,10 +21,9 @@ import { RouteInfo } from '@nestjs/common/interfaces'
 import { JwtModule } from '@nestjs/jwt'
 import { publicRoutes } from './constants/public.routes'
 
-
 @Module({
   imports: [
-    JwtModule.register({global: true}),
+    JwtModule.register({ global: true }),
     ConfigModule.forRoot(configSetup),
     LoggerModule.forRootAsync(loggerSetuo),
     /*LoggerModule.forRootAsync({
@@ -57,7 +61,7 @@ import { publicRoutes } from './constants/public.routes'
     PrismaModule,
     RedisModule,
     BookModule,
-    HealthModule
+    HealthModule,
   ],
   controllers: [],
   providers: [Logger],

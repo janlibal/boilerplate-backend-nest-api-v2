@@ -1,9 +1,6 @@
 import { registerAs } from '@nestjs/config'
 
-import {
-  IsOptional,
-  IsString,
-} from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 import { SwaggerConfig } from './swagger.config.type'
 import validateConfig from 'src/utils/validatate.config'
 import { API_PREFIX } from 'src/shared/constants/global.constants'

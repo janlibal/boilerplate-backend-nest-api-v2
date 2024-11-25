@@ -114,14 +114,14 @@ async function bootstrap() {
         bearerFormat: 'JWT',
         name: 'Authorization',
       },
-      'token'
+      'token',
     )
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document)
 
   keepAliveCheck()
-  
+
   await app.listen(
     port,
     async () =>

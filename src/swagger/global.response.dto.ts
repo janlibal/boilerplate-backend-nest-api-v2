@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsDate, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsArray, IsBoolean, IsDate, IsNotEmpty } from 'class-validator'
 
 export class GlobalResponseDto<TData> {
   @ApiProperty({
@@ -8,14 +8,14 @@ export class GlobalResponseDto<TData> {
   })
   @IsBoolean()
   @IsNotEmpty()
-  success: boolean;
+  success: boolean
 
   @ApiProperty({
     description: 'Path',
     example: '/app',
     type: String,
   })
-  path: String;
+  path: String
 
   /*@ApiProperty({
     description: 'Status code',

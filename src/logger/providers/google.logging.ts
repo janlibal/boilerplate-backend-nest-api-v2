@@ -1,5 +1,4 @@
-import { Options } from "pino-http";
-
+import { Options } from 'pino-http'
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
 const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
@@ -14,15 +13,15 @@ const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
 export function googleLoggingConfig(): Options {
   return {
     messageKey: 'message',
-      formatters: {
-        level(label, number) {
-          return {
-            severity:
-              PinoLevelToGoogleLoggingSeverityLookup[label] ||
-              PinoLevelToGoogleLoggingSeverityLookup['info'],
-            level: number,
-          }
-        },
+    formatters: {
+      level(label, number) {
+        return {
+          severity:
+            PinoLevelToGoogleLoggingSeverityLookup[label] ||
+            PinoLevelToGoogleLoggingSeverityLookup['info'],
+          level: number,
+        }
+      },
     },
   }
 }

@@ -1,9 +1,15 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { logoutPath } from '../constants/paths'
-import { InternalError, UnauthorizedError } from 'src/swagger/all.errors.decorators'
+import {
+  InternalError,
+  UnauthorizedError,
+} from 'src/swagger/all.errors.decorators'
 import { unauthorizedErrors } from '../constants/errors'
-import { internalErrorResponses, unauthorizedResponses } from 'src/swagger/constants/decorator.responses'
+import {
+  internalErrorResponses,
+  unauthorizedResponses,
+} from 'src/swagger/constants/decorator.responses'
 
 export function logoutDecorators() {
   return applyDecorators(
@@ -18,13 +24,13 @@ export function logoutDecorators() {
       logoutPath,
       unauthorizedResponses.detail,
       unauthorizedErrors,
-      unauthorizedResponses.description
+      unauthorizedResponses.description,
     ),
     InternalError(
       internalErrorResponses.title,
       logoutPath,
       internalErrorResponses.detail,
-      internalErrorResponses.description
+      internalErrorResponses.description,
     ),
   )
 }

@@ -1,10 +1,17 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
-import { InternalError, SuccessResponse, UnauthorizedError,  } from 'src/swagger/all.errors.decorators'
+import {
+  InternalError,
+  SuccessResponse,
+  UnauthorizedError,
+} from 'src/swagger/all.errors.decorators'
 import { mePath } from '../constants/paths'
 import { User } from 'src/users/domain/user.domain'
 import { unauthorizedErrors } from '../constants/errors'
-import { internalErrorResponses, unauthorizedResponses } from 'src/swagger/constants/decorator.responses'
+import {
+  internalErrorResponses,
+  unauthorizedResponses,
+} from 'src/swagger/constants/decorator.responses'
 
 export function meDecorators() {
   return applyDecorators(
@@ -25,13 +32,13 @@ export function meDecorators() {
       mePath,
       unauthorizedResponses.detail,
       unauthorizedErrors,
-      unauthorizedResponses.description
+      unauthorizedResponses.description,
     ),
     InternalError(
       internalErrorResponses.title,
       mePath,
       internalErrorResponses.detail,
-      internalErrorResponses.description
+      internalErrorResponses.description,
     ),
   )
 }

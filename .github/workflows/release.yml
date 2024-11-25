@@ -11,7 +11,7 @@ on:
   # Triggered on every successful Build action
   workflow_run:
     workflows: ["Build"]
-    branches: [ dev ] # [main,master]
+    branches: [main,master] # [ dev ] 
     types:
       - completed
   # Manual trigger for rollback to specific release or redeploy latest

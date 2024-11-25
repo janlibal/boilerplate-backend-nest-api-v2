@@ -370,7 +370,7 @@ describe('Auth Module', () => {
           )
           expect(body.result.title).toMatch('Bad Request')
           expect(body.result.detail).toMatch('Something went wrong')
-          
+
           expect(body.result.errors[0]).toMatchSnapshot({
             message: 'Lastname must be longer than 1 char',
           })

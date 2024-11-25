@@ -19,5 +19,5 @@ export class AppController {
   @Serialize(AppResponseDto)
   public async getApiInfo(): Promise<AppResponseDto> {
     return await this.appService.compileData()
-  } 
+  }
 }

@@ -14,7 +14,12 @@ import {
   unauthorizedErrors,
   unprocessableErrors,
 } from '../constants/errors'
-import { badRequestResponses, internalErrorResponses, unauthorizedResponses, unprocessableResponses } from 'src/swagger/constants/decorator.responses'
+import {
+  badRequestResponses,
+  internalErrorResponses,
+  unauthorizedResponses,
+  unprocessableResponses,
+} from 'src/swagger/constants/decorator.responses'
 
 export function loginDecorators() {
   return applyDecorators(
@@ -41,7 +46,7 @@ export function loginDecorators() {
       loginPath,
       unauthorizedResponses.detail,
       unauthorizedErrors,
-      unauthorizedResponses.description
+      unauthorizedResponses.description,
     ),
     UnprocessableEntityError(
       unprocessableResponses.title,
@@ -54,7 +59,7 @@ export function loginDecorators() {
       internalErrorResponses.title,
       loginPath,
       internalErrorResponses.detail,
-      internalErrorResponses.description
+      internalErrorResponses.description,
     ),
   )
 }
