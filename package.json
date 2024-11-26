@@ -61,6 +61,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.699.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
@@ -94,6 +95,7 @@
     "nodemailer": "^6.9.14",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "pino-cloudwatch": "^0.7.0",
     "pino-http": "^10.2.0",
     "pino-pretty": "^11.2.2",
     "prisma": "5.20.0",
