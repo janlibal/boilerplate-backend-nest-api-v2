@@ -28,6 +28,8 @@ export class AuthMiddleware implements NestMiddleware {
 
     if (jwt !== 'jwt') throw new UnauthorizedError('No jwt')
 
+    if (!accessToken) throw new UnauthorizedError('No token')
+
     const authSecret = this.configService.getOrThrow('auth.secret', {
       infer: true,
     })
