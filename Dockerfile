@@ -1,6 +1,6 @@
 FROM node:22.11.0-alpine
 LABEL maintainer="jan.libal@yahoo.com"
-LABEL build_date="2024-11-03"
+LABEL build_date="2024-11-26"
 
 RUN apk add --no-cache bash
 #RUN yarn global add @nestjs/cli typescript ts-node
