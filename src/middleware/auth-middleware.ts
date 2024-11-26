@@ -5,6 +5,8 @@ import { NextFunction, Response, Request } from 'express'
 import UnauthorizedError from 'src/exceptions/unauthorized.exception'
 import { AllConfigType } from 'src/global/config/config.type'
 import { RedisService } from 'src/redis/redis.service'
+import ms from 'ms'
+import { User } from 'src/users/domain/user.domain'
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -35,9 +37,14 @@ export class AuthMiddleware implements NestMiddleware {
     })
 
     //verify token using jwt service
-    const data = await this.jwtService.verifyAsync(accessToken, {
-      secret: authSecret,
-    })
+    let data: User
+    try {
+      data = await this.jwtService.verifyAsync(accessToken, {
+        secret: authSecret,
+      })
+    } catch (error) {
+      throw new UnauthorizedError('Wrong token')
+    }
 
     const redisObject = await this.redisService.getSession(data.id)
 

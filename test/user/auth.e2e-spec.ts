@@ -63,11 +63,11 @@ describe('Auth Module', () => {
           type: 'bearer',
         })*/
         .send()
-        .expect(200)
+        .expect(401)
       expect(({ body }) => {
         expect(body.status).toBe(true)
         expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(200)
+        expect(body.statusCode).toBe(401)
         expect(body.timestamp).toMatch(
           /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
         )
@@ -83,11 +83,11 @@ describe('Auth Module', () => {
           type: 'bearer',
         })
         .send()
-        .expect(200)
+        .expect(401)
       expect(({ body }) => {
         expect(body.status).toBe(true)
         expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(200)
+        expect(body.statusCode).toBe(401)
         expect(body.timestamp).toMatch(
           /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
         )
@@ -103,11 +103,11 @@ describe('Auth Module', () => {
           type: 'bearer',
         })
         .send()
-        .expect(200)
+        .expect(401)
       expect(({ body }) => {
-        expect(body.status).toBe(true)
+        expect(body.status).toBe(false)
         expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(200)
+        expect(body.statusCode).toBe(401)
         expect(body.timestamp).toMatch(
           /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
         )
