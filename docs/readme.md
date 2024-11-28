@@ -4,3 +4,4 @@
 
 - [Introduction](introduction.md)
 - [Installation and start](installation-and-start.md)
+- [Architecture](architecture.md)

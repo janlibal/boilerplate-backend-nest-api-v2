@@ -6,4 +6,4 @@ Nestjs Boilerplate API is a simple RESTful API boilerplate project written in TS
 
 Previous: [Main page](readme.md)
 
-Next: [Installing and Running](installing-and-running.md)
+Next: [Installing and Running](installation-and-start.md)

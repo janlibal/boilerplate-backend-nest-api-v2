@@ -35,7 +35,7 @@ This boilerplate supports [Prisma](https://www.npmjs.com/package/prisma) as ORM 
 
 4. Change `DB_HOST=postgres` to `DB_HOST=localhost`
 
-5. Change `DB_NAME=postgres` to `DB_NAME=prod`
+5. Change `DB_NAME=prod` to `DB_NAME=dev`
 
 6. Run container with Postgres, Redis and PgAdmin:
 
