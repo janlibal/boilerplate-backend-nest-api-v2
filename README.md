@@ -13,7 +13,7 @@ Nestjs REST API boilerplate
 
 - [Features](#features)
 - [Contributors](#contributors)
-- [Support](#support)
+- [Disclaimer](#disclaimer)
 
 ## Features
 
@@ -48,6 +48,6 @@ Nestjs REST API boilerplate
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-## Discalimer
+## Disclaimer
 
 Please note that this API is built for demonstration purposes only and in a go-live solution various parts are going to be more enhanced. In case you wish to develop the project from scratch yourself, please follow commits from start to finish.
