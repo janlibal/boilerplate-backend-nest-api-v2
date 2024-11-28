@@ -1,5 +1,6 @@
 # Nestjs Boilerplate API II.
 ![github action status](https://github.com/janlibal/boilerplate-backend-nest-api-v2/actions/workflows/deploy.yml/badge.svg)
+![github action status](https://github.com/janlibal/boilerplate-backend-nest-api-v2/actions/workflows/release.yml/badge.svg)
 
 <br />
 
