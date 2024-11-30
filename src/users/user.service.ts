@@ -3,7 +3,6 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common'
-import { UserRepository } from './user.repository'
 import { User } from './domain/user.domain'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { CreateUserDto } from './dto/create.user.dto'
@@ -12,12 +11,15 @@ import crypto from 'src/utils/crypto'
 import { RoleEnum } from 'src/roles/roles.enum'
 import { StatusEnum } from 'src/statuses/statuses.enum'
 import ResourceExistsError from 'src/exceptions/already.exists.exception'
-//import * as crypto from 'crypto'
-//import * as bcrypt from 'bcrypt'
+import { UserRepository } from './infrastructure/repository/user.repository'
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
+
+  findByEmail(email: User['email']): Promise<NullableType<User>> {
+    return this.userRepository.findByEmail(email);
+  }
 
   findById(id: User['id']): Promise<NullableType<User>> {
     const data = this.userRepository.findById(id)

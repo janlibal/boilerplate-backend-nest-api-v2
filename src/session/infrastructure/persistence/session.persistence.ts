@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { Session } from './domain/session.domain'
 import { PrismaService } from 'src/database/prisma.service'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { User } from 'src/users/domain/user.domain'
+import { Session } from 'src/session/domain/session.domain'
 
 @Injectable()
-export class SessionRepository {
+export class SessionPersistence {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(

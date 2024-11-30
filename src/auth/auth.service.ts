@@ -7,7 +7,6 @@ import crypto from 'src/utils/crypto'
 //import * as bcrypt from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
 import { UserService } from 'src/users/user.service'
-import { UserRepository } from 'src/users/user.repository'
 import { AllConfigType } from 'src/global/config/config.type'
 import { AuthEmailLoginDto } from './dto/auth.email.login.dto'
 import { LoginResponseDto } from './dto/login.response.dto'
@@ -33,13 +32,13 @@ export class AuthService {
     private userService: UserService,
     private sessionService: SessionService,
     private redisService: RedisService,
-    private readonly userRepository: UserRepository,
     private configService: ConfigService<AllConfigType>,
   ) {}
 
   //Promise<Omit<LoginResponseDto, 'user'>> {
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
-    const user = await this.userRepository.findByEmail(loginDto.email)
+    //const user = await this.userRepository.findByEmail(loginDto.email)
+    const user = await this.userService.findByEmail(loginDto.email);
 
     if (!user) {
       throw new UnauthorizedError('Invalid email or password')

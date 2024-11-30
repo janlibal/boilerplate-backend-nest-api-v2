@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { NullableType } from 'src/utils/types/nullable.type'
-import { User } from './domain/user.domain'
 import { PrismaService } from 'src/database/prisma.service'
+import { User } from 'src/users/domain/user.domain'
 
 @Injectable()
-export class UserRepository {
+export class UserPersistence {
   constructor(private prismaService: PrismaService) {}
 
   async findById(id: User['id']): Promise<NullableType<User>> {
