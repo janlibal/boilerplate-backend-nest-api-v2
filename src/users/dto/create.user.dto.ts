@@ -58,4 +58,6 @@ export class CreateUserDto {
   @IsOptional()
   @Type(() => StatusDto)
   status?: StatusDto
+
+  provider?: string
 }

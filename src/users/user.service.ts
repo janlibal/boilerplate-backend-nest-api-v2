@@ -12,6 +12,8 @@ import { RoleEnum } from 'src/roles/roles.enum'
 import { StatusEnum } from 'src/statuses/statuses.enum'
 import ResourceExistsError from 'src/exceptions/already.exists.exception'
 import { UserRepository } from './infrastructure/repository/user.repository'
+import { Role } from 'src/roles/domain/role.domain'
+import { Status } from 'src/statuses/domain/status.domain'
 
 @Injectable()
 export class UserService {
@@ -35,40 +37,43 @@ export class UserService {
   }
 
   async create(createProfileDto: CreateUserDto): Promise<User> {
-    const clonedPayload = {
-      firstName: createProfileDto.firstName,
-      lastName: createProfileDto.lastName,
-      password: await crypto.hashPassword(createProfileDto.password), //createProfileDto.password,
-      email: createProfileDto.email,
-      provider: AuthProvidersEnum.email,
-      role: createProfileDto.role,
-      status: createProfileDto.status,
-      //...createProfileDto,
-    }
 
-    /*if (clonedPayload.password) {
-      const salt = await bcrypt.genSalt();
-      clonedPayload.password = await bcrypt.hash(clonedPayload.password, salt);
-    }*/
-
-    if (clonedPayload.role?.id) {
-      const roleObject = Object.values(RoleEnum)
-        .map(String)
-        .includes(String(clonedPayload.role.id))
-      if (!roleObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            role: 'roleNotExists',
-          },
-        })
+    let email: string | null = null
+    if (createProfileDto.email) {
+      const userObject = await this.userRepository.findByEmail(
+        createProfileDto.email,
+      )
+      if (userObject) {
+        throw new ResourceExistsError(userObject.email)
       }
+      email = createProfileDto.email;
     }
 
-    if (clonedPayload.status?.id) {
-      const statusObject = Object.values(StatusEnum)
-        .map(String)
-        .includes(String(clonedPayload.status.id))
+    let password: string | undefined = undefined;
+    if (createProfileDto.password) {
+      password = await crypto.hashPassword(createProfileDto.password)
+    }
+
+    
+    let role: Role | undefined = undefined
+    if(createProfileDto.role?.id){
+      const roleObject = Object.values(RoleEnum).map(String).includes(String(createProfileDto.role.id))
+      if (!roleObject) {
+          throw new UnprocessableEntityException({
+            status: HttpStatus.UNPROCESSABLE_ENTITY,
+            errors: {
+              role: 'roleNotExists',
+            },
+          })
+        }
+      }
+      role = {
+        id: createProfileDto.role.id
+      }
+    
+    let status: Status | undefined = undefined
+    if (createProfileDto.status?.id) {
+      const statusObject = Object.values(StatusEnum).map(String).includes(String(createProfileDto.status.id))
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -77,14 +82,20 @@ export class UserService {
           },
         })
       }
+      status = {
+        id: createProfileDto.status.id,
+      }
     }
 
-    const userObject = await this.userRepository.findByEmail(
-      clonedPayload.email,
-    )
-
-    if (userObject) {
-      throw new ResourceExistsError(userObject.email)
+    const clonedPayload = {
+      firstName: createProfileDto.firstName,
+      lastName: createProfileDto.lastName,
+      password: password, //await crypto.hashPassword(createProfileDto.password), //createProfileDto.password,
+      email: email, //createProfileDto.email,
+      provider: createProfileDto.provider ?? AuthProvidersEnum.email,
+      role: role, //createProfileDto.role,
+      status: createProfileDto.status,
+      //...createProfileDto,
     }
 
     return await this.userRepository.create(clonedPayload)
@@ -94,3 +105,4 @@ export class UserService {
     await this.userRepository.remove(id)
   }
 }
+

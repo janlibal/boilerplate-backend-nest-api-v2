@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { PrismaService } from 'src/database/prisma.service'
 import { User } from 'src/users/domain/user.domain'
+import { UserMapper } from '../mappers/user.mapper'
 
 @Injectable()
 export class UserPersistence {
@@ -22,16 +23,26 @@ export class UserPersistence {
   }
 
   async create(clonedPayload: User): Promise<User> {
-    return await this.prismaService.user.create({
+    const persistenceModel = await UserMapper.toPersistence(clonedPayload)
+    const newEntity = await this.prismaService.user.create({
       data: {
-        firstName: clonedPayload.firstName,
-        lastName: clonedPayload.lastName,
-        password: clonedPayload.password,
-        email: clonedPayload.email,
-        statusId: clonedPayload.status.id,
-        roleId: clonedPayload.role.id,
+        firstName: persistenceModel.firstName,
+        lastName: persistenceModel.lastName,
+        password: persistenceModel.password,
+        email: persistenceModel.email,
+        status: {
+          connect: {
+            id: persistenceModel.statusId
+          }
+        },
+        role: {
+          connect: {
+            id: persistenceModel.roleId
+          }
+        }
       },
     })
+    return await UserMapper.toDomain(newEntity)
   }
 
   async remove(id: User['id']): Promise<void> {
