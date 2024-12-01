@@ -9,9 +9,8 @@ export class UserPersistence {
   constructor(private prismaService: PrismaService) {}
 
   async findById(id: User['id']): Promise<NullableType<User>> {
-    return await this.prismaService.user.findUnique({
-      where: { id: String(id) },
-    })
+    const entity = await this.prismaService.user.findUnique({ where: { id: String(id) } })
+    return entity ? await UserMapper.toDomain(entity) : null
   }
 
   async findMany(): Promise<User[]> {
@@ -19,7 +18,9 @@ export class UserPersistence {
   }
 
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
-    return await this.prismaService.user.findFirst({ where: { email: email } })
+    if (!email) return null
+    const entity = await this.prismaService.user.findFirst({ where: { email: email } })
+    return entity ? await UserMapper.toDomain(entity) : null
   }
 
   async create(clonedPayload: User): Promise<User> {
@@ -48,7 +49,7 @@ export class UserPersistence {
   async remove(id: User['id']): Promise<void> {
     await this.prismaService.user.delete({
       where: {
-        id: id, //String(id),
+        id: id
       },
     })
   }
