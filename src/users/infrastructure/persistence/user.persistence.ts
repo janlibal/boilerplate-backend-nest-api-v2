@@ -13,9 +13,9 @@ export class UserPersistence {
     return entity ? await UserMapper.toDomain(entity) : null
   }
 
-  async findMany(): Promise<User[]> {
+  /*async findMany(): Promise<User[]> {
     return await this.prismaService.user.findMany()
-  }
+  }*/
 
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude, Expose } from 'class-transformer'
 import { isUUID } from 'class-validator'
+import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
 import { Role } from 'src/roles/domain/role.domain'
 import { Status } from 'src/statuses/domain/status.domain'
 
@@ -40,7 +41,8 @@ export class User {
     example: 'email',
   })
   @Expose() //({ groups: ['me', 'admin'] })
-  provider: string
+  //@Type(() => RoleEntity)
+  provider: AuthProvidersEnum//string
 
   @ApiProperty({
     type: () => Role,

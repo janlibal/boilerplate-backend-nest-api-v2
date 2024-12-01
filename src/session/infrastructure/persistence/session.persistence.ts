@@ -3,6 +3,8 @@ import { PrismaService } from 'src/database/prisma.service'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { User } from 'src/users/domain/user.domain'
 import { Session } from 'src/session/domain/session.domain'
+import { SessionMapper } from '../mappers/session.mapper'
+import { userInfo } from 'os'
 
 @Injectable()
 export class SessionPersistence {
@@ -17,11 +19,7 @@ export class SessionPersistence {
       },
       data: {
         hash: data.hash,
-        user: {
-          connect: {
-            id: data.user.id, //.toString(),
-          },
-        },
+        userId: data.user.id
       },
     })
   }
