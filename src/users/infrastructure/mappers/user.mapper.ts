@@ -1,24 +1,28 @@
 import { User } from "src/users/domain/user.domain"
-//import { UserEntity } from "../entities/user.entity"
-//import { RoleEntity } from "src/roles/entities/role.entity"
-//import { StatusEntity } from "src/statuses/entities/status.entity"
-import { Status } from "src/statuses/domain/status.domain"
-import { Role } from "src/roles/domain/role.domain"
-import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
-import { Role as RoleEntity, Status as StatusEntity } from '@prisma/client'
+import { User as UserEntity, ProviderEnum as AuthProvider, Status } from '@prisma/client'
 import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
+import { StatusEnum as StatusEnumFromDomain } from "src/statuses/statuses.enum"
+import { Role } from "src/roles/domain/role.domain"
 
 export class UserMapper {
   static async toDomain(raw: UserEntity): Promise<User> {
-    let status: Status | undefined = undefined
-    status = new Status()
-    status.id = Number(raw.statusId)
-
     let role: Role | undefined = undefined
-    role = new Role()
-    role.id = Number(raw.roleId)
+    if(raw.roleId){
+      role = new Role()
+      role.id = Number(raw.roleId)
+    }
 
+    let status: Status | undefined = undefined
 
+    if (raw.statusId) {
+      //status = new StatusEntity()
+      status.id = Number(raw.statusId)
+    }
+
+    /*let role: DomainRole
+    role =  this.mapRoleToDomain(raw.roleId)*/
+
+    
     const domainEntity: User = {
         id: raw.id,
         firstName: raw.firstName,
@@ -26,10 +30,14 @@ export class UserMapper {
         password: raw.password,
         email: raw.email,
         provider: this.mapStatusToDomain(raw.provider),//raw.provider, 
-        status: status,
+        status: status, //this.mapUserStatusToDomain(raw.statusId), //status,
         role: role
         
     }
+
+    console.log('STATUS: ', domainEntity.status)
+    console.log('ROLE ' + domainEntity.role)
+
     return domainEntity
   }
 
@@ -62,38 +70,52 @@ export class UserMapper {
     return persistenceEntity
   }
 
+  /*private static mapRoleToDomain(n: number): DomainRoleEnum {
+    const admin = Object.keys(PrismaRoleEnum)[0]
+    const user = Object.keys(PrismaRoleEnum)[2]
 
+    let prismaRole: PrismaRole
 
-
-  private static mapStatusToPersistence(status: AuthProvidersEnum): Provider {
-      switch (status) {
-        case AuthProvidersEnum.email:
-          return Provider.email;
-        case AuthProvidersEnum.facebook:
-          return Provider.facebook;
-        case AuthProvidersEnum.google:
-          return Provider.google;
-        case AuthProvidersEnum.twitter:
-          return Provider.twitter;
-        case AuthProvidersEnum.apple:
-          return Provider.apple;
-      }
+    switch (n) {
+      case 1:
+        //prismaRole.role === 
+        return DomainRoleEnum.admin
+      case 2:
+        return DomainRoleEnum.user
+      default:
+        throw new Error(`Unknown role: ${prismaRole}`);
     }
+  }*/
 
-  private static mapStatusToDomain(status: Provider): AuthProvidersEnum {
-      switch (status) {
-        case Provider.email:
-          return AuthProvidersEnum.email;
-        case Provider.facebook:
-          return AuthProvidersEnum.facebook;
-        case Provider.google:
-          return AuthProvidersEnum.google;
-        case Provider.twitter:
-          return AuthProvidersEnum.twitter;
-        case Provider.apple:
-          return AuthProvidersEnum.apple;
-      }
+  private static mapStatusToPersistence(status: AuthProvidersEnum): AuthProvider {
+    switch (status) {
+      case AuthProvidersEnum.email:
+        return AuthProvider.email;
+      case AuthProvidersEnum.facebook:
+        return AuthProvider.facebook;
+      case AuthProvidersEnum.google:
+        return AuthProvider.google;
+      case AuthProvidersEnum.twitter:
+        return AuthProvider.twitter;
+      case AuthProvidersEnum.apple:
+        return AuthProvider.apple;
     }
+  }
+
+  private static mapStatusToDomain(status: AuthProvider): AuthProvidersEnum {
+    switch (status) {
+      case AuthProvider.email:
+        return AuthProvidersEnum.email;
+      case AuthProvider.facebook:
+        return AuthProvidersEnum.facebook;
+      case AuthProvider.google:
+        return AuthProvidersEnum.google;
+      case AuthProvider.twitter:
+        return AuthProvidersEnum.twitter;
+      case AuthProvider.apple:
+        return AuthProvidersEnum.apple;
+    }
+  }
 }
 
 

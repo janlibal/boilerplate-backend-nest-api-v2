@@ -20,7 +20,9 @@ export class UserPersistence {
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null
     const entity = await this.prismaService.user.findFirst({ where: { email: email } })
-    return entity ? await UserMapper.toDomain(entity) : null
+    const resolved = await UserMapper.toDomain(entity)
+    console.log('Resolved!!!! ' + resolved.status.id)
+    return entity ? resolved : null
   }
 
   async create(clonedPayload: User): Promise<User> {
