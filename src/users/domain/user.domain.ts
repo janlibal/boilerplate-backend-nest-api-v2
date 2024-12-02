@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Exclude, Expose } from 'class-transformer'
+import { Exclude, Expose, Type } from 'class-transformer'
 import { isUUID } from 'class-validator'
 import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
 import { Role } from 'src/roles/domain/role.domain'
@@ -48,11 +48,13 @@ export class User {
     type: () => Role,
   })
   @Expose({ name: 'roleId' })
+  @Type(() => Role) 
   role?: Role | null
 
   @ApiProperty({
     type: () => Status,
   })
   @Expose({ name: 'statusId' })
+  @Type(() => Status) 
   status?: Status
 }

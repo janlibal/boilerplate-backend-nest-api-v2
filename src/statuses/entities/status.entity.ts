@@ -1,4 +1,4 @@
-export class StatusEntity {
+/*export class StatusEntity {
   id: number
   name?: string
-}
+}*/

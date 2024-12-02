@@ -1,10 +1,11 @@
 import { User } from "src/users/domain/user.domain"
 //import { UserEntity } from "../entities/user.entity"
-import { RoleEntity } from "src/roles/entities/role.entity"
-import { StatusEntity } from "src/statuses/entities/status.entity"
+//import { RoleEntity } from "src/roles/entities/role.entity"
+//import { StatusEntity } from "src/statuses/entities/status.entity"
 import { Status } from "src/statuses/domain/status.domain"
 import { Role } from "src/roles/domain/role.domain"
 import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
+import { Role as RoleEntity, Status as StatusEntity } from '@prisma/client'
 import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
 
 export class UserMapper {
@@ -34,7 +35,7 @@ export class UserMapper {
 
 
   static async toPersistence(data: User): Promise<UserEntity> {
-    let role: RoleEntity | undefined = undefined
+    /*let role: RoleEntity | undefined = undefined
     if(data.role){
       role = new RoleEntity()
       role.id = Number(data.role.id)
@@ -43,9 +44,9 @@ export class UserMapper {
     let status: StatusEntity | undefined = undefined
 
     if (data.status) {
-      status = new StatusEntity()
+      //status = new StatusEntity()
       status.id = Number(data.status.id)
-    }
+    }*/
 
     const persistenceEntity: UserEntity = {
       id: '0',
@@ -54,8 +55,8 @@ export class UserMapper {
       email: data.email,
       password: data.password,
       provider: this.mapStatusToPersistence(data.provider), //provider,
-      roleId: role.id,
-      statusId: status.id,
+      roleId: Number(data.role.id), //role.id,
+      statusId: Number(data.status.id)//status.id,
     }
 
     return persistenceEntity

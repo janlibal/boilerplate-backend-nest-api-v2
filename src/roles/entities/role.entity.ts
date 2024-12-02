@@ -1,4 +1,4 @@
-export class RoleEntity{
+/*export class RoleEntity{
   id: number
   name?: string
-}
+}*/

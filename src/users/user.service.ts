@@ -20,7 +20,7 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   findByEmail(email: User['email']): Promise<NullableType<User>> {
-    return this.userRepository.findByEmail(email);
+    return this.userRepository.findByEmail(email)
   }
 
   findById(id: User['id']): Promise<NullableType<User>> {
