@@ -94,7 +94,7 @@ export class UserService {
       email: email, //createProfileDto.email,
       provider: createProfileDto.provider ?? AuthProvidersEnum.email,
       role: role, //createProfileDto.role,
-      status: createProfileDto.status,
+      status: status
       //...createProfileDto,
     }
 

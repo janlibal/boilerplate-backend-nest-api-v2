@@ -3,8 +3,7 @@ import { PrismaService } from 'src/database/prisma.service'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { User } from 'src/users/domain/user.domain'
 import { Session } from 'src/session/domain/session.domain'
-import { SessionMapper } from '../mappers/session.mapper'
-import { userInfo } from 'os'
+import { Session as SessionEntity } from '@prisma/client'
 
 @Injectable()
 export class SessionPersistence {
@@ -12,7 +11,7 @@ export class SessionPersistence {
 
   async create(
     data: Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
-  ): Promise<Session> {
+  ): Promise<SessionEntity> {
     return await this.prismaService.session.create({
       include: {
         user: true,
@@ -32,7 +31,7 @@ export class SessionPersistence {
     })
   }
 
-  async findById(id: Session['id']): Promise<NullableType<Session>> {
+  async findById(id: Session['id']): Promise<NullableType<SessionEntity>> {
     return await this.prismaService.session.findFirst({
       include: {
         user: true,
@@ -59,7 +58,7 @@ export class SessionPersistence {
     payload: Partial<
       Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
     >,
-  ): Promise<Session | null> {
+  ): Promise<SessionEntity | null> {
     return await this.prismaService.session.update({
       include: {
         user: true,
