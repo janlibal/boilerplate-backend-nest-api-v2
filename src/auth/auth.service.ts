@@ -84,8 +84,6 @@ export class AuthService {
     await this.redisService.createSession({ prefix, user, token, expiry })
     //await this.redisService.saveSession(user.id, token)
 
-    console.log('USER IS WHOAAA ', user)
-
     return {
       refreshToken,
       token,

@@ -1,121 +1,98 @@
 import { User } from "src/users/domain/user.domain"
-import { User as UserEntity, ProviderEnum as AuthProvider, Status } from '@prisma/client'
-import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
-import { StatusEnum as StatusEnumFromDomain } from "src/statuses/statuses.enum"
+import { Status } from "src/statuses/domain/status.domain"
 import { Role } from "src/roles/domain/role.domain"
+import { User as UserEntity, ProviderEnum as Provider, StatusEnum as UsrStatus } from '@prisma/client'
+import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
+import { StatusEnum } from "src/statuses/statuses.enum"
 
 export class UserMapper {
   static async toDomain(raw: UserEntity): Promise<User> {
-    let role: Role | undefined = undefined
-    if(raw.roleId){
-      role = new Role()
-      role.id = Number(raw.roleId)
-    }
-
     let status: Status | undefined = undefined
+    status = new Status()
+    status.id = Number(raw.statusId)
 
-    if (raw.statusId) {
-      //status = new StatusEntity()
-      status.id = Number(raw.statusId)
-    }
+    let role: Role | undefined = undefined
+    role = new Role()
+    role.id = Number(raw.roleId)
 
-    /*let role: DomainRole
-    role =  this.mapRoleToDomain(raw.roleId)*/
 
-    
     const domainEntity: User = {
         id: raw.id,
         firstName: raw.firstName,
         lastName: raw.lastName,
         password: raw.password,
         email: raw.email,
-        provider: this.mapStatusToDomain(raw.provider),//raw.provider, 
-        status: status, //this.mapUserStatusToDomain(raw.statusId), //status,
-        role: role
-        
+        provider: this.mapProviderToDomain(raw.provider),//raw.provider, 
+        status: status, //this.mapStatusToDomain(raw.statusId),//status,
+        role: role   
     }
-
-    console.log('STATUS: ', domainEntity.status)
-    console.log('ROLE ' + domainEntity.role)
-
     return domainEntity
   }
 
 
-  static async toPersistence(data: User): Promise<UserEntity> {
+  static async toPersistence(data: User): Promise<Omit<UserEntity, 'id'>> {
     /*let role: RoleEntity | undefined = undefined
     if(data.role){
-      role = new RoleEntity()
+      //role = new RoleEntity
       role.id = Number(data.role.id)
     }
 
     let status: StatusEntity | undefined = undefined
-
     if (data.status) {
       //status = new StatusEntity()
       status.id = Number(data.status.id)
     }*/
 
-    const persistenceEntity: UserEntity = {
-      id: '0',
+    const persistenceEntity: Omit<UserEntity, 'id'> = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
-      provider: this.mapStatusToPersistence(data.provider), //provider,
-      roleId: Number(data.role.id), //role.id,
-      statusId: Number(data.status.id)//status.id,
+      provider: this.mapProviderToPersistence(data.provider), //provider,
+      roleId: data.role.id, //role.id,
+      statusId: data.status.id //status.id,
     }
-
     return persistenceEntity
   }
 
-  /*private static mapRoleToDomain(n: number): DomainRoleEnum {
-    const admin = Object.keys(PrismaRoleEnum)[0]
-    const user = Object.keys(PrismaRoleEnum)[2]
-
-    let prismaRole: PrismaRole
-
-    switch (n) {
-      case 1:
-        //prismaRole.role === 
-        return DomainRoleEnum.admin
-      case 2:
-        return DomainRoleEnum.user
-      default:
-        throw new Error(`Unknown role: ${prismaRole}`);
+  private static mapProviderToPersistence(provider: AuthProvidersEnum): Provider {
+      switch (provider) {
+        case AuthProvidersEnum.email:
+          return Provider.email;
+        case AuthProvidersEnum.facebook:
+          return Provider.facebook;
+        case AuthProvidersEnum.google:
+          return Provider.google;
+        case AuthProvidersEnum.twitter:
+          return Provider.twitter;
+        case AuthProvidersEnum.apple:
+          return Provider.apple;
+      }
     }
-  }*/
 
-  private static mapStatusToPersistence(status: AuthProvidersEnum): AuthProvider {
-    switch (status) {
-      case AuthProvidersEnum.email:
-        return AuthProvider.email;
-      case AuthProvidersEnum.facebook:
-        return AuthProvider.facebook;
-      case AuthProvidersEnum.google:
-        return AuthProvider.google;
-      case AuthProvidersEnum.twitter:
-        return AuthProvider.twitter;
-      case AuthProvidersEnum.apple:
-        return AuthProvider.apple;
+  private static mapProviderToDomain(provider: Provider): AuthProvidersEnum {
+      switch (provider) {
+        case Provider.email:
+          return AuthProvidersEnum.email;
+        case Provider.facebook:
+          return AuthProvidersEnum.facebook;
+        case Provider.google:
+          return AuthProvidersEnum.google;
+        case Provider.twitter:
+          return AuthProvidersEnum.twitter;
+        case Provider.apple:
+          return AuthProvidersEnum.apple;
+      }
     }
-  }
 
-  private static mapStatusToDomain(status: AuthProvider): AuthProvidersEnum {
-    switch (status) {
-      case AuthProvider.email:
-        return AuthProvidersEnum.email;
-      case AuthProvider.facebook:
-        return AuthProvidersEnum.facebook;
-      case AuthProvider.google:
-        return AuthProvidersEnum.google;
-      case AuthProvider.twitter:
-        return AuthProvidersEnum.twitter;
-      case AuthProvider.apple:
-        return AuthProvidersEnum.apple;
+    private static mapStatusToDomain(status: UsrStatus): StatusEnum {
+      switch (status) {
+        case UsrStatus.active:
+          return StatusEnum.active
+        case UsrStatus.inactive:
+          return StatusEnum.inactive
+      }
     }
-  }
 }
 
 
@@ -159,4 +136,3 @@ export class UserMapper {
 
     return persistenceEntity
   }*/
-

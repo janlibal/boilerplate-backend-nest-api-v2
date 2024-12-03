@@ -42,7 +42,7 @@ export class User {
   })
   @Expose() //({ groups: ['me', 'admin'] })
   //@Type(() => RoleEntity)
-  provider: AuthProvidersEnum//string
+  provider: AuthProvidersEnum
 
   @ApiProperty({
     type: () => Role,

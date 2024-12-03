@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { PrismaService } from 'src/database/prisma.service'
 import { User } from 'src/users/domain/user.domain'
+import {User as UserEntity } from '@prisma/client'
 import { UserMapper } from '../mappers/user.mapper'
 
 @Injectable()
@@ -20,9 +21,8 @@ export class UserPersistence {
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null
     const entity = await this.prismaService.user.findFirst({ where: { email: email } })
-    const resolved = await UserMapper.toDomain(entity)
-    console.log('Resolved!!!! ' + resolved.status.id)
-    return entity ? resolved : null
+    return entity ? await UserMapper.toDomain(entity) : null
+    
   }
 
   async create(clonedPayload: User): Promise<User> {
