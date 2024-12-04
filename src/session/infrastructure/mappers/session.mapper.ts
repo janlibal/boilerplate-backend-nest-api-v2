@@ -1,4 +1,4 @@
-import { User } from "src/users/domain/user.domain"
+/*import { User } from "src/users/domain/user.domain"
 import { Status } from "src/statuses/domain/status.domain"
 import { Role } from "src/roles/domain/role.domain"
 import { Session as SessionEntity } from '@prisma/client'
@@ -46,4 +46,4 @@ export class SessionMapper {
   }
 
   
-}
+}*/
