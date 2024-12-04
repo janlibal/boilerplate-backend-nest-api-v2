@@ -1,9 +1,5 @@
-/*import { User } from "src/users/domain/user.domain"
-import { Status } from "src/statuses/domain/status.domain"
-import { Role } from "src/roles/domain/role.domain"
-import { Session as SessionEntity } from '@prisma/client'
-import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
-import { StatusEnum } from "src/statuses/statuses.enum"
+import { User } from "src/users/domain/user.domain"
+import { Session as SessionEntity, User as UserEntity } from '@prisma/client'
 import { Session } from "src/session/domain/session.domain"
 
 export type NestedOmit<T, K extends PropertyKey> = {
@@ -13,37 +9,33 @@ export type NestedOmit<T, K extends PropertyKey> = {
 
 export class SessionMapper {
 
-  static async toDomain(raw: SessionEntity): Promise<NestedOmit<Session, "user.firstName" | 'user.email' | 'user.lastName' | 'user.password' | 'user.provider'>> {
-    let user: Omit<User, 'firstName' | 'lastName' | 'email' | 'password' | 'provider'> | undefined = undefined
-    //user = new User()
-    user = { id: String(raw.userId) }
-
-    
-    //let s: StripKey<"user.firstName" | "user.lastName" | "user.password" | "user.provider" | "user.statusId", "user.roleId">
-    //Pick<Session['user'], 'id'>
-    const domainEntity: NestedOmit<Session, "user.firstName" | 'user.email' | 'user.lastName' | 'user.password' | 'user.provider'> =  {
-        id: raw.id,
-        user: {id: raw.userId},
-        hash: raw.hash,
-        createdAt: raw.createdAt,
-        updatedAt: raw.updatedAt,
-        deletedAt: raw.deletedAt
-    }
-    return domainEntity
-  }
-
-
-  static async toPersistence(data: NestedOmit<Session, "user.firstName" | 'user.email' | 'user.lastName' | 'user.password' | 'user.provider'>): Promise<SessionEntity> {
-    const persistenceEntity: Omit<SessionEntity, 'id'> = {
+  static async toPersistence(data: Session): Promise<SessionEntity> {
+    const user: Pick<UserEntity, 'id'> = {id: data.user.id}// { id: data.user.id, firstName: data.user.firstName, lastName: data.user.lastName, email: data.user.lastName, provider: data.user.provider, password: data.user.password, statusId: data.user.status.id, roleId: data.user.role.id, }
+    const persistenceEntity: SessionEntity = {
       hash: data.hash,
-      userId: data.user.id,
       createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
       deletedAt: data.deletedAt,
-      updatedAt: data.updatedAt
-
+      userId: user.id,
+      id: data.id
+      
     }
     return persistenceEntity
   }
 
-  
-}*/
+  /*static async toDomain(raw: SessionEntity): Promise<Session> { //Promise<Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>  {
+    const user: Pick<User, 'id'> = {id: raw.userId}
+    const domainEntity: Session = {
+      id: raw.id,
+      hash: raw.hash,
+      updatedAt: raw.updatedAt,
+      createdAt: raw.createdAt,
+      deletedAt: raw.deletedAt,
+      user: raw.userId
+    }
+
+    return domainEntity
+
+  }*/
+
+}

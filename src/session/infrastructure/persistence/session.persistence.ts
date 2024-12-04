@@ -4,23 +4,24 @@ import { NullableType } from 'src/utils/types/nullable.type'
 import { User } from 'src/users/domain/user.domain'
 import { Session } from 'src/session/domain/session.domain'
 import { Session as SessionEntity } from '@prisma/client'
+import { SessionMapper } from '../mappers/session.mapper'
 
 @Injectable()
 export class SessionPersistence {
   constructor(private readonly prismaService: PrismaService) {}
-
-  async create(
-    data: Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
-  ): Promise<SessionEntity> {
-    return await this.prismaService.session.create({
+  async create(data: Session): Promise<SessionEntity> {
+    const persistendeModel = await SessionMapper.toPersistence(data)
+    const newEntity = await this.prismaService.session.create({
       include: {
         user: true,
       },
       data: {
-        hash: data.hash,
-        userId: data.user.id
+        hash: persistendeModel.hash,
+        //userId: persistendeModel.userId,
+        user: {connect: { id: persistendeModel.userId } }
       },
     })
+    return newEntity//await SessionMapper.toDomain(newEntity)
   }
 
   async deleteById(id: Session['id']): Promise<void> {
