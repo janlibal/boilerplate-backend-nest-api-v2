@@ -22,5 +22,5 @@ export class Status {
     default: 'active',
   })
   @Expose()
-  name?: string
+  title?: string
 }

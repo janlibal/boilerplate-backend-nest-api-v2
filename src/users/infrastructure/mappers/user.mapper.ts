@@ -9,12 +9,11 @@ export class UserMapper {
   static async toDomain(raw: UserEntity): Promise<User> {
     let status: Status | undefined = undefined
     status = new Status()
-    status.id = Number(raw.statusId)
+    status = { id: Number(raw.statusId) }
 
     let role: Role | undefined = undefined
     role = new Role()
-    role.id = Number(raw.roleId)
-
+    role = { id: Number(raw.roleId) }
 
     const domainEntity: User = {
         id: raw.id,
@@ -22,8 +21,8 @@ export class UserMapper {
         lastName: raw.lastName,
         password: raw.password,
         email: raw.email,
-        provider: this.mapProviderToDomain(raw.provider),//raw.provider, 
-        status: status, //this.mapStatusToDomain(raw.statusId),//status,
+        provider: this.mapProviderToDomain(raw.provider), 
+        status: status,
         role: role   
     }
     return domainEntity
@@ -31,26 +30,14 @@ export class UserMapper {
 
 
   static async toPersistence(data: User): Promise<Omit<UserEntity, 'id'>> {
-    /*let role: RoleEntity | undefined = undefined
-    if(data.role){
-      //role = new RoleEntity
-      role.id = Number(data.role.id)
-    }
-
-    let status: StatusEntity | undefined = undefined
-    if (data.status) {
-      //status = new StatusEntity()
-      status.id = Number(data.status.id)
-    }*/
-
     const persistenceEntity: Omit<UserEntity, 'id'> = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
-      provider: this.mapProviderToPersistence(data.provider), //provider,
-      roleId: data.role.id, //role.id,
-      statusId: data.status.id //status.id,
+      provider: this.mapProviderToPersistence(data.provider),
+      roleId: data.role.id,
+      statusId: data.status.id
     }
     return persistenceEntity
   }

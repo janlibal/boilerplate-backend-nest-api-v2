@@ -47,14 +47,14 @@ export class User {
   @ApiProperty({
     type: () => Role,
   })
-  @Expose({ name: 'roleId' })
+  @Expose()//({ name: 'roleId' })
   @Type(() => Role) 
   role?: Role | null
 
   @ApiProperty({
     type: () => Status,
   })
-  @Expose({ name: 'statusId' })
+  @Expose() //({ name: 'statusId' })
   @Type(() => Status) 
   status?: Status
 }
