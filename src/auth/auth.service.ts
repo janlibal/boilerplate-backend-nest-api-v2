@@ -1,10 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import ms from 'ms'
-
 import { JwtService } from '@nestjs/jwt'
 import crypto from 'src/utils/crypto'
-//import * as crypto from 'crypto'
-//import * as bcrypt from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
 import { UserService } from 'src/users/user.service'
 import { AllConfigType } from 'src/global/config/config.type'
@@ -35,9 +32,7 @@ export class AuthService {
     private configService: ConfigService<AllConfigType>,
   ) {}
 
-  //Promise<Omit<LoginResponseDto, 'user'>> {
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
-    //const user = await this.userRepository.findByEmail(loginDto.email)
     const user = await this.userService.findByEmail(loginDto.email);
 
     if (!user) {
@@ -62,10 +57,6 @@ export class AuthService {
     }
 
     const hash = crypto.makeHash()
-    /*const hash = crypto
-      .createHash('sha256')
-      .update(randomStringGenerator())
-      .digest('hex')*/
 
     const session = await this.sessionService.create({ user, hash })
 
@@ -82,7 +73,6 @@ export class AuthService {
     })
 
     await this.redisService.createSession({ prefix, user, token, expiry })
-    //await this.redisService.saveSession(user.id, token)
 
     return {
       refreshToken,
@@ -126,7 +116,6 @@ export class AuthService {
   }
 
   async logout(data: Pick<JwtRefreshPayloadType, 'sessionId' | 'userId'>) {
-    //await this.redisService.releaseSession(data.userId.toString())
     await this.redisService.releaseByUserId(data)
     return this.sessionService.deleteById(data.sessionId)
   }
@@ -145,10 +134,6 @@ export class AuthService {
     }
 
     const hash = crypto.makeHash()
-    /*const hash = crypto
-      .createHash('sha256')
-      .update(randomStringGenerator())
-      .digest('hex');*/
 
     const user = await this.userService.findById(session.user.id)
 

@@ -4,7 +4,6 @@ import { UserModule } from 'src/users/user.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { SessionModule } from 'src/session/session.module'
-//import { UserRepository } from 'src/users/user.repository'
 import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
