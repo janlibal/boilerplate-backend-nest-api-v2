@@ -26,24 +26,7 @@ export class UserPersistence {
 
   async create(clonedPayload: User): Promise<User> {
     const persistenceModel = await UserMapper.toPersistence(clonedPayload)
-    const newEntity = await this.prismaService.user.create({
-      data: {
-        firstName: persistenceModel.firstName,
-        lastName: persistenceModel.lastName,
-        password: persistenceModel.password,
-        email: persistenceModel.email,
-        status: {
-          connect: {
-            id: persistenceModel.statusId
-          }
-        },
-        role: {
-          connect: {
-            id: persistenceModel.roleId
-          }
-        }
-      },
-    })
+    const newEntity = await this.prismaService.user.create({data: persistenceModel})
     return await UserMapper.toDomain(newEntity)
   }
 
