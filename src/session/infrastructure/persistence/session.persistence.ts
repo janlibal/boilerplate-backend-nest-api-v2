@@ -9,20 +9,12 @@ import { SessionMapper } from '../mappers/session.mapper'
 @Injectable()
 export class SessionPersistence {
   constructor(private readonly prismaService: PrismaService) {}
+
   async create(data: Session): Promise<SessionEntity> {
-    const persistendeModel = await SessionMapper.toPersistence(data)
-    const newEntity = await this.prismaService.session.create({
-      include: {
-        user: true,
-      },
-      data: {
-        hash: persistendeModel.hash,
-        //userId: persistendeModel.userId,
-        user: {connect: { id: persistendeModel.userId } }
-      },
-    })
-    return newEntity//await SessionMapper.toDomain(newEntity)
+    const persistenceEntity = await SessionMapper.toPersistence(data)
+    return await this.prismaService.session.create({data: persistenceEntity})
   }
+
 
   async deleteById(id: Session['id']): Promise<void> {
     await this.prismaService.session.delete({
