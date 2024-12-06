@@ -25,7 +25,7 @@ export class SessionPersistence {
   }
 
   async findById(id: Session['id']): Promise<NullableType<SessionEntity>> {
-    return await this.prismaService.session.findFirst({
+    const entity = await this.prismaService.session.findFirst({
       include: {
         user: true,
       },
@@ -33,6 +33,7 @@ export class SessionPersistence {
         id: id, //).toString()),
       },
     })
+    return entity// ? SessionMapper.toDomain(entity) : null
   }
 
   async deleteByUserId(conditions: { userId: User['id'] }): Promise<void> {
