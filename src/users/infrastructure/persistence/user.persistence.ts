@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { NullableType } from 'src/utils/types/nullable.type'
 import { PrismaService } from 'src/database/prisma.service'
 import { User } from 'src/users/domain/user.domain'
-import {User as UserEntity } from '@prisma/client'
 import { UserMapper } from '../mappers/user.mapper'
 
 @Injectable()

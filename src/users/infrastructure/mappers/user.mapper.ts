@@ -1,9 +1,8 @@
 import { User } from "src/users/domain/user.domain"
 import { Status } from "src/statuses/domain/status.domain"
 import { Role } from "src/roles/domain/role.domain"
-import { User as UserEntity, ProviderEnum as Provider, StatusEnum as UsrStatus } from '@prisma/client'
+import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
 import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
-import { StatusEnum } from "src/statuses/statuses.enum"
 
 export class UserMapper {
   static async toDomain(raw: UserEntity): Promise<User> {
@@ -58,68 +57,17 @@ export class UserMapper {
     }
 
   private static mapProviderToDomain(provider: Provider): AuthProvidersEnum {
-      switch (provider) {
-        case Provider.email:
-          return AuthProvidersEnum.email;
-        case Provider.facebook:
-          return AuthProvidersEnum.facebook;
-        case Provider.google:
-          return AuthProvidersEnum.google;
-        case Provider.twitter:
-          return AuthProvidersEnum.twitter;
-        case Provider.apple:
-          return AuthProvidersEnum.apple;
-      }
+    switch (provider) {
+      case Provider.email:
+        return AuthProvidersEnum.email;
+      case Provider.facebook:
+        return AuthProvidersEnum.facebook;
+      case Provider.google:
+        return AuthProvidersEnum.google;
+      case Provider.twitter:
+        return AuthProvidersEnum.twitter;
+      case Provider.apple:
+        return AuthProvidersEnum.apple;
     }
-
-    private static mapStatusToDomain(status: UsrStatus): StatusEnum {
-      switch (status) {
-        case UsrStatus.active:
-          return StatusEnum.active
-        case UsrStatus.inactive:
-          return StatusEnum.inactive
-      }
-    }
-}
-
-
-
-
-  /*static toDomainOld(raw: UserEntity): User {
-    const domainEntity = new User()
-    domainEntity.id = raw.id
-    domainEntity.email = raw.email
-    domainEntity.password = raw.password
-    domainEntity.provider = raw.provider
-    domainEntity.firstName = raw.firstName
-    domainEntity.lastName = raw.lastName
-    domainEntity.role.id = raw.roleId
-    domainEntity.status.id = raw.statusId
-    return domainEntity
   }
-
-  static toPersistenceOld(ddd: User): UserEntity {
-    let role: RoleEntity | undefined = undefined
-    if(ddd.role){
-      role = new RoleEntity()
-      role.id = Number(ddd.role.id)
-    }
-
-    let status: StatusEntity | undefined = undefined
-
-    if (ddd.status) {
-      status = new StatusEntity()
-      status.id = Number(ddd.status.id)
-    }
-
-    const persistenceEntity = new UserEntity()
-    persistenceEntity.firstName = ddd.firstName
-    persistenceEntity.lastName = ddd.lastName
-    persistenceEntity.email = ddd.email
-    persistenceEntity.password = ddd.password
-    persistenceEntity.provider = ddd.provider
-    persistenceEntity.roleId = role.id
-    persistenceEntity.statusId = status.id
-
-    return persistenceEntity
-  }*/
+}
