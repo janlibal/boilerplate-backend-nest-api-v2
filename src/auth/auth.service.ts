@@ -58,8 +58,9 @@ export class AuthService {
 
     const hash = crypto.makeHash()
 
-    const session = await this.sessionService.create({ user, hash })
-
+    const userId = user.id
+    const session = await this.sessionService.create({ userId, hash })
+    
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
       id: user.id,
       role: user.role,
@@ -135,7 +136,7 @@ export class AuthService {
 
     const hash = crypto.makeHash()
 
-    const user = await this.userService.findById(session.user.id)
+    const user = await this.userService.findById(session.userId)
 
     if (!user?.role) {
       throw new UnauthorizedException()
@@ -146,7 +147,7 @@ export class AuthService {
     })
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
-      id: session.user.id,
+      id: session.userId,
       role: {
         id: user.role.id,
       },

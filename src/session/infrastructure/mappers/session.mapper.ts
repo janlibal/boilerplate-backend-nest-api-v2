@@ -14,25 +14,27 @@ export class SessionMapper {
     const persistenceEntity: SessionEntity  ={
       id: data.id,
       hash: data.hash,
-      userId: data.user.id, 
+      userId: data.userId, 
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       deletedAt: data.deletedAt,
     }
     return persistenceEntity
   }
-
-  static async toDomain(data: SessionEntity): Promise<NestedOmit<Session, "user.firstName" |"user.lastName" |"user.password" |"user.provider" |"user.email" >> {
-    const user: Omit<User, 'firstName' | 'lastName' | 'password' | 'email' |'provider'> = {
+  //static async toDomain(data: SessionEntity): Promise<NestedOmit<Session, "user.firstName" |"user.lastName" |"user.password" |"user.provider" |"user.email" >> {
+  static async toDomain(data: SessionEntity): Promise<Session> {
+    /*const user: Omit<User, 'firstName' | 'lastName' | 'password' | 'email' |'provider'> = {
       id: data.userId
-    }
-    const domainEntity: NestedOmit<Session, "user.firstName" |"user.lastName" |"user.password" |"user.provider" |"user.email" >  ={
+    }*/
+    //const domainEntity: NestedOmit<Session, "user.firstName" |"user.lastName" |"user.password" |"user.provider" |"user.email" >  ={
+    const domainEntity: Session  ={
       id: data.id,
       hash: data.hash,
-      user: this.mapUserToDomain(user),
+      userId: data.userId,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       deletedAt: data.deletedAt,
+      ...data
     }
     return domainEntity
   }

@@ -2,7 +2,8 @@ import { User } from '../../users/domain/user.domain'
 
 export class Session {
   id: number
-  user: User
+  //user: User
+  userId: string
   hash: string
   createdAt: Date
   updatedAt: Date

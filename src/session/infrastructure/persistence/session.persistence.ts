@@ -10,30 +10,19 @@ import { SessionMapper } from '../mappers/session.mapper'
 export class SessionPersistence {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(data: Session): Promise<SessionEntity> {
+  async create(data: Session): Promise<Session> {
     const persistenceEntity = await SessionMapper.toPersistence(data)
-    return await this.prismaService.session.create({data: persistenceEntity})
+    const newEntity = await this.prismaService.session.create({data: persistenceEntity})
+    return await SessionMapper.toDomain(newEntity)
   }
 
 
   async deleteById(id: Session['id']): Promise<void> {
-    await this.prismaService.session.delete({
-      where: {
-        id: id,
-      },
-    })
-  }
+    await this.prismaService.session.delete({ where: { id: id, },})}
 
-  async findById(id: Session['id']): Promise<NullableType<SessionEntity>> {
-    const entity = await this.prismaService.session.findFirst({
-      include: {
-        user: true,
-      },
-      where: {
-        id: id, //).toString()),
-      },
-    })
-    return entity// ? SessionMapper.toDomain(entity) : null
+  async findById(id: Session['id']): Promise<NullableType<Session>> {
+    const entity = await this.prismaService.session.findFirst({ include: { user: true, }, where: { id: id },})
+    return entity ? await SessionMapper.toDomain(entity) : null;
   }
 
   async deleteByUserId(conditions: { userId: User['id'] }): Promise<void> {
@@ -64,7 +53,7 @@ export class SessionPersistence {
         hash: payload.hash,
         user: {
           connect: {
-            id: payload.user.id, //.toString(),
+            id: payload.userId, //.toString(),
           },
         },
       },
