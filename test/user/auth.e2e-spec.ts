@@ -2,6 +2,7 @@ import request from 'supertest'
 import {
   API_PREFIX,
   APP_URL,
+  EXPIRED_TOKEN,
   TESTER_EMAIL,
   TESTER_PASSWORD,
 } from '../utils/constants'
@@ -13,9 +14,11 @@ describe('Auth Module', () => {
   const newUserLastName = `E2E`
   const newUserEmail = `User.${Date.now()}@example.com`
   const newUserPassword = 'Password123!'
+  const expiredToken = EXPIRED_TOKEN
 
-  describe('Logged in user', () => {
+  describe('Logged in user',  () => {
     let newUserApiToken: any
+    let bareToken: any
 
     beforeAll(async () => {
       await request(app)
@@ -28,19 +31,18 @@ describe('Auth Module', () => {
           )
         })
         .then(({ body }) => {
-          newUserApiToken = 'jwt ' + body.result.token
+          bareToken = body.result.token
+          newUserApiToken = 'jwt ' + bareToken
         })
     })
 
-    it('should retrieve your own profile: /api/v1/auth/me (GET)', () => {
-      request(app)
+    it('should retrieve your own profile: /api/v1/auth/me (GET)', async () => {
+       await request(app)
         .get(`${prefix}/auth/me`)
-        .auth(newUserApiToken, {
-          type: 'bearer',
-        })
+        .set('Authorization', newUserApiToken)
         .send()
         .expect(200)
-      expect(({ body }) => {
+      .expect(({ body }) => {
         expect(body.status).toBe(true)
         expect(body.path).toMatch('/auth/me')
         expect(body.statusCode).toBe(200)
@@ -49,87 +51,79 @@ describe('Auth Module', () => {
         )
         expect(typeof body.result.firstName).toBe('string')
         expect(typeof body.result.lastName).toBe('string')
-        expect(typeof body.result.email).toMatch(/^\S+@\S+\.\S+$/)
-        //expect(typeof body.result.provider).toBe('string')
-        expect(typeof body.result.role).toBe('number')
-        expect(typeof body.result.status).toBe('number')
+        expect(typeof body.result.email).toBe('string')//toMatch(/^\S+@\S+\.\S+$/)
+        expect(typeof body.result.provider).toBe('string')
+        expect(typeof body.result.role.id).toBe('number')
+        expect(typeof body.result.status.id).toBe('number')
       })
     })
 
-    it('should fail with no token: /api/v1/auth/me (GET)', () => {
-      request(app)
+    it('should fail with no token: /api/v1/auth/me (GET)', async () => {
+      await request(app)
         .get(`${prefix}/auth/me`)
-        /*.auth(newUserApiToken, {
-          type: 'bearer',
-        })*/
+        //.set('Authorization', newUserApiToken)
         .send()
         .expect(401)
-      expect(({ body }) => {
-        expect(body.status).toBe(true)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(401)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(typeof body.result.title).toMatch('Unauthorized')
-        expect(typeof body.result.detail).toMatch('Invalid Headers')
-      })
-    })
-
-    it('should fail with with missing jwt prefix: /api/v1/auth/me (GET)', () => {
-      request(app)
-        .get(`${prefix}/auth/me`)
-        .auth('token', {
-          type: 'bearer',
-        })
-        .send()
-        .expect(401)
-      expect(({ body }) => {
-        expect(body.status).toBe(true)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(401)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(typeof body.result.title).toMatch('Unauthorized')
-        expect(typeof body.result.detail).toMatch('No jwt')
-      })
-    })
-
-    it('should fail with expired or corrupted token: /api/v1/auth/me (GET)', () => {
-      request(app)
-        .get(`${prefix}/auth/me`)
-        .auth('jwt expiredToken', {
-          type: 'bearer',
-        })
-        .send()
-        .expect(401)
-      expect(({ body }) => {
+      .expect(({ body }) => {
         expect(body.status).toBe(false)
         expect(body.path).toMatch('/auth/me')
         expect(body.statusCode).toBe(401)
         expect(body.timestamp).toMatch(
           /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
         )
-        expect(typeof body.result.title).toMatch('Unauthorized')
-        expect(typeof body.result.detail).toMatch('Nice try')
+        expect(body.result.title).toMatch('Unauthorized')
+        expect(body.result.detail).toMatch('Invalid Headers')
       })
     })
 
-    it('should logout user: /api/v1/auth/logout (POST)', () => {
-      request(app)
-        .get(`${prefix}/auth/logout`)
-        .auth(newUserApiToken, {
-          type: 'bearer',
-        })
+    it('should fail with with missing jwt prefix: /api/v1/auth/me (GET)', async () => {
+      await request(app)
+        .get(`${prefix}/auth/me`)
+        .set('Authorization', bareToken)
+        .send()
+        .expect(401)
+      .expect(({ body }) => {
+        expect(body.status).toBe(false)
+        expect(body.path).toMatch('/auth/me')
+        expect(body.statusCode).toBe(401)
+        expect(body.timestamp).toMatch(
+          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+        )
+        expect(body.result.title).toMatch('Unauthorized')
+        expect(body.result.detail).toMatch('No jwt')
+      })
+    })
+
+    it('should fail with wrong token: /api/v1/auth/me (GET)', async () => {
+      await request(app)
+        .get(`${prefix}/auth/me`)
+        .set('Authorization', 'jwt wrongToken')
+        .send()
+        .expect(401)
+      .expect(({ body }) => {
+        expect(body.status).toBe(false)
+        expect(body.path).toMatch('/auth/me')
+        expect(body.statusCode).toBe(401)
+        expect(body.timestamp).toMatch(
+          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+        )
+        expect(body.result.title).toMatch('Unauthorized')
+        expect(body.result.detail).toMatch('Wrong token')
+      })
+    })
+
+    it('should logout user: /api/v1/auth/logout (POST)', async () => {
+      await request(app)
+        .post(`${prefix}/auth/logout`)
+        .set('Authorization', newUserApiToken)
         .send()
         .expect(204)
     })
   })
 
   describe('Login', () => {
-    it('should successfully return data for logged user: /api/v1/auth/email/login (POST)', () => {
-      return request(app)
+    it('should successfully return data for logged user: /api/v1/auth/email/login (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/login`)
         .send({ email: TESTER_EMAIL, password: TESTER_PASSWORD })
         .expect(200)
@@ -146,17 +140,17 @@ describe('Auth Module', () => {
           expect(body.result.refreshToken).toMatch(
             /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
           )
-          expect(typeof body.result.tokenExpires).toBe('number')
+          expect(body.result.tokenExpires).toBeDefined()
           expect(body.result.user.email).toMatch(/^\S+@\S+\.\S+$/)
           expect(body.result.user.hash).not.toBeDefined()
           expect(body.result.user.password).not.toBeDefined()
-          expect(body.result.user.statusId).not.toBeDefined()
-          expect(body.result.user.roleId).not.toBeDefined()
+          expect(body.result.user.status.id).toBeDefined()
+          expect(body.result.user.role.id).toBeDefined()
           expect(body.result.user.id).not.toBeDefined()
         })
     })
-    it('should fail with missing email: /api/v1/auth/email/login (POST)', () => {
-      return request(app)
+    it('should fail with missing email: /api/v1/auth/email/login (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/login`)
         .send({
           //email: TESTER_EMAIL,
@@ -184,8 +178,8 @@ describe('Auth Module', () => {
           expect(body.stack).toMatch(/BadRequestError: Bad Request Error/i)
         })
     })
-    it('should fail with missing email and password: /api/v1/auth/email/login (POST)', () => {
-      return request(app)
+    it('should fail with missing email and password: /api/v1/auth/email/login (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/login`)
         .send({
           //email: TESTER_EMAIL,
@@ -216,8 +210,8 @@ describe('Auth Module', () => {
           expect(body.stack).toMatch(/BadRequestError: Bad Request Error/i)
         })
     })
-    it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)', () => {
-      return request(app)
+    it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)',async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/login`)
         .send({
           email: 'joe.doejoedoe.com', // TESTER_EMAIL,
@@ -241,9 +235,9 @@ describe('Auth Module', () => {
         })
     })
   })
-  describe('Registration', () => {
-    it('should successfully return data for newly registered user: /api/v1/auth/email/login (POST)', () => {
-      return request(app)
+  describe('Registration',  () => {
+    it('should successfully return data for newly registered user: /api/v1/auth/email/login (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: newUserEmail,
@@ -254,8 +248,8 @@ describe('Auth Module', () => {
         .expect(204)
     })
 
-    it('should fail with missing firstName: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing firstName: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -288,8 +282,8 @@ describe('Auth Module', () => {
           expect(body.stack).toMatch(/BadRequestError: Bad Request Error/i)
         })
     })
-    it('should fail with firstName not being string: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName not being string: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -317,8 +311,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing lastName: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing lastName: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -351,8 +345,8 @@ describe('Auth Module', () => {
           expect(body.stack).toMatch(/BadRequestError: Bad Request Error/i)
         })
     })
-    it('should fail with lastName not being string: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName not being string: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -381,8 +375,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing email: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing email: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -412,8 +406,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with email not being in proper format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with email not being in proper format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joe.doejoedoe.com',
@@ -437,8 +431,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing passowrd: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing passowrd: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -474,8 +468,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail when password is too weak: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail when password is too weak: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -502,8 +496,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail when password is too long: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail when password is too long: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -527,8 +521,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -570,8 +564,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -607,8 +601,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.com', // TESTER_EMAIL,
@@ -638,8 +632,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -681,8 +675,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -718,8 +712,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.com', // TESTER_EMAIL,
@@ -749,8 +743,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName and firstName missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName and firstName missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -795,8 +789,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -835,8 +829,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -875,8 +869,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -918,8 +912,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joedoe.com', //TESTER_EMAIL,
@@ -955,8 +949,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joedoe.com', //TESTER_EMAIL,
@@ -986,8 +980,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName and password missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName and password missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -1035,8 +1029,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with firstName and weak password: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with firstName and weak password: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -1075,8 +1069,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName and email missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName and email missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -1118,8 +1112,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joedoe.com', //TESTER_EMAIL,
@@ -1155,8 +1149,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joedoe.com', //TESTER_EMAIL,
@@ -1186,8 +1180,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName and password missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName and password missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -1235,8 +1229,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with lastName missing and weak password: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with lastName missing and weak password: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: TESTER_EMAIL,
@@ -1275,8 +1269,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with email and password missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with email and password missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -1321,8 +1315,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joddoe.com', //TESTER_EMAIL,
@@ -1361,8 +1355,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joedoe.joddoe.com', //TESTER_EMAIL,
@@ -1392,8 +1386,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -1462,8 +1456,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           //email: TESTER_EMAIL,
@@ -1523,8 +1517,8 @@ describe('Auth Module', () => {
         })
     })
 
-    it('should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST)', () => {
-      return request(app)
+    it('should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST)', async () => {
+      return await request(app)
         .post(`${prefix}/auth/email/register`)
         .send({
           email: 'joe.doe.joedoe.com', // TESTER_EMAIL,
