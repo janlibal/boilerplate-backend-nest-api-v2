@@ -36,13 +36,14 @@ export class SessionPersistence {
     })
   }
 
-  async update(
-    id: Session['id'],
-    payload: Partial<
-      Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
-    >,
-  ): Promise<SessionEntity | null> {
-    return await this.prismaService.session.update({
+  async update(id: Session['id'],payload: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>,): Promise<Session | null> {
+    const entity = await this.prismaService.session.findFirstOrThrow({where: { id: Number(id)}})
+    if(!entity) throw new Error('Session not found')
+
+    const sessionToUpdate = await SessionMapper.toPersistence(entity)
+    const newEntity = await this.prismaService.session.update({include: {user:true}, where: { id: sessionToUpdate.id}, data: payload})
+    return await SessionMapper.toDomain(newEntity)
+    /*return await this.prismaService.session.update({
       include: {
         user: true,
       },
@@ -57,8 +58,9 @@ export class SessionPersistence {
           },
         },
       },
-    })
+    })*/
   }
+
   /*
   async deleteByUserIdWithExclude(conditions: {
     userId: User['id']
