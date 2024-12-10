@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
+import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
 
 export class AuthUpdateDto {
   @ApiPropertyOptional({ example: 'Joe' })

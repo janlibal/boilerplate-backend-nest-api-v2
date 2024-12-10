@@ -13,8 +13,8 @@ import { ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
 import { User } from './domain/user.domain'
 import { CreateUserDto } from './dto/create.user.dto'
-import { NullableType } from 'src/utils/types/nullable.type'
-import { ValidateUuidPipe } from 'src/pipes/validate.uuid.pipe'
+import { NullableType } from '../utils/types/nullable.type'
+import { ValidateUuidPipe } from '../pipes/validate.uuid.pipe'
 import {
   createDecorator,
   deleteDecorator,

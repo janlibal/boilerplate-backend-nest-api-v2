@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Session } from './domain/session.domain'
 import { NullableType } from 'src/utils/types/nullable.type'
-import { User } from 'src/users/domain/user.domain'
+import { User } from '../users/domain/user.domain'
 import { SessionRepository } from './infrastructure/repository/session.repository'
 
 @Injectable()

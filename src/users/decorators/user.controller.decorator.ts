@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiCreatedResponse, ApiParam } from '@nestjs/swagger'
-import { User } from 'src/users/domain/user.domain'
+import { User } from '../../users/domain/user.domain'
 
 export function createDecorator() {
   return applyDecorators(

@@ -10,10 +10,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator'
-import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
-import { RoleDto } from 'src/roles/dto/role.dto'
-import { StatusDto } from 'src/statuses/dto/status.dto'
-import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
+import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
+import { RoleDto } from '../../roles/dto/role.dto'
+import { StatusDto } from '../../statuses/dto/status.dto'
+import { AuthProvidersEnum } from '../../auth/auth.providers.enum'
 
 export class CreateUserDto {
   @ApiProperty({ example: 'joe.doe@joedoe.com', type: String })

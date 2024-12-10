@@ -6,7 +6,7 @@ import {
   SuccessResponse,
   UnauthorizedError,
   UnprocessableEntityError,
-} from 'src/swagger/all.errors.decorators'
+} from '../../swagger/all.errors.decorators'
 import { LoginResponseDto } from '../dto/login.response.dto'
 import { loginPath } from '../constants/paths'
 import {
@@ -19,7 +19,7 @@ import {
   internalErrorResponses,
   unauthorizedResponses,
   unprocessableResponses,
-} from 'src/swagger/constants/decorator.responses'
+} from '../../swagger/constants/decorator.responses'
 
 export function loginDecorators() {
   return applyDecorators(

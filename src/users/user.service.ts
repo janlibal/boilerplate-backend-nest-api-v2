@@ -4,16 +4,16 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common'
 import { User } from './domain/user.domain'
-import { NullableType } from 'src/utils/types/nullable.type'
+import { NullableType } from '../utils/types/nullable.type'
 import { CreateUserDto } from './dto/create.user.dto'
-import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
-import crypto from 'src/utils/crypto'
-import { RoleEnum } from 'src/roles/roles.enum'
-import { StatusEnum } from 'src/statuses/statuses.enum'
-import ResourceExistsError from 'src/exceptions/already.exists.exception'
+import { AuthProvidersEnum } from '../auth/auth.providers.enum'
+import crypto from '../utils/crypto'
+import { RoleEnum } from '../roles/roles.enum'
+import { StatusEnum } from '../statuses/statuses.enum'
+import ResourceExistsError from '../exceptions/already.exists.exception'
 import { UserRepository } from './infrastructure/repository/user.repository'
-import { Role } from 'src/roles/domain/role.domain'
-import { Status } from 'src/statuses/domain/status.domain'
+import { Role } from '../roles/domain/role.domain'
+import { Status } from '../statuses/domain/status.domain'
 
 @Injectable()
 export class UserService {

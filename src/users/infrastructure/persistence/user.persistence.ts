@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { NullableType } from 'src/utils/types/nullable.type'
-import { PrismaService } from 'src/database/prisma.service'
-import { User } from 'src/users/domain/user.domain'
+import { NullableType } from '../../../utils/types/nullable.type'
+import { PrismaService } from '../../../database/prisma.service'
+import { User } from '../../../users/domain/user.domain'
 import { UserMapper } from '../mappers/user.mapper'
 
 @Injectable()

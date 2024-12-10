@@ -4,14 +4,14 @@ import {
   InternalError,
   SuccessResponse,
   UnauthorizedError,
-} from 'src/swagger/all.errors.decorators'
+} from '../../swagger/all.errors.decorators'
 import { mePath } from '../constants/paths'
-import { User } from 'src/users/domain/user.domain'
+import { User } from '../../users/domain/user.domain'
 import { unauthorizedErrors } from '../constants/errors'
 import {
   internalErrorResponses,
   unauthorizedResponses,
-} from 'src/swagger/constants/decorator.responses'
+} from '../../swagger/constants/decorator.responses'
 
 export function meDecorators() {
   return applyDecorators(

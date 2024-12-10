@@ -1,7 +1,7 @@
 import { FactoryProvider, Injectable } from '@nestjs/common'
 import { Redis } from 'ioredis'
 import { redisStatus } from './redis.status'
-import { AllConfigType } from 'src/global/config/config.type'
+import { AllConfigType } from '../global/config/config.type'
 import { ConfigService } from '@nestjs/config'
 
 export const redisClientFactory: FactoryProvider<Redis> = {

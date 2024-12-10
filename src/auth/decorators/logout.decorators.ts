@@ -4,12 +4,12 @@ import { logoutPath } from '../constants/paths'
 import {
   InternalError,
   UnauthorizedError,
-} from 'src/swagger/all.errors.decorators'
+} from '../../swagger/all.errors.decorators'
 import { unauthorizedErrors } from '../constants/errors'
 import {
   internalErrorResponses,
   unauthorizedResponses,
-} from 'src/swagger/constants/decorator.responses'
+} from '../../swagger/constants/decorator.responses'
 
 export function logoutDecorators() {
   return applyDecorators(

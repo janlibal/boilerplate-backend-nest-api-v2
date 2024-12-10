@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config'
 
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
-import validateConfig from 'src/utils/validatate.config'
+import validateConfig from '../../utils/validatate.config'
 
 import { RedisConfig } from './redis.config.type'
 

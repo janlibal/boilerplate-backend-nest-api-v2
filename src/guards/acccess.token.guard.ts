@@ -4,12 +4,11 @@ import { HttpException } from '@nestjs/common/exceptions'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 
-import { RedisService } from 'src/redis/redis.service'
+import { RedisService } from '../redis/redis.service'
 import { IRequest } from './interfaces/request.interface'
 import { IS_PUBLIC_KEY } from './decorators/public.decorator'
 import { ConfigService } from '@nestjs/config'
-import { AllConfigType } from 'src/global/config/config.type'
-import UnauthorizedError from 'src/exceptions/unauthorized.exception'
+import { AllConfigType } from '../global/config/config.type'
 
 /*
 @Injectable()

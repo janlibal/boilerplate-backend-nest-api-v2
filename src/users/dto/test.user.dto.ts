@@ -8,7 +8,7 @@ import {
   IsDefined,
   MaxLength,
 } from 'class-validator'
-import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
+import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
 
 export class TestUserDto {
   @ApiProperty({ example: 'Joe', type: String })

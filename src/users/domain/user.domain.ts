@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude, Expose, Type } from 'class-transformer'
 import { isUUID } from 'class-validator'
-import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
-import { Role } from 'src/roles/domain/role.domain'
-import { Status } from 'src/statuses/domain/status.domain'
+import { AuthProvidersEnum } from '../../auth/auth.providers.enum'
+import { Role } from '../../roles/domain/role.domain'
+import { Status } from '../../statuses/domain/status.domain'
 
 export class User {
   @ApiProperty({

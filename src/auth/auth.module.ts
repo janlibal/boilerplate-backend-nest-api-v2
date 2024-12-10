@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { UserModule } from 'src/users/user.module'
+import { UserModule } from '../users/user.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { SessionModule } from 'src/session/session.module'
+import { SessionModule } from '../session/session.module'
 import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({

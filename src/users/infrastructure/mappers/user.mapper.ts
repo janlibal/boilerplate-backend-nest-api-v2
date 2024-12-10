@@ -1,8 +1,8 @@
-import { User } from "src/users/domain/user.domain"
-import { Status } from "src/statuses/domain/status.domain"
-import { Role } from "src/roles/domain/role.domain"
+import { User } from "../../../users/domain/user.domain"
+import { Status } from "../../../statuses/domain/status.domain"
+import { Role } from "../../../roles/domain/role.domain"
 import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
-import { AuthProvidersEnum } from "src/auth/auth.providers.enum"
+import { AuthProvidersEnum } from "../../../auth/auth.providers.enum"
 
 export class UserMapper {
   static async toDomain(raw: UserEntity): Promise<User> {

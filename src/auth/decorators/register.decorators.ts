@@ -4,14 +4,14 @@ import {
   BadRequestError,
   ConflictError,
   InternalError,
-} from 'src/swagger/all.errors.decorators'
+} from '../../swagger/all.errors.decorators'
 import { registerPath } from '../constants/paths'
 import { badRequestSignUpErrors, conflictErrors } from '../constants/errors'
 import {
   badRequestResponses,
   conflictResponses,
   internalErrorResponses,
-} from 'src/swagger/constants/decorator.responses'
+} from '../../swagger/constants/decorator.responses'
 
 export function registerDecorators() {
   return applyDecorators(

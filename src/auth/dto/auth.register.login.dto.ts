@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { lowerCaseTransformer } from 'src/utils/transformers/lower.case.transformer'
+import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
 
 @ApiSchema({ name: 'Registration prerequisites' })
 export class AuthRegisterLoginDto {

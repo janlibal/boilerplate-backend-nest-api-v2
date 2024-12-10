@@ -1,5 +1,5 @@
-import { Session } from 'src/session/domain/session.domain'
-import { User } from 'src/users/domain/user.domain'
+import { Session } from '../../../session/domain/session.domain'
+import { User } from '../../../users/domain/user.domain'
 
 export type JwtRefreshPayloadType = {
   userId: User['id']

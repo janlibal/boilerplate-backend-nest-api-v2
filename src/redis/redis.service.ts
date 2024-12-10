@@ -3,7 +3,7 @@ import { ProductInterface } from './interfaces/product.interface'
 import { RedisPrefixEnum } from './enums/redis.prefix.enum'
 import { RedisRepository } from './redis.repository'
 import { RedisDomain } from './domain/redis.domain'
-import { User } from 'src/users/domain/user.domain'
+import { User } from '../users/domain/user.domain'
 
 const oneDayInSeconds = 60 * 60 * 24
 const tenMinutesInSeconds = 60 * 10

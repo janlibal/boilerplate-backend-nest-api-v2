@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common'
-import BadRequestError from 'src/exceptions/bad.request.exception'
+import BadRequestError from '../exceptions/bad.request.exception'
 
 @Injectable()
 export class ValidateIdPipe implements PipeTransform<string> {

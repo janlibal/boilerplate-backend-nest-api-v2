@@ -1,6 +1,6 @@
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { Expose, Type } from 'class-transformer'
-import { User } from 'src/users/domain/user.domain'
+import { User } from '../../users/domain/user.domain'
 
 @ApiSchema({ name: 'Login Reponse' })
 export class LoginResponseDto {

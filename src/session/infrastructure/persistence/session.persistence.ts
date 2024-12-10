@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'src/database/prisma.service'
-import { NullableType } from 'src/utils/types/nullable.type'
-import { User } from 'src/users/domain/user.domain'
-import { Session } from 'src/session/domain/session.domain'
-import { Session as SessionEntity } from '@prisma/client'
+import { PrismaService } from '../../../database/prisma.service'
+import { NullableType } from '../../../utils/types/nullable.type'
+import { User } from '../../../users/domain/user.domain'
+import { Session } from '../../../session/domain/session.domain'
 import { SessionMapper } from '../mappers/session.mapper'
 
 @Injectable()
