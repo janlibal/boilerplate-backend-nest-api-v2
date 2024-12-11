@@ -9,8 +9,6 @@ describe('UserPersistence', () => {
   const mockPrismaService = {
     user: {
       create: jest.fn(),
-      findUnique: jest.fn(),
-      findMany: jest.fn(),
     },
   }
 
