@@ -38,7 +38,7 @@ describe('AppService', () => {
   })
 
   describe('compileData', () => {
-    it('should capture env data', async () => {
+    it('should capture system environment data', async () => {
         mockAppService.compileData.mockResolvedValue(mockEnvData)
         const result = await appController.getApiInfo()
         expect(result).toEqual(mockEnvData)
