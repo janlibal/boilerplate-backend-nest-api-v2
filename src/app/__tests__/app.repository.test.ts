@@ -21,4 +21,12 @@ describe('AppRepository', () => {
   it('should be defined', () => {
     expect(appRepository).toBeDefined()
   })
+  describe('getEnv', () => {
+    it('should get system environment', async () => {
+      const result = await appRepository.getEnv()
+      expectTypeOf(result.nodeVersion).toBeString()
+      expectTypeOf(result.hostName).toBeString()
+      expectTypeOf(result.platform).toBeString()
+    })
+  })
 })

@@ -3,7 +3,7 @@ import swc from 'unplugin-swc';
 
 export default defineConfig({
   test: {
-    include: ['src/**/*.test.ts','!src/tests'],
+    include: ['src/**/*.test.ts','!src/tests', '!src/**/mock'],
     globals: true,
     root: './',
   },
