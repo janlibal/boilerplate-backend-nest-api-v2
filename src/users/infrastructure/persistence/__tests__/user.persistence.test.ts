@@ -3,8 +3,9 @@ import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserPersistence } from '../user.persistence'
 import { PrismaService } from '../../../../database/prisma.service'
 import { AuthProvidersEnum } from 'src/auth/auth.providers.enum'
-import { mockDomainEntity, mockPersistenceEntity, mockUser } from './mock/user.data'
-import { User as UserEntity } from '@prisma/client'
+import { User as UserDomain } from '../../../domain/user.domain'
+import { UserMapper } from '../../mappers/user.mapper'
+import { userMockEntityObject, userMockObject, userObject } from './mock/user.data'
 
 // Mock Prisma Service
 const mockPrismaService = {
@@ -38,4 +39,20 @@ describe('UserPersistence', () => {
     expect(userPersistence).toBeDefined()
   })
 
+  it('should create new user', async () => {
+    
+    const persistenceModel = await UserMapper.toPersistence(userObject)
+
+    vi.spyOn(prismaService.user, 'create').mockResolvedValue(userMockEntityObject)
+
+    const result = await userPersistence.create(userObject)
+
+    // Assert: Check that the result is the expected domain model
+    expect(result).toEqual(userMockObject)
+
+    // Assert: Check that Prisma's `create` method was called with correct arguments
+    expect(mockPrismaService.user.create).toHaveBeenCalledWith({
+      data: persistenceModel,
+    })
+  })
 })
