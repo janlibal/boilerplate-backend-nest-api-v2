@@ -1,5 +1,5 @@
-import { AuthProvidersEnum } from '../../../../../auth/auth.providers.enum'
-import { User as UserDomain } from '../../../../domain/user.domain'
+import { AuthProvidersEnum } from '../../../auth/auth.providers.enum'
+import { User as UserDomain } from '../../domain/user.domain'
 import { User as UserEntity } from '@prisma/client'
 
 export const userObject: UserDomain = {
@@ -12,7 +12,7 @@ export const userObject: UserDomain = {
   provider: AuthProvidersEnum.email,
 }
 
-export const userMockObject: UserDomain = {
+export const userMockDomainObject: UserDomain = {
   id: '1',
   firstName: 'Jan',
   lastName: 'Libal',
