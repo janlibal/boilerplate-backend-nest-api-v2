@@ -44,14 +44,56 @@ describe('SessionPersistence', () => {
   it('should be defined', () => {
     expect(sessionPersistence).toBeDefined()
   })
-  /*
-async create(data: Session): Promise<Session> {
-    const persistenceEntity = await SessionMapper.toPersistence(data)
-    const newEntity = await this.prismaService.session.create({data: persistenceEntity})
-    return await SessionMapper.toDomain(newEntity)
-  }
-*/
+  
   describe('SessionPersistence Operations', () => {
+
+    it('deleteByUserId()', async () => {
+      vi.spyOn(prismaService.session, 'delete').mockResolvedValue(null)
+
+      const conditions = {
+        userId: sessionMockDomainObject.userId
+      }
+
+      await sessionPersistence.deleteByUserId(conditions)
+
+      expect(mockPrismaService.session.delete).toHaveBeenCalledWith({
+        include: { user: true },
+        where: { id: Number(conditions.userId) },
+      })
+
+      expect(prismaService.session.delete).toHaveBeenCalledTimes(1)
+    })
+
+    it('deleteById()', async () => {
+      vi.spyOn(prismaService.session, 'delete').mockResolvedValue(null)
+
+      await sessionPersistence.deleteById(sessionMockDomainObject.id)
+
+      expect(mockPrismaService.session.delete).toHaveBeenCalledWith({
+        where: { id: sessionMockDomainObject.id },
+      })
+
+      expect(prismaService.session.delete).toHaveBeenCalledTimes(1)
+    })
+
+    it('findById()', async () => {
+  
+      vi.spyOn(prismaService.session, 'findFirst').mockResolvedValue(
+        sessionMockEntityObject,
+      )
+    
+      const result = await sessionPersistence.findById(sessionMockDomainObject.id)
+    
+      // Assert: Check that the result is the expected domain model
+      expect(result).toEqual(sessionMockDomainObject)
+    
+      // Assert: Check that Prisma's `create` method was called with correct arguments
+      expect(mockPrismaService.session.findFirst).toHaveBeenCalledWith({
+        include: { user: true },
+        where: { id: sessionMockDomainObject.id },
+      })
+    })
+
     it('create()', async () => {
       const persistenceModel = await SessionMapper.toPersistence(sessionObject)
 
