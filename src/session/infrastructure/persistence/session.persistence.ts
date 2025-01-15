@@ -11,17 +11,22 @@ export class SessionPersistence {
 
   async create(data: Session): Promise<Session> {
     const persistenceEntity = await SessionMapper.toPersistence(data)
-    const newEntity = await this.prismaService.session.create({data: persistenceEntity})
+    const newEntity = await this.prismaService.session.create({
+      data: persistenceEntity,
+    })
     return await SessionMapper.toDomain(newEntity)
   }
 
-
   async deleteById(id: Session['id']): Promise<void> {
-    await this.prismaService.session.delete({ where: { id: id, },})}
+    await this.prismaService.session.delete({ where: { id: id } })
+  }
 
   async findById(id: Session['id']): Promise<NullableType<Session>> {
-    const entity = await this.prismaService.session.findFirst({ include: { user: true, }, where: { id: id },})
-    return entity ? await SessionMapper.toDomain(entity) : null;
+    const entity = await this.prismaService.session.findFirst({
+      include: { user: true },
+      where: { id: id },
+    })
+    return entity ? await SessionMapper.toDomain(entity) : null
   }
 
   async deleteByUserId(conditions: { userId: User['id'] }): Promise<void> {
@@ -35,12 +40,23 @@ export class SessionPersistence {
     })
   }
 
-  async update(id: Session['id'],payload: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>,): Promise<Session | null> {
-    const entity = await this.prismaService.session.findFirstOrThrow({where: { id: Number(id)}})
-    if(!entity) throw new Error('Session not found')
+  async update(
+    id: Session['id'],
+    payload: Partial<
+      Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
+    >,
+  ): Promise<Session | null> {
+    const entity = await this.prismaService.session.findFirstOrThrow({
+      where: { id: Number(id) },
+    })
+    if (!entity) throw new Error('Session not found')
 
     const sessionToUpdate = await SessionMapper.toPersistence(entity)
-    const newEntity = await this.prismaService.session.update({include: {user:true}, where: { id: sessionToUpdate.id}, data: payload})
+    const newEntity = await this.prismaService.session.update({
+      include: { user: true },
+      where: { id: sessionToUpdate.id },
+      data: payload,
+    })
     return await SessionMapper.toDomain(newEntity)
     /*return await this.prismaService.session.update({
       include: {

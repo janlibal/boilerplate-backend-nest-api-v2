@@ -6,7 +6,7 @@ import { mockEnvData, mockEnv } from './mock/env-data'
 
 // Mock Prisma Service
 const mockAppRepository = {
-    getEnv: vi.fn(),
+  getEnv: vi.fn(),
 }
 
 describe('AppService', () => {
@@ -20,7 +20,7 @@ describe('AppService', () => {
         {
           provide: AppRepository,
           useValue: mockAppRepository,
-        }
+        },
       ],
     }).compile()
 
@@ -38,9 +38,9 @@ describe('AppService', () => {
 
   describe('compileData', () => {
     it('should capture env data', async () => {
-        mockAppRepository.getEnv.mockResolvedValue(mockEnv)
-        const result = await appService.compileData()
-        expect(result).toEqual(mockEnvData)
+      mockAppRepository.getEnv.mockResolvedValue(mockEnv)
+      const result = await appService.compileData()
+      expect(result).toEqual(mockEnvData)
     })
   })
 })

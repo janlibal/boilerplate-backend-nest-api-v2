@@ -7,7 +7,7 @@ import { AppController } from '../app.controller'
 
 // Mock Prisma Service
 const mockAppService = {
-    compileData: vi.fn(),
+  compileData: vi.fn(),
 }
 
 describe('AppService', () => {
@@ -21,7 +21,7 @@ describe('AppService', () => {
         {
           provide: AppService,
           useValue: mockAppService,
-        }
+        },
       ],
     }).compile()
 
@@ -39,9 +39,9 @@ describe('AppService', () => {
 
   describe('compileData', () => {
     it('should capture system environment data', async () => {
-        mockAppService.compileData.mockResolvedValue(mockEnvData)
-        const result = await appController.getApiInfo()
-        expect(result).toEqual(mockEnvData)
+      mockAppService.compileData.mockResolvedValue(mockEnvData)
+      const result = await appController.getApiInfo()
+      expect(result).toEqual(mockEnvData)
     })
   })
 })

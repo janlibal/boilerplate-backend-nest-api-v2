@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { AppRepository } from '../app.reposiroty'
 
-
 describe('AppRepository', () => {
   let appRepository: AppRepository
 

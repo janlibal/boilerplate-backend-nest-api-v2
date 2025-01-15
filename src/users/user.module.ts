@@ -10,4 +10,3 @@ import { UserPersistenceModule } from './infrastructure/user.infrastructure.modu
   exports: [UserService, UserPersistenceModule],
 })
 export class UserModule {}
-

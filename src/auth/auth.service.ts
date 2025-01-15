@@ -33,7 +33,7 @@ export class AuthService {
   ) {}
 
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
-    const user = await this.userService.findByEmail(loginDto.email);
+    const user = await this.userService.findByEmail(loginDto.email)
 
     if (!user) {
       throw new UnauthorizedError('Invalid email or password')
@@ -60,7 +60,7 @@ export class AuthService {
 
     const userId = user.id
     const session = await this.sessionService.create({ userId, hash })
-    
+
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
       id: user.id,
       role: user.role,

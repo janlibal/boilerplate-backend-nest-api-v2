@@ -26,9 +26,7 @@ import {
   version: '1',
 })
 export class UserController {
-  constructor(
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)

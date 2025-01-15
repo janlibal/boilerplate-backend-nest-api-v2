@@ -9,7 +9,9 @@ export class UserPersistence {
   constructor(private prismaService: PrismaService) {}
 
   async findById(id: User['id']): Promise<NullableType<User>> {
-    const entity = await this.prismaService.user.findUnique({ where: { id: String(id) } })
+    const entity = await this.prismaService.user.findUnique({
+      where: { id: String(id) },
+    })
     return entity ? await UserMapper.toDomain(entity) : null
   }
 
@@ -19,20 +21,24 @@ export class UserPersistence {
 
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null
-    const entity = await this.prismaService.user.findFirst({ where: { email: email } })
-    return entity ? await UserMapper.toDomain(entity) : null    
+    const entity = await this.prismaService.user.findFirst({
+      where: { email: email },
+    })
+    return entity ? await UserMapper.toDomain(entity) : null
   }
 
   async create(clonedPayload: User): Promise<User> {
     const persistenceModel = await UserMapper.toPersistence(clonedPayload)
-    const newEntity = await this.prismaService.user.create({data: persistenceModel})
+    const newEntity = await this.prismaService.user.create({
+      data: persistenceModel,
+    })
     return await UserMapper.toDomain(newEntity)
   }
 
   async remove(id: User['id']): Promise<void> {
     await this.prismaService.user.delete({
       where: {
-        id: id
+        id: id,
       },
     })
   }
