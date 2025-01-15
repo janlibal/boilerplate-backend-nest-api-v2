@@ -9,7 +9,11 @@ import { PrismaModule } from '../../database/prisma.module'
 import { User as UserEntity } from '@prisma/client'
 import { User as UserDomain } from '../domain/user.domain'
 import { AuthProvidersEnum } from '../../auth/auth.providers.enum'
-import { userMockDomainObject, userMockEntityObject, userObject } from './mock/user.data'
+import {
+  userMockDomainObject,
+  userMockEntityObject,
+  userObject,
+} from './mock/user.data'
 import exp from 'constants'
 import { HttpStatus, UnprocessableEntityException } from '@nestjs/common'
 
@@ -17,23 +21,23 @@ import { HttpStatus, UnprocessableEntityException } from '@nestjs/common'
 const mockUserPersistence = {
   create: vi.fn(),
   findByEmail: vi.fn(),
-  findById: vi.fn()
+  findById: vi.fn(),
 }
 
 describe('UserService', () => {
   let userService: UserService
   let userPersistence: UserPersistence
-  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports:[UserModule, UserPersistenceModule, PrismaModule],
+      imports: [UserModule, UserPersistenceModule, PrismaModule],
       providers: [
         UserService,
         {
           provide: UserPersistence,
           useValue: mockUserPersistence,
-        }, PrismaService
+        },
+        PrismaService,
       ],
     }).compile()
 
@@ -60,7 +64,9 @@ describe('UserService', () => {
     })
     it('findByEmail()', async () => {
       mockUserPersistence.findByEmail.mockResolvedValue(userMockDomainObject)
-      const result = await userPersistence.findByEmail(userMockDomainObject.email)
+      const result = await userPersistence.findByEmail(
+        userMockDomainObject.email,
+      )
       expect(result).toEqual(userMockDomainObject)
       //expect(mockPlaylistRepository.save).toHaveBeenCalledWith({data: createPlaylist,})
     })

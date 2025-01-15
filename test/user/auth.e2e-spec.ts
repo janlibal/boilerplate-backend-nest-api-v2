@@ -16,7 +16,7 @@ describe('Auth Module', () => {
   const newUserPassword = 'Password123!'
   const expiredToken = EXPIRED_TOKEN
 
-  describe('Logged in user',  () => {
+  describe('Logged in user', () => {
     let newUserApiToken: any
     let bareToken: any
 
@@ -37,25 +37,25 @@ describe('Auth Module', () => {
     })
 
     it('should retrieve your own profile: /api/v1/auth/me (GET)', async () => {
-       await request(app)
+      await request(app)
         .get(`${prefix}/auth/me`)
         .set('Authorization', newUserApiToken)
         .send()
         .expect(200)
-      .expect(({ body }) => {
-        expect(body.status).toBe(true)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(200)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(typeof body.result.firstName).toBe('string')
-        expect(typeof body.result.lastName).toBe('string')
-        expect(typeof body.result.email).toBe('string')//toMatch(/^\S+@\S+\.\S+$/)
-        expect(typeof body.result.provider).toBe('string')
-        expect(typeof body.result.role.id).toBe('number')
-        expect(typeof body.result.status.id).toBe('number')
-      })
+        .expect(({ body }) => {
+          expect(body.status).toBe(true)
+          expect(body.path).toMatch('/auth/me')
+          expect(body.statusCode).toBe(200)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
+          expect(typeof body.result.firstName).toBe('string')
+          expect(typeof body.result.lastName).toBe('string')
+          expect(typeof body.result.email).toBe('string') //toMatch(/^\S+@\S+\.\S+$/)
+          expect(typeof body.result.provider).toBe('string')
+          expect(typeof body.result.role.id).toBe('number')
+          expect(typeof body.result.status.id).toBe('number')
+        })
     })
 
     it('should fail with no token: /api/v1/auth/me (GET)', async () => {
@@ -64,16 +64,16 @@ describe('Auth Module', () => {
         //.set('Authorization', newUserApiToken)
         .send()
         .expect(401)
-      .expect(({ body }) => {
-        expect(body.status).toBe(false)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(401)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(body.result.title).toMatch('Unauthorized')
-        expect(body.result.detail).toMatch('Invalid Headers')
-      })
+        .expect(({ body }) => {
+          expect(body.status).toBe(false)
+          expect(body.path).toMatch('/auth/me')
+          expect(body.statusCode).toBe(401)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
+          expect(body.result.title).toMatch('Unauthorized')
+          expect(body.result.detail).toMatch('Invalid Headers')
+        })
     })
 
     it('should fail with with missing jwt prefix: /api/v1/auth/me (GET)', async () => {
@@ -82,16 +82,16 @@ describe('Auth Module', () => {
         .set('Authorization', bareToken)
         .send()
         .expect(401)
-      .expect(({ body }) => {
-        expect(body.status).toBe(false)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(401)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(body.result.title).toMatch('Unauthorized')
-        expect(body.result.detail).toMatch('No jwt')
-      })
+        .expect(({ body }) => {
+          expect(body.status).toBe(false)
+          expect(body.path).toMatch('/auth/me')
+          expect(body.statusCode).toBe(401)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
+          expect(body.result.title).toMatch('Unauthorized')
+          expect(body.result.detail).toMatch('No jwt')
+        })
     })
 
     it('should fail with wrong token: /api/v1/auth/me (GET)', async () => {
@@ -100,16 +100,16 @@ describe('Auth Module', () => {
         .set('Authorization', 'jwt wrongToken')
         .send()
         .expect(401)
-      .expect(({ body }) => {
-        expect(body.status).toBe(false)
-        expect(body.path).toMatch('/auth/me')
-        expect(body.statusCode).toBe(401)
-        expect(body.timestamp).toMatch(
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
-        )
-        expect(body.result.title).toMatch('Unauthorized')
-        expect(body.result.detail).toMatch('Wrong token')
-      })
+        .expect(({ body }) => {
+          expect(body.status).toBe(false)
+          expect(body.path).toMatch('/auth/me')
+          expect(body.statusCode).toBe(401)
+          expect(body.timestamp).toMatch(
+            /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/,
+          )
+          expect(body.result.title).toMatch('Unauthorized')
+          expect(body.result.detail).toMatch('Wrong token')
+        })
     })
 
     it('should logout user: /api/v1/auth/logout (POST)', async () => {
@@ -210,7 +210,7 @@ describe('Auth Module', () => {
           expect(body.stack).toMatch(/BadRequestError: Bad Request Error/i)
         })
     })
-    it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)',async () => {
+    it('should fail with email being in wrong format: /api/v1/auth/email/login (POST)', async () => {
       return await request(app)
         .post(`${prefix}/auth/email/login`)
         .send({
@@ -235,7 +235,7 @@ describe('Auth Module', () => {
         })
     })
   })
-  describe('Registration',  () => {
+  describe('Registration', () => {
     it('should successfully return data for newly registered user: /api/v1/auth/email/login (POST)', async () => {
       return await request(app)
         .post(`${prefix}/auth/email/register`)

@@ -7,7 +7,7 @@ export const userObject: UserDomain = {
   lastName: 'Libal',
   email: 'jan.libal@janlibal.com',
   password: 'Password123!',
-  role: { id: 1},
+  role: { id: 1 },
   status: { id: 1 },
   provider: AuthProvidersEnum.email,
 }
@@ -18,7 +18,7 @@ export const userMockDomainObject: UserDomain = {
   lastName: 'Libal',
   email: 'jan.libal@janlibal.com',
   password: 'Password123!',
-  role: { id: 1},
+  role: { id: 1 },
   status: { id: 1 },
   provider: AuthProvidersEnum.email,
 }
@@ -29,7 +29,7 @@ export const userMockEntityObject: UserEntity = {
   lastName: 'Libal',
   email: 'jan.libal@janlibal.com',
   password: 'Password123!',
-  roleId:1,
+  roleId: 1,
   statusId: 1,
   provider: AuthProvidersEnum.email,
 }

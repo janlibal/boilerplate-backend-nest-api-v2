@@ -3,7 +3,11 @@ import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserPersistence } from '../infrastructure/persistence/user.persistence'
 import { PrismaService } from '../../database/prisma.service'
 import { UserMapper } from '../infrastructure/mappers/user.mapper'
-import { userMockEntityObject, userMockDomainObject, userObject } from './mock/user.data'
+import {
+  userMockEntityObject,
+  userMockDomainObject,
+  userObject,
+} from './mock/user.data'
 
 // Mock Prisma Service
 const mockPrismaService = {
@@ -11,8 +15,8 @@ const mockPrismaService = {
     create: vi.fn(),
     findUnique: vi.fn(),
     findFirst: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }
 
 describe('UserPersistence', () => {
@@ -43,7 +47,6 @@ describe('UserPersistence', () => {
 
   describe('UserPersistence Operations', () => {
     it('remove()', async () => {
-      
       vi.spyOn(prismaService.user, 'delete').mockResolvedValue(null)
 
       await userPersistence.remove(userMockDomainObject.id)
@@ -52,14 +55,13 @@ describe('UserPersistence', () => {
         where: { id: String(userMockDomainObject.id) },
       })
 
-      expect(prismaService.user.delete).toHaveBeenCalledTimes(1);
-
-      
+      expect(prismaService.user.delete).toHaveBeenCalledTimes(1)
     })
 
     it('findById()', async () => {
-      
-      vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(userMockEntityObject)
+      vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(
+        userMockEntityObject,
+      )
 
       const result = await userPersistence.findById(userMockDomainObject.id)
 
@@ -73,8 +75,9 @@ describe('UserPersistence', () => {
     })
 
     it('findByEmail()', async () => {
-      
-      vi.spyOn(prismaService.user, 'findFirst').mockResolvedValue(userMockEntityObject)
+      vi.spyOn(prismaService.user, 'findFirst').mockResolvedValue(
+        userMockEntityObject,
+      )
 
       const result = await userPersistence.findByEmail(userObject.email)
 
@@ -88,10 +91,11 @@ describe('UserPersistence', () => {
     })
 
     it('create()', async () => {
-      
       const persistenceModel = await UserMapper.toPersistence(userObject)
 
-      vi.spyOn(prismaService.user, 'create').mockResolvedValue(userMockEntityObject)
+      vi.spyOn(prismaService.user, 'create').mockResolvedValue(
+        userMockEntityObject,
+      )
 
       const result = await userPersistence.create(userObject)
 

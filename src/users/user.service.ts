@@ -37,7 +37,6 @@ export class UserService {
   }
 
   async create(createProfileDto: CreateUserDto): Promise<User> {
-
     let email: string | null = null
     if (createProfileDto.email) {
       const userObject = await this.userRepository.findByEmail(
@@ -46,34 +45,37 @@ export class UserService {
       if (userObject) {
         throw new ResourceExistsError(userObject.email)
       }
-      email = createProfileDto.email;
+      email = createProfileDto.email
     }
 
-    let password: string | undefined = undefined;
+    let password: string | undefined = undefined
     if (createProfileDto.password) {
       password = await crypto.hashPassword(createProfileDto.password)
     }
 
-    
     let role: Role | undefined = undefined
-    if(createProfileDto.role?.id){
-      const roleObject = Object.values(RoleEnum).map(String).includes(String(createProfileDto.role.id))
+    if (createProfileDto.role?.id) {
+      const roleObject = Object.values(RoleEnum)
+        .map(String)
+        .includes(String(createProfileDto.role.id))
       if (!roleObject) {
-          throw new UnprocessableEntityException({
-            status: HttpStatus.UNPROCESSABLE_ENTITY,
-            errors: {
-              role: 'roleNotExists',
-            },
-          })
-        }
+        throw new UnprocessableEntityException({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            role: 'roleNotExists',
+          },
+        })
       }
-      role = {
-        id: createProfileDto.role.id
-      }
-    
+    }
+    role = {
+      id: createProfileDto.role.id,
+    }
+
     let status: Status | undefined = undefined
     if (createProfileDto.status?.id) {
-      const statusObject = Object.values(StatusEnum).map(String).includes(String(createProfileDto.status.id))
+      const statusObject = Object.values(StatusEnum)
+        .map(String)
+        .includes(String(createProfileDto.status.id))
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -94,7 +96,7 @@ export class UserService {
       email: email, //createProfileDto.email,
       provider: createProfileDto.provider ?? AuthProvidersEnum.email,
       role: role, //createProfileDto.role,
-      status: status
+      status: status,
       //...createProfileDto,
     }
 
@@ -105,4 +107,3 @@ export class UserService {
     await this.userRepository.remove(id)
   }
 }
-
