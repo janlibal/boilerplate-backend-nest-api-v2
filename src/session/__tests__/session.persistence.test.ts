@@ -44,14 +44,13 @@ describe('SessionPersistence', () => {
   it('should be defined', () => {
     expect(sessionPersistence).toBeDefined()
   })
-  
-  describe('SessionPersistence Operations', () => {
 
+  describe('SessionPersistence Operations', () => {
     it('deleteByUserId()', async () => {
       vi.spyOn(prismaService.session, 'delete').mockResolvedValue(null)
 
       const conditions = {
-        userId: sessionMockDomainObject.userId
+        userId: sessionMockDomainObject.userId,
       }
 
       await sessionPersistence.deleteByUserId(conditions)
@@ -77,16 +76,17 @@ describe('SessionPersistence', () => {
     })
 
     it('findById()', async () => {
-  
       vi.spyOn(prismaService.session, 'findFirst').mockResolvedValue(
         sessionMockEntityObject,
       )
-    
-      const result = await sessionPersistence.findById(sessionMockDomainObject.id)
-    
+
+      const result = await sessionPersistence.findById(
+        sessionMockDomainObject.id,
+      )
+
       // Assert: Check that the result is the expected domain model
       expect(result).toEqual(sessionMockDomainObject)
-    
+
       // Assert: Check that Prisma's `create` method was called with correct arguments
       expect(mockPrismaService.session.findFirst).toHaveBeenCalledWith({
         include: { user: true },

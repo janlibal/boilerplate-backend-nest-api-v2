@@ -14,7 +14,7 @@ const mockSessionPersistence = {
   findByEmail: vi.fn(),
   findById: vi.fn(),
   deleteById: vi.fn(),
-  deleteByUserId: vi.fn()
+  deleteByUserId: vi.fn(),
 }
 
 describe('SessionService', () => {
@@ -48,46 +48,43 @@ describe('SessionService', () => {
     expect(sessionService).toBeDefined()
   })
 
-  /*
-
-  deleteByUserId(conditions: { userId: User['id'] }): Promise<void> {
-    return this.sessionRepository.deleteByUserId(conditions)
-  }
-
-  */
-
   describe('SessionService Operations', () => {
-
     it('deleteByUserId()', async () => {
-        vi.spyOn(mockSessionPersistence, 'deleteByUserId').mockResolvedValue(null)
+      vi.spyOn(mockSessionPersistence, 'deleteByUserId').mockResolvedValue(null)
 
-        const conditions = {
-            userId: sessionMockDomainObject.userId
-        }
-  
-        await sessionPersistence.deleteByUserId(conditions)
-  
-        expect(mockSessionPersistence.deleteByUserId).toHaveBeenCalledWith(conditions)
-  
-        expect(sessionPersistence.deleteByUserId).toHaveBeenCalledTimes(1)
+      const conditions = {
+        userId: sessionMockDomainObject.userId,
+      }
+
+      await sessionPersistence.deleteByUserId(conditions)
+
+      expect(mockSessionPersistence.deleteByUserId).toHaveBeenCalledWith(
+        conditions,
+      )
+
+      expect(sessionPersistence.deleteByUserId).toHaveBeenCalledTimes(1)
     })
-   
+
     it('deleteById()', async () => {
-        vi.spyOn(mockSessionPersistence, 'deleteById').mockResolvedValue(null)
-  
-        await sessionPersistence.deleteById(sessionMockDomainObject.id)
-  
-        expect(mockSessionPersistence.deleteById).toHaveBeenCalledWith(sessionMockDomainObject.id)
-  
-        expect(sessionPersistence.deleteById).toHaveBeenCalledTimes(1)
+      vi.spyOn(mockSessionPersistence, 'deleteById').mockResolvedValue(null)
+
+      await sessionPersistence.deleteById(sessionMockDomainObject.id)
+
+      expect(mockSessionPersistence.deleteById).toHaveBeenCalledWith(
+        sessionMockDomainObject.id,
+      )
+
+      expect(sessionPersistence.deleteById).toHaveBeenCalledTimes(1)
     })
 
     it('findById()', async () => {
-        mockSessionPersistence.findById.mockResolvedValue(sessionMockDomainObject)
-        const result = await sessionPersistence.findById(sessionMockDomainObject.id)
-        expect(result).toEqual(sessionMockDomainObject)
-        //expect(mockPlaylistRepository.save).toHaveBeenCalledWith({data: createPlaylist,})
-      })
+      mockSessionPersistence.findById.mockResolvedValue(sessionMockDomainObject)
+      const result = await sessionPersistence.findById(
+        sessionMockDomainObject.id,
+      )
+      expect(result).toEqual(sessionMockDomainObject)
+      //expect(mockPlaylistRepository.save).toHaveBeenCalledWith({data: createPlaylist,})
+    })
 
     it('create()', async () => {
       mockSessionPersistence.create.mockResolvedValue(sessionMockDomainObject)
