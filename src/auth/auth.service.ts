@@ -97,7 +97,7 @@ export class AuthService {
       },
     })
 
-    /*const hash = await this.jwtService.signAsync(
+    const hash = await this.jwtService.signAsync(
       {
         confirmEmailUserId: user.id,
       },
@@ -109,7 +109,7 @@ export class AuthService {
           infer: true,
         }),
       },
-    )*/
+    )
   }
 
   async me(userJwtPayload: JwtPayloadType): Promise<NullableType<User>> {

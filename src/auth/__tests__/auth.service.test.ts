@@ -10,14 +10,13 @@ import { SessionModule } from '../../session/session.module'
 import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
 import { RedisModule } from '../../redis/redis.module'
 import configModuleSetup from 'src/config/config.module'
-import { RoleEnum } from '../../roles/roles.enum'
-import { StatusEnum } from '../../statuses/statuses.enum'
 import { dto } from './mock/auth.data'
 
 
 
 const mockUserService = {
-    create: vi.fn()
+    create: vi.fn(),
+    findByEmail: vi.fn()
 }
 
 describe('UserService', () => {
@@ -48,11 +47,9 @@ describe('UserService', () => {
     vi.clearAllMocks()
   })
 
-
   it('should be defined', () => {
     expect(authService).toBeDefined()
   })
-
 
   it('register()', async () => {
     mockUserService.create.mockResolvedValue(dto)
