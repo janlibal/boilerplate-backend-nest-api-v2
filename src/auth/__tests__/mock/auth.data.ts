@@ -1,9 +1,10 @@
 import { AuthEmailLoginDto } from 'src/auth/dto/auth.email.login.dto'
 import { AuthRegisterLoginDto } from '../../dto/auth.register.login.dto'
 import { User as UserEntity, Session as SessionEntity } from '@prisma/client'
+import { Session as SessionDomain } from '../../../session/domain/session.domain'
 import { AuthProvidersEnum } from '../../auth.providers.enum'
-import { RoleEnum } from 'src/roles/roles.enum'
-import { StatusEnum } from 'src/statuses/statuses.enum'
+import { RoleEnum } from '../../../roles/roles.enum'
+import { StatusEnum } from '../../../statuses/statuses.enum'
 
 export const dto: AuthRegisterLoginDto = {
   firstName: 'Jan',
@@ -69,8 +70,8 @@ export const loginDataBad: AuthEmailLoginDto = {
 }
 
 export const sessionData = {
-  hash: 'hash123',
   userId: mockUser.id,
+  hash: 'hash123',
 }
 
 export const mockSession: SessionEntity = {

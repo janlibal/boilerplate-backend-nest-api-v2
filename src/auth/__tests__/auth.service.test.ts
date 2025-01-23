@@ -14,6 +14,7 @@ import {
   dto,
   loginData,
   loginDataBad,
+  mockSession,
   mockUser,
   mockUserGoogle,
   newUser,
@@ -24,6 +25,7 @@ import UnprocessableError from '../../exceptions/unprocessable.exception'
 import crypto from '../../utils/crypto'
 import { SessionService } from '../../session/session.service'
 import { RedisService } from '../../redis/redis.service'
+import { RedisPrefixEnum } from '../../redis/enums/redis.prefix.enum'
 
 //vi.mock('../../utils/crypto', () => mockCrypto)
 
@@ -49,6 +51,7 @@ describe('AuthService', () => {
   let authService: AuthService
   let userService: UserService
   let sessionService: SessionService
+  let redisService: RedisService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -69,11 +72,11 @@ describe('AuthService', () => {
         },
         {
           provide: SessionService,
-          useValue: mockRedisService,
+          useValue: mockSessionService,
         },
         {
           provide: RedisService,
-          useValue: mockSessionService,
+          useValue: mockRedisService,
         },
         JwtService,
       ],
@@ -82,6 +85,7 @@ describe('AuthService', () => {
     authService = module.get<AuthService>(AuthService)
     userService = module.get<UserService>(UserService)
     sessionService = module.get<SessionService>(SessionService)
+    redisService = module.get<RedisService>(RedisService)
 
     vi.restoreAllMocks()
   })
@@ -103,6 +107,44 @@ describe('AuthService', () => {
   })
 
   describe('validateLogin()', () => {
+    it('should return user data after successul login', async () => {
+      const prefix = RedisPrefixEnum.USER
+      const expiry = 900000
+      mockUserService.findByEmail.mockResolvedValue(mockUser)
+      const comparePasswordsSpy = vi
+        .spyOn(crypto, 'comparePasswords')
+        .mockResolvedValue(true)
+      const makeHashSpy = vi
+        .spyOn(crypto, 'makeHash')
+        .mockReturnValue('hash123')
+      mockSessionService.create.mockResolvedValue(sessionData)
+      mockRedisService.createSession.mockResolvedValue(true)
+
+      const result = await authService.validateLogin(loginData)
+      expect(result.refreshToken).toMatch(
+        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+      )
+      expect(result.token).toMatch(
+        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+      )
+      expect(result.tokenExpires).toBeDefined()
+      expect(result.user).toEqual(mockUser)
+
+      expect(mockUserService.findByEmail).toHaveBeenCalledWith(loginData.email)
+      expect(comparePasswordsSpy).toHaveBeenCalledWith(
+        loginData.password,
+        mockUser.password,
+      )
+      expect(makeHashSpy).toHaveBeenCalled()
+      expect(mockSessionService.create).toHaveBeenCalledWith(sessionData)
+      expect(mockRedisService.createSession).toHaveBeenCalledWith({
+        prefix: prefix,
+        user: result.user,
+        token: result.token,
+        expiry: expiry,
+      })
+    })
+
     it('should throw unauthorized if user is not found', async () => {
       mockUserService.findByEmail.mockResolvedValue(null)
 
