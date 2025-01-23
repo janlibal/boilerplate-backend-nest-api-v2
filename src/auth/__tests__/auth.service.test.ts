@@ -10,21 +10,34 @@ import { SessionModule } from '../../session/session.module'
 import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
 import { RedisModule } from '../../redis/redis.module'
 import configModuleSetup from '../../config/config.module'
-import { dto, loginData, loginDataBad, mockSession, mockUser, mockUserGoogle, sessionData } from './mock/auth.data'
+import {
+  dto,
+  loginData,
+  loginDataBad,
+  mockUser,
+  mockUserGoogle,
+  newUser,
+  sessionData,
+} from './mock/auth.data'
 import UnauthorizedError from '../../exceptions/unauthorized.exception'
 import UnprocessableError from '../../exceptions/unprocessable.exception'
 import crypto from '../../utils/crypto'
 import { SessionService } from '../../session/session.service'
+import { RedisService } from '../../redis/redis.service'
 
 //vi.mock('../../utils/crypto', () => mockCrypto)
 
 const mockUserService = {
-    create: vi.fn(),
-    findByEmail: vi.fn()
+  create: vi.fn(),
+  findByEmail: vi.fn(),
 }
 
 const mockSessionService = {
   create: vi.fn(),
+}
+
+const mockRedisService = {
+  createSession: vi.fn(),
 }
 
 const mockCrypto = {
@@ -39,25 +52,36 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserModule, UserPersistenceModule, SessionModule, SessionPersistenceModule, RedisModule, PrismaModule, configModuleSetup()],
+      imports: [
+        UserModule,
+        UserPersistenceModule,
+        SessionModule,
+        SessionPersistenceModule,
+        RedisModule,
+        PrismaModule,
+        configModuleSetup(),
+      ],
       providers: [
         AuthService,
         {
           provide: UserService,
           useValue: mockUserService,
-        }, 
+        },
         {
           provide: SessionService,
+          useValue: mockRedisService,
+        },
+        {
+          provide: RedisService,
           useValue: mockSessionService,
         },
-        JwtService
+        JwtService,
       ],
     }).compile()
 
     authService = module.get<AuthService>(AuthService)
     userService = module.get<UserService>(UserService)
     sessionService = module.get<SessionService>(SessionService)
-    
 
     vi.restoreAllMocks()
   })
@@ -71,10 +95,10 @@ describe('AuthService', () => {
   })
 
   describe('register()', () => {
-    it('should return new user', async () => {
-      mockUserService.create.mockResolvedValue(dto)
-      const result = await authService.register(dto)
-      expect(result).toBeUndefined()
+    it('should register new user', async () => {
+      mockUserService.create.mockResolvedValue(mockUser)
+      await authService.register(dto)
+      expect(mockUserService.create).toHaveBeenCalledWith(newUser)
     })
   })
 
@@ -91,7 +115,9 @@ describe('AuthService', () => {
       mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
       await expect(authService.validateLogin(loginData)).rejects.toThrow(
-        new UnprocessableError(`hasToLoginViaProvider:${mockUserGoogle.provider}`),
+        new UnprocessableError(
+          `hasToLoginViaProvider:${mockUserGoogle.provider}`,
+        ),
       )
     })
 
@@ -99,7 +125,7 @@ describe('AuthService', () => {
       mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
       await expect(authService.validateLogin(loginData)).rejects.toThrow(
-        new UnprocessableError('missingPassword')
+        new UnprocessableError('missingPassword'),
       )
     })
 
@@ -111,7 +137,7 @@ describe('AuthService', () => {
         .mockResolvedValue(false)
 
       await expect(authService.validateLogin(loginDataBad)).rejects.toThrow(
-        new UnauthorizedError('Invalid email or password')
+        new UnauthorizedError('Invalid email or password'),
       )
 
       expect(comparePasswordsSpy).toHaveBeenCalledWith(
@@ -121,6 +147,6 @@ describe('AuthService', () => {
       expect(mockUserService.findByEmail).toHaveBeenCalledWith(
         loginDataBad.email,
       )
-    }) 
+    })
   })
 })
