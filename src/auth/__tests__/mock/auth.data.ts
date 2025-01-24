@@ -5,6 +5,7 @@ import { Session as SessionDomain } from '../../../session/domain/session.domain
 import { AuthProvidersEnum } from '../../auth.providers.enum'
 import { RoleEnum } from '../../../roles/roles.enum'
 import { StatusEnum } from '../../../statuses/statuses.enum'
+import { LoginResponseDto } from 'src/auth/dto/login.response.dto'
 
 export const dto: AuthRegisterLoginDto = {
   firstName: 'Jan',
