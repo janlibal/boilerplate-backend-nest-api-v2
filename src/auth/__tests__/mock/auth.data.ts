@@ -95,5 +95,5 @@ export const mockLoginResponse: LoginResponseDto = {
     lastName: mockUser.lastName,
     password: mockUser.password,
     provider: AuthProvidersEnum.email,
-  }
+  },
 }
