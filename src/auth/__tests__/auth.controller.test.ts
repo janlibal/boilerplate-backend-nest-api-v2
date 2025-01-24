@@ -9,13 +9,8 @@ import { SessionModule } from '../../session/session.module'
 import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
 import { RedisModule } from '../../redis/redis.module'
 import configModuleSetup from '../../config/config.module'
-import { SessionService } from '../../session/session.service'
-import { RedisService } from '../../redis/redis.service'
 import { AuthController } from '../auth.controller'
-import { dto, loginData, mockUser, newUser } from './mock/auth.data'
-import exp from 'constants'
-
-//vi.mock('../../utils/crypto', () => mockCrypto)
+import { dto, loginData, mockLoginResponse, mockUser } from './mock/auth.data'
 
 const mockAuthService = {
   register: vi.fn(),
@@ -25,8 +20,6 @@ const mockAuthService = {
 describe('AuthService', () => {
   let authController: AuthController
   let authService: AuthService
-  let sessionService: SessionService
-  let redisService: RedisService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -68,6 +61,15 @@ describe('AuthService', () => {
       mockAuthService.register.mockResolvedValue(mockUser)
       await authService.register(dto)
       expect(mockAuthService.register).toHaveBeenCalledWith(dto)
+    })
+  })
+
+  describe('login()', () => {
+    it('should login a registered user', async () => {
+      mockAuthService.validateLogin.mockResolvedValue(mockLoginResponse)
+      const result = await authController.login(loginData)
+      expect(result).toEqual(mockLoginResponse)
+      expect(mockAuthService.validateLogin).toHaveBeenCalledWith(loginData)
     })
   })
 })
