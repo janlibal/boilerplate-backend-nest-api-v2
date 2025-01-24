@@ -14,7 +14,6 @@ import {
   dto,
   loginData,
   loginDataBad,
-  mockSession,
   mockUser,
   mockUserGoogle,
   newUser,

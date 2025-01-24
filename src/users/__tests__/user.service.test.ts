@@ -6,16 +6,7 @@ import { UserPersistenceModule } from '../infrastructure/user.infrastructure.mod
 import { PrismaService } from '../../database/prisma.service'
 import { UserModule } from '../user.module'
 import { PrismaModule } from '../../database/prisma.module'
-import { User as UserEntity } from '@prisma/client'
-import { User as UserDomain } from '../domain/user.domain'
-import { AuthProvidersEnum } from '../../auth/auth.providers.enum'
-import {
-  userMockDomainObject,
-  userMockEntityObject,
-  userObject,
-} from './mock/user.data'
-import exp from 'constants'
-import { HttpStatus, UnprocessableEntityException } from '@nestjs/common'
+import { userMockDomainObject, userObject } from './mock/user.data'
 
 // Mock Prisma Service
 const mockUserPersistence = {
