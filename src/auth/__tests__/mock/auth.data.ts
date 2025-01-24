@@ -83,3 +83,17 @@ export const mockSession: SessionEntity = {
   updatedAt: new Date('2011-10-10T14:48:00'),
   deletedAt: new Date('2011-10-10T14:48:00'),
 }
+
+export const mockLoginResponse: LoginResponseDto = {
+  token: 'token',
+  refreshToken: 'refreshToken',
+  tokenExpires: 1234567890,
+  user: {
+    id: mockUser.id,
+    email: mockUser.email,
+    firstName: mockUser.firstName,
+    lastName: mockUser.lastName,
+    password: mockUser.password,
+    provider: AuthProvidersEnum.email,
+  }
+}
