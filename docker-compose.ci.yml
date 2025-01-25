@@ -7,6 +7,8 @@ services:
       - .env
     depends_on:
       - postgres
+    networks:
+      - api-network
 
   postgres:
     container_name: postgres
@@ -22,6 +24,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       #POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
+    networks:
+      - api-network
     #restart: unless-stopped
     #volumes:
     #  - postgres:/var/lib/postgresql/data
@@ -37,6 +41,8 @@ services:
     restart: unless-stopped   
     volumes:
       - redis:/data
+    networks:
+      - api-network
     #environment:
     #  - ALLOW_EMPTY_PASSWORD=yes
     #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
@@ -46,4 +52,8 @@ volumes:
 #    name: boilerplate-db
   redis:
     driver: local
+
+networks:
+  api-network:
+    driver: bridge
   
