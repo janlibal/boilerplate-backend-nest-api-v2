@@ -11,7 +11,6 @@ import { AuthModule } from 'src/auth/auth.module'
 import { Logger, LoggerModule } from 'nestjs-pino'
 import { RedisModule } from 'src/redis/redis.module'
 import { PrismaModule } from 'nestjs-prisma'
-import { BookModule } from 'src/book/book.module'
 import { HealthModule } from 'src/health/health.module'
 import { ConfigModule } from '@nestjs/config'
 import { configSetup } from 'src/config/config.setup'
@@ -60,7 +59,6 @@ import { publicRoutes } from './constants/public.routes'
     AuthModule,
     PrismaModule,
     RedisModule,
-    BookModule,
     HealthModule,
   ],
   controllers: [],
