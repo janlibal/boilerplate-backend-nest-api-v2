@@ -1,5 +1,5 @@
-#NODE_ENV=dev
-APP_PORT=4300
+NODE_ENV=prod
+APP_PORT=80
 #DATABASE_USERNAME=root
 #DATABASE_PASSWORD=root
 #MULTIPLE_DATABASES=dev,test,prod
@@ -13,7 +13,7 @@ PGADMIN_PORT=16543
 # POSTGRES
 DB_USERNAME=root
 DB_PASSWORD=root
-DB_NAME=test
+DB_NAME=prod
 MULTIPLE_DATABASES=dev,test,prod
 
 # Nest run locally
@@ -22,7 +22,7 @@ MULTIPLE_DATABASES=dev,test,prod
 DB_HOST=postgres
 
 DB_PORT=5432
-DB_SCHEMA=test
+DB_SCHEMA=prod
 
 # Prisma database connection
 #DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=${DB_SCHEMA}&sslmode=prefer
