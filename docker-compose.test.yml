@@ -18,6 +18,8 @@ services:
       - ./test:/usr/src/app/test
     depends_on:
       - postgres
+    networks:
+      - api-network
   postgres:
     container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
@@ -31,6 +33,8 @@ services:
     #restart: unless-stopped
     #volumes:
     #  - postgres:/var/lib/postgresql/data
+    networks:
+      - api-network
   # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
   #pgadmin-compose:
   #  container_name: nest-pgadmin
@@ -52,6 +56,8 @@ services:
     restart: unless-stopped   
     volumes:
       - redis:/data
+    networks:
+      - api-network
     #environment:
     #  - ALLOW_EMPTY_PASSWORD=yes
     #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
@@ -61,4 +67,8 @@ volumes:
 #    name: boilerplate-db
   redis:
     driver: local
+
+networks:
+  api-network:
+    driver: bridge
       
