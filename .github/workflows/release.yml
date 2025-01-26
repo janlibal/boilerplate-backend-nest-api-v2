@@ -10,8 +10,8 @@ on:
     types: [published]
   # Triggered on every successful Build action
   workflow_run:
-    workflows: ["Build"]
-    branches: [unknown]#[main,master] # [ dev ] 
+    workflows: ["E2E Tests"]
+    branches: [ main ] # [ dev ] 
     types:
       - completed
   # Manual trigger for rollback to specific release or redeploy latest
