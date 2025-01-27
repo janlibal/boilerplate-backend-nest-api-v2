@@ -24,7 +24,7 @@ jobs:
           echo "Changed files: $CHANGED_FILES"
 
           # Check if any relevant files (in src or tests) are changed
-          if [[ $CHANGED_FILES =~ ^(src/|tests/).* ]]; then
+          if [[ $CHANGED_FILES =~ ^(src/|test/).* ]]; then
             echo "Tests should be run"
             echo "run_tests=true" >> $GITHUB_ENV
             echo "run_tests=true" >> $GITHUB_OUTPUT
