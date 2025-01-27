@@ -34,7 +34,7 @@ async function main() {
 
   const user = await prisma.user.findFirst()
   if(!user) {
-    const data = await prisma.user.create({
+    await prisma.user.create({
       data: 
         {
           //id: 'fe918fd3-96b6-4573-ab9c-3c0c15a6a91d',
@@ -44,10 +44,6 @@ async function main() {
           email: 'joe.doe@joedoe.com',
         }
     })
-    console.log('finished seeding user')
-    console.log(data.id)
-    console.log(data.email)
-    console.log(data.password)
   }
 }
 
