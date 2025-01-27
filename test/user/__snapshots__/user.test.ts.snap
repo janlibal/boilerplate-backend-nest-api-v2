@@ -1,5 +1,1217 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`App > Login > should fail with email being in wrong format: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 4`] = `
+{
+  "message": "Password cannot be empty",
+}
+`;
+
+exports[`App > Login > should fail with missing email: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Login > should fail with missing email: /api/v1/auth/email/login (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Login > should fail with missing email: /api/v1/auth/email/login (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail when password is too long: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail when password is too weak: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail when password is too weak: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with email not being in proper format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being string: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with firstName not being string: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being string: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with lastName not being string: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 15`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 16`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`App > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`App > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`App > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`App > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`App > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`App > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`App > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
 exports[`App > User > should fail when password is too long: /api/v1/auth/email/register (POST) 1`] = `
 {
   "message": "Password can contain 20 characters at the most",
@@ -1159,6 +2371,1218 @@ exports[`App > User > should fail with missing passowrd: /api/v1/auth/email/regi
 `;
 
 exports[`App > User > should fail with missing passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Login > should fail with email being in wrong format: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email and password: /api/v1/auth/email/login (POST) 4`] = `
+{
+  "message": "Password cannot be empty",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email: /api/v1/auth/email/login (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email: /api/v1/auth/email/login (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Login > should fail with missing email: /api/v1/auth/email/login (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail when password is too long: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail when password is too weak: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail when password is too weak: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and a weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email in wrong format and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with email not being in proper format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and email missing: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and password missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName and weak password: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName missing and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being a string and lastName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being string: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with firstName not being string: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and email missing: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and firstName missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName and password missing: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName missing and weak password: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not as a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and email missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being a string and firstName missing: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being string: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with lastName not being string: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing email: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email and weak passowrd: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Email must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Email cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 15`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, email, passowrd: /api/v1/auth/email/register (POST) 16`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 5`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 6`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 7`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 8`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 9`] = `
+{
+  "message": "Email must be in proper format",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 10`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 11`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 12`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 13`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName, lastName, password and email in wrong format: /api/v1/auth/email/register (POST) 14`] = `
+{
+  "message": "Password must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Firstname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Firstname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Firstname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing firstName: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Firstname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Lastname has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Lastname must be longer than 1 char",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Lastname must be a string",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing lastName: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Lastname cannot be empty",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 1`] = `
+{
+  "message": "Password has to be defined",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 2`] = `
+{
+  "message": "Password is too weak",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 3`] = `
+{
+  "message": "Password can contain 20 characters at the most",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 4`] = `
+{
+  "message": "Password must contain at least 6 characters",
+}
+`;
+
+exports[`Users operations > Registration > should fail with missing passowrd: /api/v1/auth/email/register (POST) 5`] = `
 {
   "message": "Password must be a string",
 }
