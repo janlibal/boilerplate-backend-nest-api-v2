@@ -51,4 +51,4 @@ Nestjs REST API boilerplate
 
 ## Disclaimer
 
-Please note that this API is built for demonstration purposes only and in a go-live solution various parts are going to be more enhanced. In case you wish to develop the project from scratch yourself, please follow commits from start to finish.
+Please note that this API is built for demonstration purposes only and in a go-live solution various parts are going to be more enhanced. In case you wish to develop the project from scratch yourself, please follow commits from start to finish. This file yet to be finished.
