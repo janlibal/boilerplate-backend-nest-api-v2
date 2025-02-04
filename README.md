@@ -6,7 +6,7 @@
 
 ## Description <!-- omit in toc -->
 
-Nestjs REST API boilerplate
+Nestjs REST API Boilerplate
 
 [Full documentation here](/docs/readme.md)
 
@@ -51,4 +51,8 @@ Nestjs REST API boilerplate
 
 ## Disclaimer
 
+<<<<<<< HEAD
 Please note that this API is built for demonstration purposes only and in a go-live solution various parts are going to be more enhanced. In case you wish to develop the project from scratch yourself, please follow commits from start to finish. This file yet to be finished.
+=======
+Please note that this API is built for demonstration purposes only and in a go-live solution various parts are going to be more enhanced. In case you wish to develop the project from scratch yourself, please follow commits from start to finish. This documentation yet to be finished.
+>>>>>>> 814928a (chore: update readme)
