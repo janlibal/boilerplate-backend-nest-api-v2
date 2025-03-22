@@ -97,97 +97,101 @@ describe('AuthService', () => {
     expect(authService).toBeDefined()
   })
 
-  describe('register()', () => {
-    it('should register new user', async () => {
-      mockUserService.create.mockResolvedValue(mockUser)
-      await authService.register(dto)
-      expect(mockUserService.create).toHaveBeenCalledWith(newUser)
-    })
-  })
-
-  describe('validateLogin()', () => {
-    it('should return user data after successul login', async () => {
-      const prefix = RedisPrefixEnum.USER
-      const expiry = 900000
-      mockUserService.findByEmail.mockResolvedValue(mockUser)
-      const comparePasswordsSpy = vi
-        .spyOn(crypto, 'comparePasswords')
-        .mockResolvedValue(true)
-      const makeHashSpy = vi
-        .spyOn(crypto, 'makeHash')
-        .mockReturnValue('hash123')
-      mockSessionService.create.mockResolvedValue(sessionData)
-      mockRedisService.createSession.mockResolvedValue(true)
-
-      const result = await authService.validateLogin(loginData)
-      expect(result.refreshToken).toMatch(
-        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
-      )
-      expect(result.token).toMatch(
-        /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
-      )
-      expect(result.tokenExpires).toBeDefined()
-      expect(result.user).toEqual(mockUser)
-
-      expect(mockUserService.findByEmail).toHaveBeenCalledWith(loginData.email)
-      expect(comparePasswordsSpy).toHaveBeenCalledWith(
-        loginData.password,
-        mockUser.password,
-      )
-      expect(makeHashSpy).toHaveBeenCalled()
-      expect(mockSessionService.create).toHaveBeenCalledWith(sessionData)
-      expect(mockRedisService.createSession).toHaveBeenCalledWith({
-        prefix: prefix,
-        user: result.user,
-        token: result.token,
-        expiry: expiry,
+  describe('AuthSerivice methods', () => {
+    describe('register()', () => {
+      it('should register new user', async () => {
+        mockUserService.create.mockResolvedValue(mockUser)
+        await authService.register(dto)
+        expect(mockUserService.create).toHaveBeenCalledWith(newUser)
       })
     })
 
-    it('should throw unauthorized if user is not found', async () => {
-      mockUserService.findByEmail.mockResolvedValue(null)
+    describe('validateLogin()', () => {
+      it('should return user data after successul login', async () => {
+        const prefix = RedisPrefixEnum.USER
+        const expiry = 900000
+        mockUserService.findByEmail.mockResolvedValue(mockUser)
+        const comparePasswordsSpy = vi
+          .spyOn(crypto, 'comparePasswords')
+          .mockResolvedValue(true)
+        const makeHashSpy = vi
+          .spyOn(crypto, 'makeHash')
+          .mockReturnValue('hash123')
+        mockSessionService.create.mockResolvedValue(sessionData)
+        mockRedisService.createSession.mockResolvedValue(true)
 
-      await expect(authService.validateLogin(loginData)).rejects.toThrow(
-        new UnauthorizedError('Invalid email or password'),
-      )
-    })
+        const result = await authService.validateLogin(loginData)
+        expect(result.refreshToken).toMatch(
+          /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+        )
+        expect(result.token).toMatch(
+          /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+        )
+        expect(result.tokenExpires).toBeDefined()
+        expect(result.user).toEqual(mockUser)
 
-    it('should throw Unauthorized if user provider is not email', async () => {
-      mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
+        expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+          loginData.email,
+        )
+        expect(comparePasswordsSpy).toHaveBeenCalledWith(
+          loginData.password,
+          mockUser.password,
+        )
+        expect(makeHashSpy).toHaveBeenCalled()
+        expect(mockSessionService.create).toHaveBeenCalledWith(sessionData)
+        expect(mockRedisService.createSession).toHaveBeenCalledWith({
+          prefix: prefix,
+          user: result.user,
+          token: result.token,
+          expiry: expiry,
+        })
+      })
 
-      await expect(authService.validateLogin(loginData)).rejects.toThrow(
-        new UnprocessableError(
-          `hasToLoginViaProvider:${mockUserGoogle.provider}`,
-        ),
-      )
-    })
+      it('should throw unauthorized if user is not found', async () => {
+        mockUserService.findByEmail.mockResolvedValue(null)
 
-    it('should throw Unauthorized in case of missing password', async () => {
-      mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
+        await expect(authService.validateLogin(loginData)).rejects.toThrow(
+          new UnauthorizedError('Invalid email or password'),
+        )
+      })
 
-      await expect(authService.validateLogin(loginData)).rejects.toThrow(
-        new UnprocessableError('missingPassword'),
-      )
-    })
+      it('should throw Unauthorized if user provider is not email', async () => {
+        mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
-    it('should throw error for invalid password', async () => {
-      mockUserService.findByEmail.mockResolvedValue(mockUser)
+        await expect(authService.validateLogin(loginData)).rejects.toThrow(
+          new UnprocessableError(
+            `hasToLoginViaProvider:${mockUserGoogle.provider}`,
+          ),
+        )
+      })
 
-      const comparePasswordsSpy = vi
-        .spyOn(crypto, 'comparePasswords')
-        .mockResolvedValue(false)
+      it('should throw Unauthorized in case of missing password', async () => {
+        mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
-      await expect(authService.validateLogin(loginDataBad)).rejects.toThrow(
-        new UnauthorizedError('Invalid email or password'),
-      )
+        await expect(authService.validateLogin(loginData)).rejects.toThrow(
+          new UnprocessableError('missingPassword'),
+        )
+      })
 
-      expect(comparePasswordsSpy).toHaveBeenCalledWith(
-        loginDataBad.password,
-        mockUser.password,
-      )
-      expect(mockUserService.findByEmail).toHaveBeenCalledWith(
-        loginDataBad.email,
-      )
+      it('should throw error for invalid password', async () => {
+        mockUserService.findByEmail.mockResolvedValue(mockUser)
+
+        const comparePasswordsSpy = vi
+          .spyOn(crypto, 'comparePasswords')
+          .mockResolvedValue(false)
+
+        await expect(authService.validateLogin(loginDataBad)).rejects.toThrow(
+          new UnauthorizedError('Invalid email or password'),
+        )
+
+        expect(comparePasswordsSpy).toHaveBeenCalledWith(
+          loginDataBad.password,
+          mockUser.password,
+        )
+        expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+          loginDataBad.email,
+        )
+      })
     })
   })
 })

@@ -17,7 +17,7 @@ const mockAuthService = {
   validateLogin: vi.fn(),
 }
 
-describe('AuthService', () => {
+describe('AuthController', () => {
   let authController: AuthController
   let authService: AuthService
 
@@ -56,20 +56,22 @@ describe('AuthService', () => {
     expect(authController).toBeDefined()
   })
 
-  describe('register()', () => {
-    it('should register new user', async () => {
-      mockAuthService.register.mockResolvedValue(mockUser)
-      await authService.register(dto)
-      expect(mockAuthService.register).toHaveBeenCalledWith(dto)
+  describe('AuthController methods', () => {
+    describe('register()', () => {
+      it('should register new user', async () => {
+        mockAuthService.register.mockResolvedValue(mockUser)
+        await authService.register(dto)
+        expect(mockAuthService.register).toHaveBeenCalledWith(dto)
+      })
     })
-  })
 
-  describe('login()', () => {
-    it('should login a registered user', async () => {
-      mockAuthService.validateLogin.mockResolvedValue(mockLoginResponse)
-      const result = await authController.login(loginData)
-      expect(result).toEqual(mockLoginResponse)
-      expect(mockAuthService.validateLogin).toHaveBeenCalledWith(loginData)
+    describe('login()', () => {
+      it('should login a registered user', async () => {
+        mockAuthService.validateLogin.mockResolvedValue(mockLoginResponse)
+        const result = await authController.login(loginData)
+        expect(result).toEqual(mockLoginResponse)
+        expect(mockAuthService.validateLogin).toHaveBeenCalledWith(loginData)
+      })
     })
   })
 })

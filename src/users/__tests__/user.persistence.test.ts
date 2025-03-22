@@ -45,7 +45,7 @@ describe('UserPersistence', () => {
     expect(userPersistence).toBeDefined()
   })
 
-  describe('UserPersistence Operations', () => {
+  describe('UserPersistence methids', () => {
     it('remove()', async () => {
       vi.spyOn(prismaService.user, 'delete').mockResolvedValue(null)
 
