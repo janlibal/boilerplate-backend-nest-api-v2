@@ -89,15 +89,15 @@ export class UserService {
       }
     }
 
-    const clonedPayload = {
+    const clonedPayload: User = {
       firstName: createProfileDto.firstName,
       lastName: createProfileDto.lastName,
-      password: password, //await crypto.hashPassword(createProfileDto.password), //createProfileDto.password,
-      email: email, //createProfileDto.email,
+      password: password,
+      email: email,
       provider: createProfileDto.provider ?? AuthProvidersEnum.email,
-      role: role, //createProfileDto.role,
+      role: role, 
       status: status,
-      //...createProfileDto,
+      
     }
 
     return await this.userRepository.create(clonedPayload)
