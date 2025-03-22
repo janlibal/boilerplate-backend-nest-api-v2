@@ -48,7 +48,7 @@ describe('SessionService', () => {
     expect(sessionService).toBeDefined()
   })
 
-  describe('SessionService Operations', () => {
+  describe('SessionService methods', () => {
     it('deleteByUserId()', async () => {
       vi.spyOn(mockSessionPersistence, 'deleteByUserId').mockResolvedValue(null)
 

@@ -46,7 +46,7 @@ describe('UserService', () => {
     expect(userService).toBeDefined()
   })
 
-  describe('UserService Operations', () => {
+  describe('UserService methods', () => {
     it('findById()', async () => {
       mockUserPersistence.findByEmail.mockResolvedValue(userMockDomainObject)
       const result = await userPersistence.findByEmail(userMockDomainObject.id)

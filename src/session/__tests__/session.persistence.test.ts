@@ -45,7 +45,7 @@ describe('SessionPersistence', () => {
     expect(sessionPersistence).toBeDefined()
   })
 
-  describe('SessionPersistence Operations', () => {
+  describe('SessionPersistence methods', () => {
     it('deleteByUserId()', async () => {
       vi.spyOn(prismaService.session, 'delete').mockResolvedValue(null)
 
