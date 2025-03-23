@@ -1,5 +1,5 @@
-import { User } from 'src/users/domain/user.domain'
-import { NullableType } from 'src/utils/types/nullable.type'
+import { User } from '../../domain/user.domain'
+import { NullableType } from '../../../utils/types/nullable.type'
 
 export abstract class UserRepository {
   abstract create(

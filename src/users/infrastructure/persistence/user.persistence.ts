@@ -21,8 +21,8 @@ export class UserPersistence {
 
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null
-    const entity = await this.prismaService.user.findFirst({
-      where: { email: email },
+    const entity = await this.prismaService.user.findUnique({
+      where: { email },
     })
     return entity ? await UserMapper.toDomain(entity) : null
   }
