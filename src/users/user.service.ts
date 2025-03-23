@@ -95,9 +95,8 @@ export class UserService {
       password: password,
       email: email,
       provider: createProfileDto.provider ?? AuthProvidersEnum.email,
-      role: role, 
+      role: role,
       status: status,
-      
     }
 
     return await this.userRepository.create(clonedPayload)
