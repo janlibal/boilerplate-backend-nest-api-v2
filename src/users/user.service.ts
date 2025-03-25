@@ -19,8 +19,8 @@ import { Status } from '../statuses/domain/status.domain'
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  findByEmail(email: User['email']): Promise<NullableType<User>> {
-    return this.userRepository.findByEmail(email)
+  async findByEmail(email: User['email']): Promise<NullableType<User>> {
+    return await this.userRepository.findByEmail(email)
   }
 
   findById(id: User['id']): Promise<NullableType<User>> {
