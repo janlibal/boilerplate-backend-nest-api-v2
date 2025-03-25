@@ -1,39 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
-import { UserPersistence } from '../infrastructure/persistence/user.persistence'
 import { UserService } from '../user.service'
-import { UserPersistenceModule } from '../infrastructure/user.infrastructure.module'
-import { PrismaService } from '../../database/prisma.service'
 import { UserModule } from '../user.module'
+import { userMockDomainObject } from './mock/user.data'
+import { UserRepository } from '../infrastructure/repository/user.repository'
+import { UserPersistence } from '../infrastructure/persistence/user.persistence'
+import { UserPersistenceModule } from '../infrastructure/user.infrastructure.module'
 import { PrismaModule } from '../../database/prisma.module'
-import { userMockDomainObject, userObject } from './mock/user.data'
+import { PrismaService } from '../../database/prisma.service'
 
 // Mock Prisma Service
 const mockUserPersistence = {
-  create: vi.fn(),
-  findByEmail: vi.fn(),
   findById: vi.fn(),
 }
 
 describe('UserService', () => {
   let userService: UserService
-  let userPersistence: UserPersistence
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UserModule, UserPersistenceModule, PrismaModule],
+      //imports: [UserModule],
       providers: [
         UserService,
         {
-          provide: UserPersistence,
+          provide: UserRepository,
           useValue: mockUserPersistence,
         },
-        PrismaService,
       ],
     }).compile()
 
     userService = module.get<UserService>(UserService)
-    userPersistence = module.get<UserPersistence>(UserPersistence)
 
     vi.restoreAllMocks()
   })
@@ -47,7 +43,18 @@ describe('UserService', () => {
   })
 
   describe('UserService methods', () => {
-    it('findById()', async () => {
+    describe('findById()', () => {
+      it('should find user by provided Id', async () => {
+        mockUserPersistence.findById.mockResolvedValue(userMockDomainObject)
+        const result = await userService.findById(userMockDomainObject.id)
+        expect(result).toEqual(userMockDomainObject)
+        expect(mockUserPersistence.findById).toHaveBeenCalledWith(
+          userMockDomainObject.id,
+        )
+      })
+    })
+
+    /*it('findById()', async () => {
       mockUserPersistence.findByEmail.mockResolvedValue(userMockDomainObject)
       const result = await userPersistence.findByEmail(userMockDomainObject.id)
       expect(result).toEqual(userMockDomainObject)
@@ -66,6 +73,6 @@ describe('UserService', () => {
       const result = await userPersistence.create(userObject)
       expect(result).toEqual(userMockDomainObject)
       //expect(mockUserPersistence.create).toHaveBeenCalledWith({data: userMockEntityObject,})
-    })
+    })*/
   })
 })
