@@ -33,3 +33,13 @@ export const userMockEntityObject: UserEntity = {
   statusId: 1,
   provider: AuthProvidersEnum.email,
 }
+
+export const userObjectHashedPwd: UserDomain = {
+  email: 'jan.libal@janlibal.com',
+  password: 'hashedPassword123!',
+  firstName: 'Jan',
+  lastName: 'Libal',
+  role: { id: 1 },
+  status: { id: 1 },
+  provider: AuthProvidersEnum.email,
+}

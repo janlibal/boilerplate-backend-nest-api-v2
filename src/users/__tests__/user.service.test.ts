@@ -1,16 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserService } from '../user.service'
-import { userMockDomainObject, userObject } from './mock/user.data'
+import {
+  userMockDomainObject,
+  userObject,
+  userObjectHashedPwd,
+} from './mock/user.data'
 import { UserRepository } from '../infrastructure/repository/user.repository'
 import { UnprocessableEntityException } from '@nestjs/common'
 import ResourceExistsError from '../../exceptions/already.exists.exception'
+import hashPassword from '../../utils/crypto'
 
 // Mock Prisma Service
 const mockUserPersistence = {
   findById: vi.fn(),
   findByEmail: vi.fn(),
   remove: vi.fn(),
+  create: vi.fn(),
 }
 
 describe('UserService', () => {
@@ -43,8 +49,27 @@ describe('UserService', () => {
   describe('UserService methods', () => {
     describe('create()', () => {
       it('should return data for new user', async () => {
-       
+        mockUserPersistence.findByEmail.mockResolvedValue(null)
 
+        const hashPasswordSpy = vi
+          .spyOn(hashPassword, 'hashPassword')
+          .mockResolvedValue('hashedPassword123!')
+
+        mockUserPersistence.create.mockResolvedValue(userMockDomainObject)
+
+        const result = await userService.create(userObject)
+
+        expect(mockUserPersistence.create).toHaveBeenCalledWith(
+          expect.objectContaining(userObjectHashedPwd),
+        )
+
+        expect(result).toEqual(userMockDomainObject)
+
+        expect(hashPasswordSpy).toHaveBeenCalled()
+
+        expect(mockUserPersistence.findByEmail).toHaveBeenCalledWith(
+          userObject.email,
+        )
       })
       it('should throw ConflictException if user with email already exists', async () => {
         mockUserPersistence.findByEmail.mockResolvedValue({})
@@ -104,13 +129,5 @@ describe('UserService', () => {
         )
       })
     })
-
-    /*
-    it('create()', async () => {
-      mockUserPersistence.create.mockResolvedValue(userMockDomainObject)
-      const result = await userPersistence.create(userObject)
-      expect(result).toEqual(userMockDomainObject)
-      //expect(mockUserPersistence.create).toHaveBeenCalledWith({data: userMockEntityObject,})
-    })*/
   })
 })
