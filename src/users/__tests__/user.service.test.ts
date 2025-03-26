@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserService } from '../user.service'
-import { userMockDomainObject } from './mock/user.data'
+import { userMockDomainObject, userObject } from './mock/user.data'
 import { UserRepository } from '../infrastructure/repository/user.repository'
 import { UnprocessableEntityException } from '@nestjs/common'
+import ResourceExistsError from '../../exceptions/already.exists.exception'
 
 // Mock Prisma Service
 const mockUserPersistence = {
@@ -40,6 +41,31 @@ describe('UserService', () => {
   })
 
   describe('UserService methods', () => {
+    describe('create()', () => {
+      it('should return data for new user', async () => {
+       
+
+      })
+      it('should throw ConflictException if user with email already exists', async () => {
+        mockUserPersistence.findByEmail.mockResolvedValue({})
+        await expect(userService.create(userObject)).rejects.toThrowError(
+          ResourceExistsError,
+        )
+      })
+      it('should throw UnprocessableEntityException if role does not exist', async () => {
+        mockUserPersistence.findByEmail.mockResolvedValue(null)
+        await expect(
+          userService.create({ ...userObject, role: { id: 999 } }),
+        ).rejects.toThrowError(UnprocessableEntityException)
+      })
+      it('should throw UnprocessableEntityException if status does not exist', async () => {
+        mockUserPersistence.findByEmail.mockResolvedValue(null)
+
+        await expect(
+          userService.create({ ...userObject, status: { id: 999 } }),
+        ).rejects.toThrowError(UnprocessableEntityException)
+      })
+    })
     describe('findById()', () => {
       it('should find user by provided Id', async () => {
         mockUserPersistence.findById.mockResolvedValue(userMockDomainObject)
