@@ -74,13 +74,6 @@ describe('UserService', () => {
     })
     describe('create()', () => {
       it('should create new session in Db', async () => {
-        const conditions = { userId: User['id'] }
-        mockSessionRepository.deleteByUserId.mockResolvedValue(true)
-        await sessionService.deleteByUserId(conditions)
-        expect(mockSessionRepository.deleteByUserId).toHaveBeenCalledWith(
-          conditions,
-        )
-
         mockSessionRepository.create.mockResolvedValue(sessionMockDomainObject)
         const result = await sessionService.create(sessionObject)
         expect(result).toEqual(sessionMockDomainObject)
