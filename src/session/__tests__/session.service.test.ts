@@ -1,41 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
-import { PrismaService } from '../../database/prisma.service'
-import { PrismaModule } from '../../database/prisma.module'
 import { SessionService } from '../session.service'
-import { SessionPersistence } from '../infrastructure/persistence/session.persistence'
-import { SessionModule } from '../session.module'
-import { SessionPersistenceModule } from '../infrastructure/session.infrastructure.module'
+import { SessionRepository } from '../infrastructure/repository/session.repository'
 import { sessionMockDomainObject, sessionObject } from './mock/session.data'
+import { User } from '../../users/domain/user.domain'
 
 // Mock Prisma Service
-const mockSessionPersistence = {
-  create: vi.fn(),
-  findByEmail: vi.fn(),
+const mockSessionRepository = {
   findById: vi.fn(),
   deleteById: vi.fn(),
   deleteByUserId: vi.fn(),
+  create: vi.fn(),
 }
 
-describe('SessionService', () => {
+describe('UserService', () => {
   let sessionService: SessionService
-  let sessionPersistence: SessionPersistence
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SessionModule, SessionPersistenceModule, PrismaModule],
       providers: [
         SessionService,
         {
-          provide: SessionPersistence,
-          useValue: mockSessionPersistence,
+          provide: SessionRepository,
+          useValue: mockSessionRepository,
         },
-        PrismaService,
       ],
     }).compile()
 
     sessionService = module.get<SessionService>(SessionService)
-    sessionPersistence = module.get<SessionPersistence>(SessionPersistence)
 
     vi.restoreAllMocks()
   })
@@ -49,48 +41,51 @@ describe('SessionService', () => {
   })
 
   describe('SessionService methods', () => {
-    it('deleteByUserId()', async () => {
-      vi.spyOn(mockSessionPersistence, 'deleteByUserId').mockResolvedValue(null)
-
-      const conditions = {
-        userId: sessionMockDomainObject.userId,
-      }
-
-      await sessionPersistence.deleteByUserId(conditions)
-
-      expect(mockSessionPersistence.deleteByUserId).toHaveBeenCalledWith(
-        conditions,
-      )
-
-      expect(sessionPersistence.deleteByUserId).toHaveBeenCalledTimes(1)
+    describe('findById()', () => {
+      it('should find session by provided Id', async () => {
+        mockSessionRepository.findById.mockResolvedValue(
+          sessionMockDomainObject,
+        )
+        const result = await sessionService.findById(sessionMockDomainObject.id)
+        expect(result).toEqual(sessionMockDomainObject)
+        expect(mockSessionRepository.findById).toHaveBeenCalledWith(
+          sessionMockDomainObject.id,
+        )
+      })
     })
-
-    it('deleteById()', async () => {
-      vi.spyOn(mockSessionPersistence, 'deleteById').mockResolvedValue(null)
-
-      await sessionPersistence.deleteById(sessionMockDomainObject.id)
-
-      expect(mockSessionPersistence.deleteById).toHaveBeenCalledWith(
-        sessionMockDomainObject.id,
-      )
-
-      expect(sessionPersistence.deleteById).toHaveBeenCalledTimes(1)
+    describe('deleteById()', () => {
+      it('should delete session by provided sessionId', async () => {
+        mockSessionRepository.deleteById.mockResolvedValue(true)
+        await sessionService.deleteById(sessionMockDomainObject.id)
+        expect(mockSessionRepository.deleteById).toHaveBeenCalledWith(
+          sessionMockDomainObject.id,
+        )
+      })
     })
-
-    it('findById()', async () => {
-      mockSessionPersistence.findById.mockResolvedValue(sessionMockDomainObject)
-      const result = await sessionPersistence.findById(
-        sessionMockDomainObject.id,
-      )
-      expect(result).toEqual(sessionMockDomainObject)
-      //expect(mockPlaylistRepository.save).toHaveBeenCalledWith({data: createPlaylist,})
+    describe('deleteByUserId()', () => {
+      it('should delete session by provided userId', async () => {
+        const conditions = { userId: User['id'] }
+        mockSessionRepository.deleteByUserId.mockResolvedValue(true)
+        await sessionService.deleteByUserId(conditions)
+        expect(mockSessionRepository.deleteByUserId).toHaveBeenCalledWith(
+          conditions,
+        )
+      })
     })
+    describe('create()', () => {
+      it('should create new session in Db', async () => {
+        const conditions = { userId: User['id'] }
+        mockSessionRepository.deleteByUserId.mockResolvedValue(true)
+        await sessionService.deleteByUserId(conditions)
+        expect(mockSessionRepository.deleteByUserId).toHaveBeenCalledWith(
+          conditions,
+        )
 
-    it('create()', async () => {
-      mockSessionPersistence.create.mockResolvedValue(sessionMockDomainObject)
-      const result = await sessionPersistence.create(sessionObject)
-      expect(result).toEqual(sessionMockDomainObject)
-      //expect(mockUserPersistence.create).toHaveBeenCalledWith({data: userMockEntityObject,})
+        mockSessionRepository.create.mockResolvedValue(sessionMockDomainObject)
+        const result = await sessionService.create(sessionObject)
+        expect(result).toEqual(sessionMockDomainObject)
+        expect(mockSessionRepository.create).toHaveBeenCalledWith(sessionObject)
+      })
     })
   })
 })
