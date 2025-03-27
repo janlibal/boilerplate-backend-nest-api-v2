@@ -8,9 +8,9 @@ import { PrismaModule } from '../../database/prisma.module'
 import { SessionModule } from '../../session/session.module'
 import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
 import { RedisModule } from '../../redis/redis.module'
-import configModuleSetup from '../../config/config.module'
 import { AuthController } from '../auth.controller'
 import { dto, loginData, mockLoginResponse, mockUser } from './mock/auth.data'
+import { GlobalConfigModule } from '../../config/global-config.module'
 
 const mockAuthService = {
   register: vi.fn(),
@@ -30,7 +30,7 @@ describe('AuthController', () => {
         SessionPersistenceModule,
         RedisModule,
         PrismaModule,
-        configModuleSetup(),
+        GlobalConfigModule,
       ],
       providers: [
         AuthController,
