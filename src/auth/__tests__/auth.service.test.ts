@@ -9,7 +9,6 @@ import { PrismaModule } from '../../database/prisma.module'
 import { SessionModule } from '../../session/session.module'
 import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
 import { RedisModule } from '../../redis/redis.module'
-import configModuleSetup from '../../config/config.module'
 import {
   dto,
   loginData,
@@ -25,6 +24,7 @@ import crypto from '../../utils/crypto'
 import { SessionService } from '../../session/session.service'
 import { RedisService } from '../../redis/redis.service'
 import { RedisPrefixEnum } from '../../redis/enums/redis.prefix.enum'
+import { GlobalConfigModule } from 'src/config/global-config.module'
 
 //vi.mock('../../utils/crypto', () => mockCrypto)
 
@@ -61,7 +61,7 @@ describe('AuthService', () => {
         SessionPersistenceModule,
         RedisModule,
         PrismaModule,
-        configModuleSetup(),
+        GlobalConfigModule,
       ],
       providers: [
         AuthService,
