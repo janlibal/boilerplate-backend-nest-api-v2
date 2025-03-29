@@ -3,12 +3,6 @@ import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { AuthService } from '../auth.service'
 import { JwtService } from '@nestjs/jwt'
 import { UserService } from '../../users/user.service'
-import { UserModule } from '../../users/user.module'
-import { UserPersistenceModule } from '../../users/infrastructure/user.infrastructure.module'
-import { PrismaModule } from '../../database/prisma.module'
-import { SessionModule } from '../../session/session.module'
-import { SessionPersistenceModule } from '../../session/infrastructure/session.infrastructure.module'
-import { RedisModule } from '../../redis/redis.module'
 import {
   dto,
   loginData,
@@ -25,8 +19,6 @@ import { SessionService } from '../../session/session.service'
 import { RedisService } from '../../redis/redis.service'
 import { RedisPrefixEnum } from '../../redis/enums/redis.prefix.enum'
 import { GlobalConfigModule } from 'src/config/global-config.module'
-
-//vi.mock('../../utils/crypto', () => mockCrypto)
 
 const mockUserService = {
   create: vi.fn(),
@@ -48,21 +40,10 @@ const mockCrypto = {
 
 describe('AuthService', () => {
   let authService: AuthService
-  let userService: UserService
-  let sessionService: SessionService
-  let redisService: RedisService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        UserModule,
-        UserPersistenceModule,
-        SessionModule,
-        SessionPersistenceModule,
-        RedisModule,
-        PrismaModule,
-        GlobalConfigModule,
-      ],
+      imports: [GlobalConfigModule],
       providers: [
         AuthService,
         {
@@ -82,9 +63,6 @@ describe('AuthService', () => {
     }).compile()
 
     authService = module.get<AuthService>(AuthService)
-    userService = module.get<UserService>(UserService)
-    sessionService = module.get<SessionService>(SessionService)
-    redisService = module.get<RedisService>(RedisService)
 
     vi.restoreAllMocks()
   })

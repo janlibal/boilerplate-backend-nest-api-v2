@@ -9,7 +9,6 @@ import {
   sessionObject,
 } from './mock/session.data'
 
-// Mock Prisma Service
 const mockPrismaService = {
   session: {
     create: vi.fn(),
@@ -84,10 +83,8 @@ describe('SessionPersistence', () => {
         sessionMockDomainObject.id,
       )
 
-      // Assert: Check that the result is the expected domain model
       expect(result).toEqual(sessionMockDomainObject)
 
-      // Assert: Check that Prisma's `create` method was called with correct arguments
       expect(mockPrismaService.session.findFirst).toHaveBeenCalledWith({
         include: { user: true },
         where: { id: sessionMockDomainObject.id },
@@ -103,10 +100,8 @@ describe('SessionPersistence', () => {
 
       const result = await sessionPersistence.create(sessionObject)
 
-      // Assert: Check that the result is the expected domain model
       expect(result).toEqual(sessionMockDomainObject)
 
-      // Assert: Check that Prisma's `create` method was called with correct arguments
       expect(mockPrismaService.session.create).toHaveBeenCalledWith({
         data: persistenceModel,
       })

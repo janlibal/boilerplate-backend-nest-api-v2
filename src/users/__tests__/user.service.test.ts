@@ -11,7 +11,6 @@ import { UnprocessableEntityException } from '@nestjs/common'
 import ResourceExistsError from '../../exceptions/already.exists.exception'
 import hashPassword from '../../utils/crypto'
 
-// Mock Prisma Service
 const mockUserPersistence = {
   findById: vi.fn(),
   findByEmail: vi.fn(),
