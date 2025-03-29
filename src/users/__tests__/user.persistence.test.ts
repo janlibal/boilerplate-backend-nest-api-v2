@@ -9,7 +9,6 @@ import {
   userObject,
 } from './mock/user.data'
 
-// Mock Prisma Service
 const mockPrismaService = {
   user: {
     create: vi.fn(),
@@ -68,10 +67,8 @@ describe('UserPersistence', () => {
 
         const result = await userPersistence.findById(userMockDomainObject.id)
 
-        // Assert: Check that the result is the expected domain model
         expect(result).toEqual(userMockDomainObject)
 
-        // Assert: Check that Prisma's `create` method was called with correct arguments
         expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
           where: { id: String(userMockDomainObject.id) },
         })
@@ -103,10 +100,8 @@ describe('UserPersistence', () => {
 
         const result = await userPersistence.create(userObject)
 
-        // Assert: Check that the result is the expected domain model
         expect(result).toEqual(userMockDomainObject)
 
-        // Assert: Check that Prisma's `create` method was called with correct arguments
         expect(mockPrismaService.user.create).toHaveBeenCalledWith({
           data: persistenceModel,
         })

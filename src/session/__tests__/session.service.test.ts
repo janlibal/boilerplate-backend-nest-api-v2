@@ -5,7 +5,6 @@ import { SessionRepository } from '../infrastructure/repository/session.reposito
 import { sessionMockDomainObject, sessionObject } from './mock/session.data'
 import { User } from '../../users/domain/user.domain'
 
-// Mock Prisma Service
 const mockSessionRepository = {
   findById: vi.fn(),
   deleteById: vi.fn(),
@@ -13,7 +12,7 @@ const mockSessionRepository = {
   create: vi.fn(),
 }
 
-describe('UserService', () => {
+describe('SessionService', () => {
   let sessionService: SessionService
 
   beforeEach(async () => {

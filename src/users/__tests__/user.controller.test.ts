@@ -4,14 +4,12 @@ import { UserController } from '../user.controller'
 import { UserService } from '../user.service'
 import { userMockDomainObject, userObject } from './mock/user.data'
 
-// Mock Prisma Service
 const mockUserService = {
   create: vi.fn(),
 }
 
 describe('UserController', () => {
   let userController: UserController
-  let userService: UserService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +23,6 @@ describe('UserController', () => {
     }).compile()
 
     userController = module.get<UserController>(UserController)
-    userService = module.get<UserService>(UserService)
 
     vi.restoreAllMocks()
   })
@@ -43,7 +40,7 @@ describe('UserController', () => {
       mockUserService.create.mockResolvedValue(userMockDomainObject)
       const result = await userController.create(userObject)
       expect(result).toEqual(userMockDomainObject)
-      //expect(mockPlaylistService.createOne).toHaveBeenCalledWith({data: createPlaylist,})
+      expect(mockUserService.create).toHaveBeenCalledWith(userObject)
     })
   })
 })
