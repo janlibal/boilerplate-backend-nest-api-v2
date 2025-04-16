@@ -8,9 +8,9 @@ import loggerFactory from './logger.factory'
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: loggerFactory,
-    }),
+      useFactory: loggerFactory
+    })
   ],
-  exports: [LoggerModule],
+  exports: [LoggerModule]
 })
 export class GlobalLoggerModule {}

@@ -29,7 +29,7 @@ export class AuthService {
     private userService: UserService,
     private sessionService: SessionService,
     private redisService: RedisService,
-    private configService: ConfigService<AllConfigType>,
+    private configService: ConfigService<AllConfigType>
   ) {}
 
   async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
@@ -47,10 +47,7 @@ export class AuthService {
       throw new UnprocessableError('missingPassword')
     }
 
-    const isValidPassword = await crypto.comparePasswords(
-      loginDto.password,
-      user.password,
-    )
+    const isValidPassword = await crypto.comparePasswords(loginDto.password, user.password)
 
     if (!isValidPassword) {
       throw new UnauthorizedError('Invalid email or password')
@@ -65,12 +62,12 @@ export class AuthService {
       id: user.id,
       role: user.role,
       sessionId: session.id,
-      hash,
+      hash
     })
 
     const prefix = RedisPrefixEnum.USER
     const expiry = this.configService.getOrThrow('redis.expiry', {
-      infer: true,
+      infer: true
     })
 
     await this.redisService.createSession({ prefix, user, token, expiry })
@@ -79,7 +76,7 @@ export class AuthService {
       refreshToken,
       token,
       tokenExpires,
-      user,
+      user
     }
   }
 
@@ -90,25 +87,25 @@ export class AuthService {
       password: dto.password,
       email: dto.email,
       role: {
-        id: RoleEnum.user,
+        id: RoleEnum.user
       },
       status: {
-        id: StatusEnum.inactive,
-      },
+        id: StatusEnum.inactive
+      }
     })
 
-    const hash = await this.jwtService.signAsync(
+    await this.jwtService.signAsync(
       {
-        confirmEmailUserId: user.id,
+        confirmEmailUserId: user.id
       },
       {
         secret: this.configService.getOrThrow('auth.confirmEmailSecret', {
-          infer: true,
+          infer: true
         }),
         expiresIn: this.configService.getOrThrow('auth.confirmEmailExpires', {
-          infer: true,
-        }),
-      },
+          infer: true
+        })
+      }
     )
   }
 
@@ -122,7 +119,7 @@ export class AuthService {
   }
 
   async refreshToken(
-    data: Pick<JwtRefreshPayloadType, 'sessionId' | 'hash'>,
+    data: Pick<JwtRefreshPayloadType, 'sessionId' | 'hash'>
   ): Promise<Omit<LoginResponseDto, 'user'>> {
     const session = await this.sessionService.findById(data.sessionId)
 
@@ -143,22 +140,22 @@ export class AuthService {
     }
 
     await this.sessionService.update(session.id, {
-      hash,
+      hash
     })
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
       id: session.userId,
       role: {
-        id: user.role.id,
+        id: user.role.id
       },
       sessionId: session.id,
-      hash,
+      hash
     })
 
     return {
       token,
       refreshToken,
-      tokenExpires,
+      tokenExpires
     }
   }
 
@@ -169,7 +166,7 @@ export class AuthService {
     hash: Session['hash']
   }) {
     const tokenExpiresIn = this.configService.getOrThrow('auth.expires', {
-      infer: true,
+      infer: true
     })
 
     const tokenExpires = Date.now() + ms(tokenExpiresIn)
@@ -179,33 +176,33 @@ export class AuthService {
         {
           id: data.id,
           role: data.role,
-          sessionId: data.sessionId,
+          sessionId: data.sessionId
         },
         {
           secret: this.configService.getOrThrow('auth.secret', { infer: true }),
-          expiresIn: tokenExpiresIn,
-        },
+          expiresIn: tokenExpiresIn
+        }
       ),
       await this.jwtService.signAsync(
         {
           sessionId: data.sessionId,
-          hash: data.hash,
+          hash: data.hash
         },
         {
           secret: this.configService.getOrThrow('auth.refreshSecret', {
-            infer: true,
+            infer: true
           }),
           expiresIn: this.configService.getOrThrow('auth.refreshExpires', {
-            infer: true,
-          }),
-        },
-      ),
+            infer: true
+          })
+        }
+      )
     ])
 
     return {
       token,
       refreshToken,
-      tokenExpires,
+      tokenExpires
     }
   }
 }

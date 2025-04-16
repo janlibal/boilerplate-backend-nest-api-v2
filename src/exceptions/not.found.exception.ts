@@ -9,11 +9,11 @@ export default class NotFoundError extends HttpException {
         detail: 'The resource not found.',
         errors: [
           {
-            message: `${resource} was not found`,
-          },
-        ],
+            message: `${resource} was not found`
+          }
+        ]
       },
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     )
   }
 }

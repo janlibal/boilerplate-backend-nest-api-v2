@@ -7,7 +7,7 @@ describe('AppRepository', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AppRepository],
+      providers: [AppRepository]
     }).compile()
 
     appRepository = module.get<AppRepository>(AppRepository)

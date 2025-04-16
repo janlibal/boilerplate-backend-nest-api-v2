@@ -10,16 +10,10 @@ async function hashPassword(password: string) {
 }
 
 function makeHash() {
-  return crypto
-    .createHash('sha256')
-    .update(randomStringGenerator())
-    .digest('hex')
+  return crypto.createHash('sha256').update(randomStringGenerator()).digest('hex')
 }
 
-async function comparePasswords(
-  candidatePassword: string,
-  userPassword: string,
-) {
+async function comparePasswords(candidatePassword: string, userPassword: string) {
   return bcrypt.compare(candidatePassword, userPassword)
 }
 
@@ -89,6 +83,6 @@ export default {
   //generateAccessToken,
   comparePasswords,
   //peperify,
-  makeHash,
+  makeHash
   //verifyToken
 }

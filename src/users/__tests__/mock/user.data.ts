@@ -9,7 +9,7 @@ export const userObject: UserDomain = {
   password: 'Password123!',
   role: { id: 1 },
   status: { id: 1 },
-  provider: AuthProvidersEnum.email,
+  provider: AuthProvidersEnum.email
 }
 
 export const userMockDomainObject: UserDomain = {
@@ -20,7 +20,7 @@ export const userMockDomainObject: UserDomain = {
   password: 'Password123!',
   role: { id: 1 },
   status: { id: 1 },
-  provider: AuthProvidersEnum.email,
+  provider: AuthProvidersEnum.email
 }
 
 export const userMockEntityObject: UserEntity = {
@@ -31,7 +31,7 @@ export const userMockEntityObject: UserEntity = {
   password: 'Password123!',
   roleId: 1,
   statusId: 1,
-  provider: AuthProvidersEnum.email,
+  provider: AuthProvidersEnum.email
 }
 
 export const userObjectHashedPwd: UserDomain = {
@@ -41,5 +41,5 @@ export const userObjectHashedPwd: UserDomain = {
   lastName: 'Libal',
   role: { id: 1 },
   status: { id: 1 },
-  provider: AuthProvidersEnum.email,
+  provider: AuthProvidersEnum.email
 }

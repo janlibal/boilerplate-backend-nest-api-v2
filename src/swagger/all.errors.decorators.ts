@@ -9,7 +9,7 @@ export function SuccessResponse<TModel extends Type<unknown>>(
   path: string,
   status: number,
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
   return ApiOk(model, type, path, status, description, options)
 }
@@ -20,7 +20,7 @@ export function BadRequestError(
   detail: string,
   errors: object[],
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
   return ApiErrorDecorator(
     HttpStatus.BAD_REQUEST,
@@ -29,7 +29,7 @@ export function BadRequestError(
     detail,
     errors,
     description,
-    options,
+    options
   )
 }
 
@@ -39,7 +39,7 @@ export function UnauthorizedError(
   detail: string,
   errors: object[],
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
   return ApiErrorDecorator(
     HttpStatus.UNAUTHORIZED,
@@ -48,7 +48,7 @@ export function UnauthorizedError(
     detail,
     errors,
     description,
-    options,
+    options
   )
 }
 
@@ -58,7 +58,7 @@ export function InternalError(
   detail: string,
   description?: string,
   errors?: object[],
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
   return ApiErrorDecorator(
     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -67,7 +67,7 @@ export function InternalError(
     detail,
     errors,
     description,
-    options,
+    options
   )
 }
 
@@ -77,7 +77,7 @@ export function UnprocessableEntityError(
   detail: string,
   errors: object[],
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
   return ApiErrorDecorator(
     HttpStatus.UNPROCESSABLE_ENTITY,
@@ -86,7 +86,7 @@ export function UnprocessableEntityError(
     detail,
     errors,
     description,
-    options,
+    options
   )
 }
 
@@ -96,15 +96,7 @@ export function ConflictError(
   detail: string,
   errors: object[],
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) {
-  return ApiErrorDecorator(
-    HttpStatus.CONFLICT,
-    title,
-    path,
-    detail,
-    errors,
-    description,
-    options,
-  )
+  return ApiErrorDecorator(HttpStatus.CONFLICT, title, path, detail, errors, description, options)
 }

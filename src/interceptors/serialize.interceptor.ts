@@ -18,9 +18,9 @@ export class SerializeInterceptor implements NestInterceptor {
 
         return plainToClass(this.dto, data, {
           excludeExtraneousValues: true, // remove fields that are not in the DTO
-          exposeUnsetFields: false, // remove fields with value of undefined
+          exposeUnsetFields: false // remove fields with value of undefined
         })
-      }),
+      })
     )
   }
 }

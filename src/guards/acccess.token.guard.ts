@@ -35,7 +35,7 @@ export class AccessTokenGuard implements CanActivate {
     private readonly reflect: Reflector,
     private jwtService: JwtService,
     private redisService: RedisService,
-    private configService: ConfigService<AllConfigType>,
+    private configService: ConfigService<AllConfigType>
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -45,32 +45,27 @@ export class AccessTokenGuard implements CanActivate {
 
       const isPublic = this.reflect.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
         context.getClass(),
-        context.getHandler(),
+        context.getHandler()
       ])
 
       if (isPublic) return true
 
       const authorization = request.headers.authorization
 
-      if (
-        !authorization ||
-        Array.isArray(authorization) ||
-        typeof authorization !== 'string'
-      )
+      if (!authorization || Array.isArray(authorization) || typeof authorization !== 'string')
         throw new HttpException('Invalid Headers', HttpStatus.UNAUTHORIZED)
 
       const [jwt, accessToken] = authorization.split(' ')
 
-      if (jwt !== 'jwt')
-        throw new HttpException('No jwt', HttpStatus.UNAUTHORIZED)
+      if (jwt !== 'jwt') throw new HttpException('No jwt', HttpStatus.UNAUTHORIZED)
 
       const authSecret = this.configService.getOrThrow('auth.secret', {
-        infer: true,
+        infer: true
       })
 
       //verify token using jwt service
       const data = await this.jwtService.verifyAsync(accessToken, {
-        secret: authSecret,
+        secret: authSecret
       })
 
       const redisObject = await this.redisService.getSession(data.id)
@@ -107,7 +102,7 @@ export class AccessTokenGuard implements CanActivate {
     } catch (error: any) {
       throw new HttpException(
         !!error?.message ? error.message : 'You must be logged in first',
-        !!error?.status ? error.status : HttpStatus.UNAUTHORIZED,
+        !!error?.status ? error.status : HttpStatus.UNAUTHORIZED
       )
     }
   }

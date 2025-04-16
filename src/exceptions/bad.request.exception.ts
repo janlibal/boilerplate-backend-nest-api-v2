@@ -10,9 +10,9 @@ export default class BadRequestError extends HttpException {
         title: 'Bad Request',
         status: HttpStatus.BAD_REQUEST,
         detail: 'Something went wrong.',
-        errors: messages.map((message) => ({ message })),
+        errors: messages.map((message) => ({ message }))
       },
-      HttpStatus.BAD_REQUEST,
+      HttpStatus.BAD_REQUEST
     )
   }
 }

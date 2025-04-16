@@ -10,7 +10,7 @@ import {
   mockUser,
   mockUserGoogle,
   newUser,
-  sessionData,
+  sessionData
 } from './mock/auth.data'
 import UnauthorizedError from '../../exceptions/unauthorized.exception'
 import UnprocessableError from '../../exceptions/unprocessable.exception'
@@ -22,20 +22,15 @@ import { GlobalConfigModule } from 'src/config/global-config.module'
 
 const mockUserService = {
   create: vi.fn(),
-  findByEmail: vi.fn(),
+  findByEmail: vi.fn()
 }
 
 const mockSessionService = {
-  create: vi.fn(),
+  create: vi.fn()
 }
 
 const mockRedisService = {
-  createSession: vi.fn(),
-}
-
-const mockCrypto = {
-  comparePasswords: vi.fn(),
-  makeHash: vi.fn(),
+  createSession: vi.fn()
 }
 
 describe('AuthService', () => {
@@ -48,18 +43,18 @@ describe('AuthService', () => {
         AuthService,
         {
           provide: UserService,
-          useValue: mockUserService,
+          useValue: mockUserService
         },
         {
           provide: SessionService,
-          useValue: mockSessionService,
+          useValue: mockSessionService
         },
         {
           provide: RedisService,
-          useValue: mockRedisService,
+          useValue: mockRedisService
         },
-        JwtService,
-      ],
+        JwtService
+      ]
     }).compile()
 
     authService = module.get<AuthService>(AuthService)
@@ -89,39 +84,28 @@ describe('AuthService', () => {
         const prefix = RedisPrefixEnum.USER
         const expiry = 900000
         mockUserService.findByEmail.mockResolvedValue(mockUser)
-        const comparePasswordsSpy = vi
-          .spyOn(crypto, 'comparePasswords')
-          .mockResolvedValue(true)
-        const makeHashSpy = vi
-          .spyOn(crypto, 'makeHash')
-          .mockReturnValue('hash123')
+        const comparePasswordsSpy = vi.spyOn(crypto, 'comparePasswords').mockResolvedValue(true)
+        const makeHashSpy = vi.spyOn(crypto, 'makeHash').mockReturnValue('hash123')
         mockSessionService.create.mockResolvedValue(sessionData)
         mockRedisService.createSession.mockResolvedValue(true)
 
         const result = await authService.validateLogin(loginData)
         expect(result.refreshToken).toMatch(
-          /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
+          /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
         )
-        expect(result.token).toMatch(
-          /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
-        )
+        expect(result.token).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         expect(result.tokenExpires).toBeDefined()
         expect(result.user).toEqual(mockUser)
 
-        expect(mockUserService.findByEmail).toHaveBeenCalledWith(
-          loginData.email,
-        )
-        expect(comparePasswordsSpy).toHaveBeenCalledWith(
-          loginData.password,
-          mockUser.password,
-        )
+        expect(mockUserService.findByEmail).toHaveBeenCalledWith(loginData.email)
+        expect(comparePasswordsSpy).toHaveBeenCalledWith(loginData.password, mockUser.password)
         expect(makeHashSpy).toHaveBeenCalled()
         expect(mockSessionService.create).toHaveBeenCalledWith(sessionData)
         expect(mockRedisService.createSession).toHaveBeenCalledWith({
           prefix: prefix,
           user: result.user,
           token: result.token,
-          expiry: expiry,
+          expiry: expiry
         })
       })
 
@@ -129,7 +113,7 @@ describe('AuthService', () => {
         mockUserService.findByEmail.mockResolvedValue(null)
 
         await expect(authService.validateLogin(loginData)).rejects.toThrow(
-          new UnauthorizedError('Invalid email or password'),
+          new UnauthorizedError('Invalid email or password')
         )
       })
 
@@ -137,9 +121,7 @@ describe('AuthService', () => {
         mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
         await expect(authService.validateLogin(loginData)).rejects.toThrow(
-          new UnprocessableError(
-            `hasToLoginViaProvider:${mockUserGoogle.provider}`,
-          ),
+          new UnprocessableError(`hasToLoginViaProvider:${mockUserGoogle.provider}`)
         )
       })
 
@@ -147,28 +129,21 @@ describe('AuthService', () => {
         mockUserService.findByEmail.mockResolvedValue(mockUserGoogle)
 
         await expect(authService.validateLogin(loginData)).rejects.toThrow(
-          new UnprocessableError('missingPassword'),
+          new UnprocessableError('missingPassword')
         )
       })
 
       it('should throw error for invalid password', async () => {
         mockUserService.findByEmail.mockResolvedValue(mockUser)
 
-        const comparePasswordsSpy = vi
-          .spyOn(crypto, 'comparePasswords')
-          .mockResolvedValue(false)
+        const comparePasswordsSpy = vi.spyOn(crypto, 'comparePasswords').mockResolvedValue(false)
 
         await expect(authService.validateLogin(loginDataBad)).rejects.toThrow(
-          new UnauthorizedError('Invalid email or password'),
+          new UnauthorizedError('Invalid email or password')
         )
 
-        expect(comparePasswordsSpy).toHaveBeenCalledWith(
-          loginDataBad.password,
-          mockUser.password,
-        )
-        expect(mockUserService.findByEmail).toHaveBeenCalledWith(
-          loginDataBad.email,
-        )
+        expect(comparePasswordsSpy).toHaveBeenCalledWith(loginDataBad.password, mockUser.password)
+        expect(mockUserService.findByEmail).toHaveBeenCalledWith(loginDataBad.email)
       })
     })
   })

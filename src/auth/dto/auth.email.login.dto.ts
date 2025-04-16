@@ -11,14 +11,14 @@ export class AuthEmailLoginDto {
   @IsNotEmpty({ message: 'Email cannot be empty' })
   @IsString({ message: 'Email must be a string' })
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, {
-    message: 'Email must be in proper format',
+    message: 'Email must be in proper format'
   })
   readonly email: string
 
   @ApiProperty({
     example: 'Password123!',
     default: 'Password123!',
-    type: String,
+    type: String
   })
   @IsNotEmpty({ message: 'Password cannot be empty' })
   readonly password: string

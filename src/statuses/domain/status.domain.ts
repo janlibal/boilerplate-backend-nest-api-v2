@@ -9,7 +9,7 @@ export class Status {
     type: Number,
     description: 'Status when created',
     default: 2,
-    example: 2,
+    example: 2
   })
   @Expose()
   id: number
@@ -19,7 +19,7 @@ export class Status {
     type: String,
     example: 'active',
     description: 'Status description active/inactive',
-    default: 'active',
+    default: 'active'
   })
   @Expose()
   title?: string

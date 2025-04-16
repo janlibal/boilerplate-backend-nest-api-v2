@@ -1,14 +1,5 @@
 import { registerAs } from '@nestjs/config'
-import {
-  IsBoolean,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-  IsUrl,
-  Max,
-  Min,
-} from 'class-validator'
+import { IsEnum, IsInt, IsOptional, IsString, IsUrl, Max, Min } from 'class-validator'
 import { AppConfig } from './app.config.type'
 
 import { API_PREFIX } from 'src/shared/constants/global.constants'
@@ -17,7 +8,7 @@ import validateConfig from 'src/utils/validatate.config'
 enum Environment {
   Development = 'dev',
   Production = 'prod',
-  Test = 'test',
+  Test = 'test'
 }
 
 class EnvironmentVariablesValidator {
@@ -85,7 +76,7 @@ export default registerAs<AppConfig>('app', () => {
 
     logLevel: process.env.LOG_LEVEL || 'debug',
     logService: process.env.LOG_SERVICE || 'console',
-    debug: process.env.DEBUG && process.env.DEBUG == 'false',
+    debug: process.env.DEBUG && process.env.DEBUG == 'false'
   }
 })
 
@@ -95,6 +86,6 @@ export default registerAs<AppConfig>('app', () => {
 LOG_SERVICE=console
 DEBUG=false
   const logLevel = configService.get('app.logLevel', { infer: true }); //'debug'
-  const logService = configService.get('app.logService', { infer: true }); //'console' // 
-  const isDebug =  configService.get('app.debug', { infer: true }); //false 
+  const logService = configService.get('app.logService', { infer: true }); //'console' //
+  const isDebug =  configService.get('app.debug', { infer: true }); //false
   */

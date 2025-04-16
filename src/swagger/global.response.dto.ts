@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsDate, IsNotEmpty } from 'class-validator'
+import { IsBoolean, IsNotEmpty } from 'class-validator'
 
-export class GlobalResponseDto<TData> {
+export class GlobalResponseDto {
   @ApiProperty({
     description: 'Result of the operation',
-    example: true,
+    example: true
   })
   @IsBoolean()
   @IsNotEmpty()
@@ -13,9 +13,9 @@ export class GlobalResponseDto<TData> {
   @ApiProperty({
     description: 'Path',
     example: '/app',
-    type: String,
+    type: String
   })
-  path: String
+  path: string
 
   /*@ApiProperty({
     description: 'Status code',

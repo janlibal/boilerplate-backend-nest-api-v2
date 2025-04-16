@@ -14,9 +14,9 @@ export function cloudwatchLoggingConfig(): Options {
         createLogStream: true, // Automatically create log stream if it doesn't exist
         pinoOptions: {
           level: 'info', // Optional: Set logging level for Pino
-          timestamp: new Date(Date.now()).toISOString(),
-        },
-      },
-    },
+          timestamp: new Date(Date.now()).toISOString()
+        }
+      }
+    }
   }
 }

@@ -7,21 +7,21 @@ import { EnvDto } from './env.dto'
 export class AppResponseDto {
   @ApiProperty({
     description: 'Project name',
-    default: pck.name,
+    default: pck.name
   })
   @Expose()
   name: string
 
   @ApiProperty({
     description: 'Project version',
-    default: pck.version,
+    default: pck.version
   })
   @Expose()
   version: string
 
   @ApiProperty({
     description: 'Project description',
-    default: pck.description,
+    default: pck.description
   })
   @Expose()
   description: string

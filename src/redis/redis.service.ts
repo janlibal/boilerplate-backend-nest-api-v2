@@ -1,18 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common'
-import { ProductInterface } from './interfaces/product.interface'
 import { RedisPrefixEnum } from './enums/redis.prefix.enum'
 import { RedisRepository } from './redis.repository'
 import { RedisDomain } from './domain/redis.domain'
 import { User } from '../users/domain/user.domain'
 
-const oneDayInSeconds = 60 * 60 * 24
-const tenMinutesInSeconds = 60 * 10
+//const oneDayInSeconds = 60 * 60 * 24
+//const tenMinutesInSeconds = 60 * 10
 
 @Injectable()
 export class RedisService {
-  constructor(
-    @Inject(RedisRepository) private readonly redisRepository: RedisRepository,
-  ) {}
+  constructor(@Inject(RedisRepository) private readonly redisRepository: RedisRepository) {}
 
   async createSession(data: RedisDomain): Promise<void> {
     return await this.redisRepository.createUserWithExpiry(data)
@@ -20,10 +17,7 @@ export class RedisService {
 
   async releaseByUserId(conditions: { userId: User['id'] }): Promise<void> {
     //const userId = conditions.userId.toString()
-    return await this.redisRepository.delete(
-      RedisPrefixEnum.USER,
-      conditions.userId,
-    )
+    return await this.redisRepository.delete(RedisPrefixEnum.USER, conditions.userId)
   }
 
   async getSession(userId: string): Promise<string | null> {

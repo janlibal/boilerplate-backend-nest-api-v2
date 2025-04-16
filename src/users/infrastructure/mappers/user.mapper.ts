@@ -22,7 +22,7 @@ export class UserMapper {
       email: raw.email,
       provider: this.mapProviderToDomain(raw.provider),
       status: status,
-      role: role,
+      role: role
     }
     return domainEntity
   }
@@ -35,14 +35,12 @@ export class UserMapper {
       password: data.password,
       provider: this.mapProviderToPersistence(data.provider),
       roleId: data.role.id,
-      statusId: data.status.id,
+      statusId: data.status.id
     }
     return persistenceEntity
   }
 
-  private static mapProviderToPersistence(
-    provider: AuthProvidersEnum,
-  ): Provider {
+  private static mapProviderToPersistence(provider: AuthProvidersEnum): Provider {
     switch (provider) {
       case AuthProvidersEnum.email:
         return Provider.email

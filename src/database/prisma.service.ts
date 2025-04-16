@@ -1,6 +1,6 @@
 import { OnModuleInit } from '@nestjs/common'
 import { PrismaClient } from '@prisma/client'
-import { connectWithRetry, keepAliveCheck } from './prisma.connection-checker'
+import { connectWithRetry } from './prisma.connection-checker'
 
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {

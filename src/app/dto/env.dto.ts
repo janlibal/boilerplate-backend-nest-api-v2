@@ -6,7 +6,7 @@ export class EnvDto {
   @ApiProperty({
     type: String,
     description: 'Runtime verion',
-    example: '20.10.0',
+    example: '20.10.0'
   })
   @Expose()
   nodeVersion: string
@@ -14,7 +14,7 @@ export class EnvDto {
   @ApiProperty({
     type: String,
     description: 'Machine name',
-    example: 'Macbooks-Macbook.local',
+    example: 'Macbooks-Macbook.local'
   })
   @Expose()
   hostName: string
@@ -22,7 +22,7 @@ export class EnvDto {
   @ApiProperty({
     type: String,
     description: 'Platform name',
-    example: 'darwin/x64',
+    example: 'darwin/x64'
   })
   @Expose()
   platform: string

@@ -11,9 +11,9 @@ export class NewBadRequestError extends HttpException {
         '4. name': 'NewBadRequest',
         '5. type': 'NEW_BAD_REQUEST',
         //'D. status': HttpStatus.BAD_REQUEST || 400,
-        '6. detail': 'Error: ' + messages.map((m) => m),
+        '6. detail': 'Error: ' + messages.map((m) => m)
       },
-      HttpStatus.BAD_REQUEST,
+      HttpStatus.BAD_REQUEST
     )
   }
 }
@@ -24,9 +24,9 @@ export class NewResourceNotFound extends HttpException {
       {
         '4. name': 'NewResourceNotFound',
         '5. type': 'NEW_RESOURCE_NOT_FOUND',
-        '6. detail': `Error: Resource ${resource} could not be found.`,
+        '6. detail': `Error: Resource ${resource} could not be found.`
       },
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     )
   }
 }
@@ -37,9 +37,9 @@ export class NewNotFoundError extends HttpException {
       {
         '4. name': 'NewNotFound',
         '5. type': 'NEW_NOT_FOUND',
-        '6. detail': `Error: Resource ${resource} with identifier ${identitier} could not be found.`,
+        '6. detail': `Error: Resource ${resource} with identifier ${identitier} could not be found.`
       },
-      HttpStatus.NO_CONTENT,
+      HttpStatus.NO_CONTENT
     )
   }
 }
@@ -51,14 +51,14 @@ export class NotFoundError extends HttpException {
         title: 'Not Found',
         status: HttpStatus.NOT_FOUND,
         detail: 'The resource you requested could not be found.',
-        errors: `${resource} with identifier ${identifier} was not found`,
+        errors: `${resource} with identifier ${identifier} was not found`
         /*errors: [
           {
             message: `${resource} with identifier '${identifier}' was not found`,
           },
         ],*/
       },
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     )
   }
 }
@@ -88,14 +88,14 @@ export class OldResourceNotFound extends HttpException {
         title: 'Resource Not Found',
         status: HttpStatus.NOT_FOUND,
         detail: 'The resource you requested could not be found.',
-        errors: `${resource} was not found`,
+        errors: `${resource} was not found`
         /*errors: [
           {
             message: `${resource} was not found`,
           },
         ],*/
       },
-      HttpStatus.NOT_FOUND,
+      HttpStatus.NOT_FOUND
     )
   }
 }

@@ -1,11 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserService } from '../user.service'
-import {
-  userMockDomainObject,
-  userObject,
-  userObjectHashedPwd,
-} from './mock/user.data'
+import { userMockDomainObject, userObject, userObjectHashedPwd } from './mock/user.data'
 import { UserRepository } from '../infrastructure/repository/user.repository'
 import { UnprocessableEntityException } from '@nestjs/common'
 import ResourceExistsError from '../../exceptions/already.exists.exception'
@@ -15,7 +11,7 @@ const mockUserPersistence = {
   findById: vi.fn(),
   findByEmail: vi.fn(),
   remove: vi.fn(),
-  create: vi.fn(),
+  create: vi.fn()
 }
 
 describe('UserService', () => {
@@ -27,9 +23,9 @@ describe('UserService', () => {
         UserService,
         {
           provide: UserRepository,
-          useValue: mockUserPersistence,
-        },
-      ],
+          useValue: mockUserPersistence
+        }
+      ]
     }).compile()
 
     userService = module.get<UserService>(UserService)
@@ -59,34 +55,30 @@ describe('UserService', () => {
         const result = await userService.create(userObject)
 
         expect(mockUserPersistence.create).toHaveBeenCalledWith(
-          expect.objectContaining(userObjectHashedPwd),
+          expect.objectContaining(userObjectHashedPwd)
         )
 
         expect(result).toEqual(userMockDomainObject)
 
         expect(hashPasswordSpy).toHaveBeenCalled()
 
-        expect(mockUserPersistence.findByEmail).toHaveBeenCalledWith(
-          userObject.email,
-        )
+        expect(mockUserPersistence.findByEmail).toHaveBeenCalledWith(userObject.email)
       })
       it('should throw ConflictException if user with email already exists', async () => {
         mockUserPersistence.findByEmail.mockResolvedValue({})
-        await expect(userService.create(userObject)).rejects.toThrowError(
-          ResourceExistsError,
-        )
+        await expect(userService.create(userObject)).rejects.toThrowError(ResourceExistsError)
       })
       it('should throw UnprocessableEntityException if role does not exist', async () => {
         mockUserPersistence.findByEmail.mockResolvedValue(null)
-        await expect(
-          userService.create({ ...userObject, role: { id: 999 } }),
-        ).rejects.toThrowError(UnprocessableEntityException)
+        await expect(userService.create({ ...userObject, role: { id: 999 } })).rejects.toThrowError(
+          UnprocessableEntityException
+        )
       })
       it('should throw UnprocessableEntityException if status does not exist', async () => {
         mockUserPersistence.findByEmail.mockResolvedValue(null)
 
         await expect(
-          userService.create({ ...userObject, status: { id: 999 } }),
+          userService.create({ ...userObject, status: { id: 999 } })
         ).rejects.toThrowError(UnprocessableEntityException)
       })
     })
@@ -95,9 +87,7 @@ describe('UserService', () => {
         mockUserPersistence.findById.mockResolvedValue(userMockDomainObject)
         const result = await userService.findById(userMockDomainObject.id)
         expect(result).toEqual(userMockDomainObject)
-        expect(mockUserPersistence.findById).toHaveBeenCalledWith(
-          userMockDomainObject.id,
-        )
+        expect(mockUserPersistence.findById).toHaveBeenCalledWith(userMockDomainObject.id)
       })
       it('should throw error if Id is missing', async () => {
         mockUserPersistence.findById.mockResolvedValue(null)
@@ -114,18 +104,14 @@ describe('UserService', () => {
         mockUserPersistence.findByEmail.mockResolvedValue(userMockDomainObject)
         const result = await userService.findByEmail(userMockDomainObject.email)
         expect(result).toEqual(userMockDomainObject)
-        expect(mockUserPersistence.findByEmail).toHaveBeenCalledWith(
-          userMockDomainObject.email,
-        )
+        expect(mockUserPersistence.findByEmail).toHaveBeenCalledWith(userMockDomainObject.email)
       })
     })
     describe('remove()', () => {
       it('should remove user from Db with provided Id', async () => {
         mockUserPersistence.remove.mockResolvedValue(true)
         await userService.remove(userMockDomainObject.id)
-        expect(mockUserPersistence.remove).toHaveBeenCalledWith(
-          userMockDomainObject.id,
-        )
+        expect(mockUserPersistence.remove).toHaveBeenCalledWith(userMockDomainObject.id)
       })
     })
   })

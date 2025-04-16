@@ -6,9 +6,9 @@ export default class UnprocessableError extends HttpException {
       {
         title: 'Unprocessable Error',
         status: HttpStatus.UNPROCESSABLE_ENTITY,
-        detail: message,
+        detail: message
       },
-      HttpStatus.UNPROCESSABLE_ENTITY,
+      HttpStatus.UNPROCESSABLE_ENTITY
     )
   }
 }
