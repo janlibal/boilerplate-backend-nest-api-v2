@@ -3,7 +3,7 @@ import { type IncomingMessage, type ServerResponse } from 'http'
 export const customSuccessMessage = (
   req: IncomingMessage,
   res: ServerResponse<IncomingMessage>,
-  responseTime: number,
+  responseTime: number
 ) => {
   return `[${req.id || '*'}] "${req.method} ${req.url}" ${res.statusCode} - "${req.headers['host']}" "${req.headers['user-agent']}" - ${responseTime} ms`
 }

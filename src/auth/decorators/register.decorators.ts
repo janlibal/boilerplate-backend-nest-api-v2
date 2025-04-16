@@ -1,23 +1,19 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiOperation, ApiResponse } from '@nestjs/swagger'
-import {
-  BadRequestError,
-  ConflictError,
-  InternalError,
-} from '../../swagger/all.errors.decorators'
+import { BadRequestError, ConflictError, InternalError } from '../../swagger/all.errors.decorators'
 import { registerPath } from '../constants/paths'
 import { badRequestSignUpErrors, conflictErrors } from '../constants/errors'
 import {
   badRequestResponses,
   conflictResponses,
-  internalErrorResponses,
+  internalErrorResponses
 } from '../../swagger/constants/decorator.responses'
 
 export function registerDecorators() {
   return applyDecorators(
     ApiOperation({
       summary: 'Registers a new user',
-      description: 'Returns no content when registration succeeds',
+      description: 'Returns no content when registration succeeds'
     }),
     ApiResponse({ status: 204, description: 'Success, returns no content' }),
     BadRequestError(
@@ -25,20 +21,20 @@ export function registerDecorators() {
       registerPath,
       badRequestResponses.detail,
       badRequestSignUpErrors,
-      badRequestResponses.description,
+      badRequestResponses.description
     ),
     ConflictError(
       conflictResponses.title,
       registerPath,
       conflictResponses.detail,
       conflictErrors,
-      conflictResponses.description,
+      conflictResponses.description
     ),
     InternalError(
       internalErrorResponses.title,
       registerPath,
       internalErrorResponses.detail,
-      internalErrorResponses.description,
-    ),
+      internalErrorResponses.description
+    )
   )
 }

@@ -6,7 +6,7 @@ import { Session } from 'src/session/domain/session.domain'
 @Injectable()
 export abstract class SessionRepository {
   abstract create(
-    data: Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,
+    data: Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
   ): Promise<Session>
 
   abstract deleteById(id: Session['id']): Promise<void>
@@ -17,8 +17,6 @@ export abstract class SessionRepository {
 
   abstract update(
     id: Session['id'],
-    payload: Partial<
-      Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>
-    >,
+    payload: Partial<Omit<Session, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>>
   ): Promise<Session | null>
 }

@@ -7,7 +7,7 @@ const PinoLevelToGoogleLoggingSeverityLookup = Object.freeze({
   info: 'INFO',
   warn: 'WARNING',
   error: 'ERROR',
-  fatal: 'CRITICAL',
+  fatal: 'CRITICAL'
 })
 
 export function googleLoggingConfig(): Options {
@@ -19,9 +19,9 @@ export function googleLoggingConfig(): Options {
           severity:
             PinoLevelToGoogleLoggingSeverityLookup[label] ||
             PinoLevelToGoogleLoggingSeverityLookup['info'],
-          level: number,
+          level: number
         }
-      },
-    },
+      }
+    }
   }
 }

@@ -5,7 +5,7 @@ import { IsBoolean, IsDate, IsNotEmpty } from 'class-validator'
 export class GlobalOkResponseDto<TData> {
   @ApiProperty({
     description: 'Result of the operation',
-    example: true,
+    example: true
   })
   @IsBoolean()
   @IsNotEmpty()
@@ -14,14 +14,14 @@ export class GlobalOkResponseDto<TData> {
   @ApiProperty({
     description: 'API path',
     example: '/api/v1',
-    type: String,
+    type: String
   })
   path: string
 
   @ApiProperty({
     description: 'Status code',
     example: 201,
-    type: Number,
+    type: Number
   })
   @IsDate()
   statusCode: number
@@ -29,13 +29,13 @@ export class GlobalOkResponseDto<TData> {
   @ApiProperty({
     description: 'Timestamp',
     example: new Date().toISOString(),
-    type: Date,
+    type: Date
   })
   @IsDate()
   timestamp: string
 
   @ApiProperty({
-    description: 'Result',
+    description: 'Result'
   })
   @IsNotEmpty()
   result: TData | TData[]

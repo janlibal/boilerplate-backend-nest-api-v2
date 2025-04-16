@@ -8,7 +8,7 @@ import {
   IsString,
   Matches,
   MaxLength,
-  MinLength,
+  MinLength
 } from 'class-validator'
 import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
 import { RoleDto } from '../../roles/dto/role.dto'
@@ -22,7 +22,7 @@ export class CreateUserDto {
   @IsString({ message: 'Email must be a string' })
   @IsEmail({}, { message: 'Email must be valid.' })
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, {
-    message: 'Email must be in proper format',
+    message: 'Email must be in proper format'
   })
   readonly email: string | null
 
@@ -32,7 +32,7 @@ export class CreateUserDto {
   @MinLength(6, { message: 'Password must contain at least 6 characters' })
   @MaxLength(20, { message: 'Passwword can contain 20 characters at the most' })
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password is too weak',
+    message: 'Password is too weak'
   })
   readonly password: string
 

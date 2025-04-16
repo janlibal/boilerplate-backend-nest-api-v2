@@ -7,14 +7,14 @@ import { Status } from '../../statuses/domain/status.domain'
 
 export class User {
   @ApiProperty({
-    type: isUUID,
+    type: isUUID
   })
   @Exclude()
   id?: string //= uuid() //number | string
 
   @ApiProperty({
     type: String,
-    example: 'joe.doe@example.com',
+    example: 'joe.doe@example.com'
   })
   @Expose()
   email: string | null
@@ -24,35 +24,35 @@ export class User {
 
   @ApiProperty({
     type: String,
-    example: 'Joe',
+    example: 'Joe'
   })
   @Expose()
   firstName: string | null
 
   @ApiProperty({
     type: String,
-    example: 'Doe',
+    example: 'Doe'
   })
   @Expose()
   lastName: string | null
 
   @ApiProperty({
     type: String,
-    example: 'email',
+    example: 'email'
   })
   @Expose() //({ groups: ['me', 'admin'] })
   //@Type(() => RoleEntity)
   provider: AuthProvidersEnum
 
   @ApiProperty({
-    type: () => Role,
+    type: () => Role
   })
   @Expose() //({ name: 'roleId' })
   @Type(() => Role)
   role?: Role | null
 
   @ApiProperty({
-    type: () => Status,
+    type: () => Status
   })
   @Expose() //({ name: 'statusId' })
   @Type(() => Status)

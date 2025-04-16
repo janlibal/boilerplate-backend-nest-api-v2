@@ -6,12 +6,11 @@ import { mockEnvData, mockEnv } from './mock/env-data'
 
 // Mock Prisma Service
 const mockAppRepository = {
-  getEnv: vi.fn(),
+  getEnv: vi.fn()
 }
 
 describe('AppService', () => {
   let appService: AppService
-  let appRepository: AppRepository
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,13 +18,12 @@ describe('AppService', () => {
         AppService,
         {
           provide: AppRepository,
-          useValue: mockAppRepository,
-        },
-      ],
+          useValue: mockAppRepository
+        }
+      ]
     }).compile()
 
     appService = module.get<AppService>(AppService)
-    appRepository = module.get<AppRepository>(AppRepository)
   })
 
   afterEach(() => {

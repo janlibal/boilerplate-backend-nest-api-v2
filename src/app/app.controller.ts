@@ -8,7 +8,7 @@ import { infoDecorators } from './decorators/info.decorators'
 @ApiTags('App')
 @Controller({
   path: 'app',
-  version: '1',
+  version: '1'
 })
 export class AppController {
   constructor(private readonly appService: AppService) {}

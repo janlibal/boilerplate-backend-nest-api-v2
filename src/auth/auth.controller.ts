@@ -7,7 +7,7 @@ import {
   Request,
   Post,
   UseGuards,
-  SerializeOptions,
+  SerializeOptions
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
@@ -29,7 +29,7 @@ import { refreshDecorators } from './decorators/refresh.decorators'
 @ApiTags('Auth')
 @Controller({
   path: 'auth',
-  version: '1',
+  version: '1'
 })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -37,7 +37,7 @@ export class AuthController {
   @Post('email/login')
   @loginDecorators()
   @SerializeOptions({
-    groups: ['me'],
+    groups: ['me']
   })
   @HttpCode(HttpStatus.OK)
   @Serialize(LoginResponseDto)
@@ -57,7 +57,7 @@ export class AuthController {
   //@UseGuards(AccessTokenGuard)
   @meDecorators()
   @SerializeOptions({
-    groups: ['me'],
+    groups: ['me']
   })
   @Serialize(User)
   @HttpCode(HttpStatus.OK)
@@ -73,13 +73,13 @@ export class AuthController {
   public async logout(@Request() request): Promise<void> {
     await this.authService.logout({
       sessionId: request.user.sessionId,
-      userId: request.user.id,
+      userId: request.user.id
     })
   }
 
   @Post('refresh')
   @SerializeOptions({
-    groups: ['me'],
+    groups: ['me']
   })
   @UseGuards(AuthGuard('jwt-refresh'))
   @refreshDecorators()
@@ -87,7 +87,7 @@ export class AuthController {
   public refresh(@Request() request): Promise<RefreshResponseDto> {
     return this.authService.refreshToken({
       sessionId: request.user.sessionId,
-      hash: request.user.hash,
+      hash: request.user.hash
     })
   }
 

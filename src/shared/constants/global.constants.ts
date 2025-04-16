@@ -10,11 +10,11 @@ export const loggingRedactPaths = [
   'req.body.refreshToken',
   'req.body.email',
   'req.body.password',
-  'req.body.oldPassword',
+  'req.body.oldPassword'
 ]
 
 export enum LogService {
   CONSOLE = 'console',
   GOOGLE_LOGGING = 'google_logging',
-  AWS_CLOUDWATCH = 'aws_cloudwatch',
+  AWS_CLOUDWATCH = 'aws_cloudwatch'
 }

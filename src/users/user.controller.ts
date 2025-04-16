@@ -7,7 +7,7 @@ import {
   Delete,
   Get,
   SerializeOptions,
-  Param,
+  Param
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { UserService } from './user.service'
@@ -15,24 +15,19 @@ import { User } from './domain/user.domain'
 import { CreateUserDto } from './dto/create.user.dto'
 import { NullableType } from '../utils/types/nullable.type'
 import { ValidateUuidPipe } from '../pipes/validate.uuid.pipe'
-import {
-  createDecorator,
-  deleteDecorator,
-} from './decorators/user.controller.decorator'
+import { createDecorator, deleteDecorator } from './decorators/user.controller.decorator'
 
 @ApiTags('Users')
 @Controller({
   path: 'users',
-  version: '1',
+  version: '1'
 })
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  findOneOld(
-    @Param('id', ValidateUuidPipe) id: string,
-  ): Promise<NullableType<User>> {
+  findOneOld(@Param('id', ValidateUuidPipe) id: string): Promise<NullableType<User>> {
     return this.userService.findById(id)
   }
 
@@ -46,7 +41,7 @@ export class UserController {
 
   @Post()
   @SerializeOptions({
-    groups: ['admin'],
+    groups: ['admin']
   })
   @HttpCode(HttpStatus.CREATED)
   @createDecorator()

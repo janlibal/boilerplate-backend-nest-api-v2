@@ -1,8 +1,4 @@
-import {
-  HttpStatus,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common'
+import { HttpStatus, Injectable, UnprocessableEntityException } from '@nestjs/common'
 
 @Injectable()
 export class ValidateStringPipe {
@@ -12,8 +8,8 @@ export class ValidateStringPipe {
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         errors: {
-          error: `'${value}' is not a valid id. Id must be an integer.`,
-        },
+          error: `'${value}' is not a valid id. Id must be an integer.`
+        }
       })
     }
     return num

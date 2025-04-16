@@ -5,7 +5,6 @@ import { NextFunction, Response, Request } from 'express'
 import UnauthorizedError from 'src/exceptions/unauthorized.exception'
 import { AllConfigType } from 'src/global/config/config.type'
 import { RedisService } from 'src/redis/redis.service'
-import ms from 'ms'
 import { User } from 'src/users/domain/user.domain'
 
 @Injectable()
@@ -13,17 +12,13 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(
     private jwtService: JwtService,
     private redisService: RedisService,
-    private configService: ConfigService<AllConfigType>,
+    private configService: ConfigService<AllConfigType>
   ) {}
 
   public async use(req: Request, _: Response, next: NextFunction) {
     const authorization = req.headers.authorization
 
-    if (
-      !authorization ||
-      Array.isArray(authorization) ||
-      typeof authorization !== 'string'
-    )
+    if (!authorization || Array.isArray(authorization) || typeof authorization !== 'string')
       throw new UnauthorizedError('Invalid Headers')
 
     const [jwt, accessToken] = authorization.split(' ')
@@ -33,16 +28,16 @@ export class AuthMiddleware implements NestMiddleware {
     if (!accessToken) throw new UnauthorizedError('No token')
 
     const authSecret = this.configService.getOrThrow('auth.secret', {
-      infer: true,
+      infer: true
     })
 
     //verify token using jwt service
     let data: User
     try {
       data = await this.jwtService.verifyAsync(accessToken, {
-        secret: authSecret,
+        secret: authSecret
       })
-    } catch (error) {
+    } catch {
       throw new UnauthorizedError('Wrong token')
     }
 
@@ -50,8 +45,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     const isTokenFromCacheSameAsTokenFromHeaders = redisObject === accessToken
 
-    if (!isTokenFromCacheSameAsTokenFromHeaders)
-      throw new UnauthorizedError('Nice try')
+    if (!isTokenFromCacheSameAsTokenFromHeaders) throw new UnauthorizedError('Nice try')
 
     req.user = data
 

@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import {
-  IsNotEmpty,
-  IsString,
-  MinLength,
-  Matches,
-  IsDefined,
-  MaxLength,
-} from 'class-validator'
+import { IsNotEmpty, IsString, MinLength, Matches, IsDefined, MaxLength } from 'class-validator'
 import { lowerCaseTransformer } from '../../utils/transformers/lower.case.transformer'
 
 export class TestUserDto {
@@ -30,7 +23,7 @@ export class TestUserDto {
   @IsNotEmpty({ message: 'Email cannot be empty' })
   @IsString({ message: 'Email must be a string' })
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, {
-    message: 'Email must be in proper format',
+    message: 'Email must be in proper format'
   })
   readonly email: string | null
 
@@ -40,7 +33,7 @@ export class TestUserDto {
   @MinLength(6, { message: 'Password must contain at least 6 characters' })
   @MaxLength(64, { message: 'Passoword can contain 64 characters at the most' })
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password is too weak',
+    message: 'Password is too weak'
   })
   readonly password: string
 }

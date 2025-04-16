@@ -1,8 +1,4 @@
-import {
-  HttpStatus,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common'
+import { HttpStatus, Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { User } from './domain/user.domain'
 import { NullableType } from '../utils/types/nullable.type'
 import { CreateUserDto } from './dto/create.user.dto'
@@ -29,8 +25,8 @@ export class UserService {
       throw new UnprocessableEntityException({
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         errors: {
-          user: 'userAlreadyExists',
-        },
+          user: 'userAlreadyExists'
+        }
       })
     }
     return data
@@ -39,9 +35,7 @@ export class UserService {
   async create(createProfileDto: CreateUserDto): Promise<User> {
     let email: string | null = null
     if (createProfileDto.email) {
-      const userObject = await this.userRepository.findByEmail(
-        createProfileDto.email,
-      )
+      const userObject = await this.userRepository.findByEmail(createProfileDto.email)
       if (userObject) {
         throw new ResourceExistsError(userObject.email)
       }
@@ -62,13 +56,13 @@ export class UserService {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
-            role: 'roleNotExists',
-          },
+            role: 'roleNotExists'
+          }
         })
       }
     }
     role = {
-      id: createProfileDto.role.id,
+      id: createProfileDto.role.id
     }
 
     let status: Status | undefined = undefined
@@ -80,12 +74,12 @@ export class UserService {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
-            status: 'statusNotExists',
-          },
+            status: 'statusNotExists'
+          }
         })
       }
       status = {
-        id: createProfileDto.status.id,
+        id: createProfileDto.status.id
       }
     }
 
@@ -96,7 +90,7 @@ export class UserService {
       email: email,
       provider: createProfileDto.provider ?? AuthProvidersEnum.email,
       role: role,
-      status: status,
+      status: status
     }
 
     return await this.userRepository.create(clonedPayload)

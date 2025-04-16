@@ -13,12 +13,12 @@ export class InternalDisabledLogger extends ConsoleLogger {
     'InstanceLoader',
     'RoutesResolver',
     'RouterExplorer',
-    'NestFactory', // I prefer not including this one
+    'NestFactory' // I prefer not including this one
   ]
 
   log(_: any, context?: string): void {
     if (!InternalDisabledLogger.contextsToIgnore.includes(context)) {
-      super.log.apply(this, arguments)
+      super.log.apply(this)
     }
   }
 }

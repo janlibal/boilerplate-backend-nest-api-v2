@@ -3,19 +3,15 @@ import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { UserPersistence } from '../infrastructure/persistence/user.persistence'
 import { PrismaService } from '../../database/prisma.service'
 import { UserMapper } from '../infrastructure/mappers/user.mapper'
-import {
-  userMockEntityObject,
-  userMockDomainObject,
-  userObject,
-} from './mock/user.data'
+import { userMockEntityObject, userMockDomainObject, userObject } from './mock/user.data'
 
 const mockPrismaService = {
   user: {
     create: vi.fn(),
     findUnique: vi.fn(),
     findFirst: vi.fn(),
-    delete: vi.fn(),
-  },
+    delete: vi.fn()
+  }
 }
 
 describe('UserPersistence', () => {
@@ -24,10 +20,7 @@ describe('UserPersistence', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UserPersistence,
-        { provide: PrismaService, useValue: mockPrismaService },
-      ],
+      providers: [UserPersistence, { provide: PrismaService, useValue: mockPrismaService }]
     }).compile()
 
     userPersistence = module.get<UserPersistence>(UserPersistence)
@@ -52,7 +45,7 @@ describe('UserPersistence', () => {
         await userPersistence.remove(userMockDomainObject.id)
 
         expect(mockPrismaService.user.delete).toHaveBeenCalledWith({
-          where: { id: String(userMockDomainObject.id) },
+          where: { id: String(userMockDomainObject.id) }
         })
 
         expect(prismaService.user.delete).toHaveBeenCalledTimes(1)
@@ -61,31 +54,25 @@ describe('UserPersistence', () => {
 
     describe('findbyId()', () => {
       it('should return user by provided Id', async () => {
-        vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(
-          userMockEntityObject,
-        )
+        vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(userMockEntityObject)
 
         const result = await userPersistence.findById(userMockDomainObject.id)
 
         expect(result).toEqual(userMockDomainObject)
 
         expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-          where: { id: String(userMockDomainObject.id) },
+          where: { id: String(userMockDomainObject.id) }
         })
       })
     })
 
     describe('findbyEmail()', () => {
       it('should return user by provided email', async () => {
-        vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(
-          userMockEntityObject,
-        )
-        const result = await userPersistence.findByEmail(
-          userMockDomainObject.email,
-        )
+        vi.spyOn(prismaService.user, 'findUnique').mockResolvedValue(userMockEntityObject)
+        const result = await userPersistence.findByEmail(userMockDomainObject.email)
         expect(result).toEqual(userMockDomainObject)
         expect(mockPrismaService.user.findUnique).toHaveBeenCalledWith({
-          where: { email: userObject.email },
+          where: { email: userObject.email }
         })
       })
     })
@@ -94,16 +81,14 @@ describe('UserPersistence', () => {
       it('should create user in database and return void', async () => {
         const persistenceModel = await UserMapper.toPersistence(userObject)
 
-        vi.spyOn(prismaService.user, 'create').mockResolvedValue(
-          userMockEntityObject,
-        )
+        vi.spyOn(prismaService.user, 'create').mockResolvedValue(userMockEntityObject)
 
         const result = await userPersistence.create(userObject)
 
         expect(result).toEqual(userMockDomainObject)
 
         expect(mockPrismaService.user.create).toHaveBeenCalledWith({
-          data: persistenceModel,
+          data: persistenceModel
         })
       })
     })

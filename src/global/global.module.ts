@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
 import { AppModule } from '../app/app.module'
 import { UserModule } from '../users/user.module'
 import { SessionModule } from '../session/session.module'
@@ -30,10 +25,10 @@ import { GlobalLoggerModule } from '../logger/logger.module'
     AuthModule,
     PrismaModule,
     RedisModule,
-    HealthModule,
+    HealthModule
   ],
   controllers: [],
-  providers: [Logger],
+  providers: [Logger]
 })
 export class GlobalModule implements NestModule {
   public publicRoutes: Array<RouteInfo> = publicRoutes
@@ -44,7 +39,7 @@ export class GlobalModule implements NestModule {
       .exclude(...this.publicRoutes)
       .forRoutes({
         path: '*',
-        method: RequestMethod.ALL,
+        method: RequestMethod.ALL
       })
   }
 }

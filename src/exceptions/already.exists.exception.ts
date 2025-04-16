@@ -9,11 +9,11 @@ export default class ResourceExistsError extends HttpException {
         detail: 'The resource already exists.',
         errors: [
           {
-            message: `${resource} already exists`,
-          },
-        ],
+            message: `${resource} already exists`
+          }
+        ]
       },
-      HttpStatus.CONFLICT,
+      HttpStatus.CONFLICT
     )
   }
 }

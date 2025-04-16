@@ -8,7 +8,7 @@ export class AppRepository {
     const environments = {
       nodeVersion: process.versions['node'],
       hostName: os.hostname(),
-      platform: `${process.platform}/${process.arch}`,
+      platform: `${process.platform}/${process.arch}`
     }
     return environments
   }

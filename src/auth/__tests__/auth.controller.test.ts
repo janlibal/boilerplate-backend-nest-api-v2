@@ -9,7 +9,7 @@ import { RedisService } from '../../redis/redis.service'
 
 const mockAuthService = {
   register: vi.fn(),
-  validateLogin: vi.fn(),
+  validateLogin: vi.fn()
 }
 
 let mockRedisService: any
@@ -24,14 +24,14 @@ describe('AuthController', () => {
         AuthController,
         {
           provide: AuthService,
-          useValue: mockAuthService,
+          useValue: mockAuthService
         },
         {
           provide: RedisService,
-          useValue: mockRedisService,
+          useValue: mockRedisService
         },
-        JwtService,
-      ],
+        JwtService
+      ]
     }).compile()
 
     authController = module.get<AuthController>(AuthController)

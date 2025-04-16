@@ -9,7 +9,7 @@ export class Role {
     type: Number,
     description: 'Role Id',
     default: 2,
-    example: 1,
+    example: 1
   })
   @Expose()
   id: number
@@ -19,7 +19,7 @@ export class Role {
     type: String,
     description: 'Access level',
     default: 2,
-    example: 'admin',
+    example: 'admin'
   })
   @Expose()
   name?: string

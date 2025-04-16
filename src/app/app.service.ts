@@ -12,7 +12,7 @@ export class AppService {
       name: pkginfo.name,
       version: pkginfo.version,
       description: pkginfo.description,
-      env,
+      env
     }
     return data
   }

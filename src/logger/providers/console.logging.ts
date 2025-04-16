@@ -11,27 +11,26 @@ export function consoleLoggingConfig(): Options {
           options: {
             singleLine: true,
             colorize: true,
-            ignore:
-              'req.id,req.method,req.url,req.headers,req.remoteAddress,req.remotePort',
-          },
+            ignore: 'req.id,req.method,req.url,req.headers,req.remoteAddress,req.remotePort'
+          }
         },
         {
           target: 'pino/file',
           level: 'debug',
           options: {
             destination: './logs/app.log',
-            mkdir: true,
-          },
+            mkdir: true
+          }
         },
         {
           target: 'pino/file',
           level: 'error',
           options: {
             destination: './logs/app-error.log',
-            mkdir: true,
-          },
-        },
-      ],
-    },
+            mkdir: true
+          }
+        }
+      ]
+    }
   }
 }

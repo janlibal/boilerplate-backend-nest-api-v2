@@ -7,7 +7,7 @@ export const sessionObject: SessionDomain = {
   userId: '1',
   createdAt: new Date('2024-12-31T00:00:00'),
   updatedAt: new Date('2024-12-31T00:00:00'),
-  deletedAt: new Date('2024-12-31T00:00:00'),
+  deletedAt: new Date('2024-12-31T00:00:00')
 }
 
 export const sessionMockEntityObject: SessionEntity = {
@@ -16,7 +16,7 @@ export const sessionMockEntityObject: SessionEntity = {
   userId: '1',
   createdAt: new Date('2024-12-31T00:00:00'),
   updatedAt: new Date('2024-12-31T00:00:00'),
-  deletedAt: new Date('2024-12-31T00:00:00'),
+  deletedAt: new Date('2024-12-31T00:00:00')
 }
 
 export const sessionMockDomainObject: SessionDomain = {
@@ -25,5 +25,5 @@ export const sessionMockDomainObject: SessionDomain = {
   userId: '1',
   createdAt: new Date('2024-12-31T00:00:00'),
   updatedAt: new Date('2024-12-31T00:00:00'),
-  deletedAt: new Date('2024-12-31T00:00:00'),
+  deletedAt: new Date('2024-12-31T00:00:00')
 }

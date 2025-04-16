@@ -19,7 +19,7 @@ import { keepAliveCheck } from './database/prisma.connection-checker'
 async function bootstrap() {
   const app = await NestFactory.create(GlobalModule, {
     bufferLogs: true,
-    cors: true,
+    cors: true
   })
 
   const configService = app.get(ConfigService<AllConfigType>)
@@ -39,10 +39,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter())
 
   //app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
-  app.useGlobalInterceptors(
-    new ResponseInterceptor(),
-    new LoggerErrorInterceptor(),
-  )
+  app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
   /*app.useGlobalInterceptors(
     // ResolvePromisesInterceptor is used to resolve promises in responses because class-transformer can't do it
     // https://github.com/typestack/class-transformer/issues/549
@@ -59,10 +56,10 @@ async function bootstrap() {
     helmet({
       contentSecurityPolicy: {
         directives: {
-          upgradeInsecureRequests: null,
-        },
-      },
-    }),
+          upgradeInsecureRequests: null
+        }
+      }
+    })
   )
 
   app.use(compression())
@@ -71,18 +68,18 @@ async function bootstrap() {
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100, // limit each IP to 100 requests per windowMs
-    }),
+      max: 100 // limit each IP to 100 requests per windowMs
+    })
   )
 
-  const frontEnd = configService.getOrThrow('app.frontendDomain', {
-    infer: true,
-  })
+  /*const frontEnd = configService.getOrThrow('app.frontendDomain', {
+    infer: true
+  })*/
 
   app.enableCors({
     origin: '*', //frontEnd,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    credentials: true,
+    credentials: true
   })
 
   app.use(cookieParser())
@@ -99,7 +96,7 @@ async function bootstrap() {
     .addBearerAuth()
     .setTitle('Nestjs Boilerplate API')
     .setDescription(
-      'Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.',
+      'Nest Boilerplate API is a simple RESTful API boilerplate project built using Nest, Prisma as ORM for Postgres, Redis, TS, Docker, Swagger, Jest, Nginx.'
     )
     .setVersion('2.0')
     .setTermsOfService('http://swagger.io/terms/')
@@ -112,15 +109,15 @@ async function bootstrap() {
         type: 'apiKey',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        name: 'Authorization',
+        name: 'Authorization'
       },
-      'token',
+      'token'
     )
     .build()
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document)
 
-  keepAliveCheck()
+  await keepAliveCheck()
 
   await app.listen(
     port,
@@ -134,8 +131,8 @@ async function bootstrap() {
   redisUrl: ${redisUrl} \n
   apiPrefix: ${apiPrefix} \n
   `,
-        'Main',
-      ),
+        'Main'
+      )
     //logger.info(`Server started listening on ${port} w/ db ${db}`, 'Main')
   )
 }

@@ -9,7 +9,7 @@ const mockSessionRepository = {
   findById: vi.fn(),
   deleteById: vi.fn(),
   deleteByUserId: vi.fn(),
-  create: vi.fn(),
+  create: vi.fn()
 }
 
 describe('SessionService', () => {
@@ -21,9 +21,9 @@ describe('SessionService', () => {
         SessionService,
         {
           provide: SessionRepository,
-          useValue: mockSessionRepository,
-        },
-      ],
+          useValue: mockSessionRepository
+        }
+      ]
     }).compile()
 
     sessionService = module.get<SessionService>(SessionService)
@@ -42,23 +42,17 @@ describe('SessionService', () => {
   describe('SessionService methods', () => {
     describe('findById()', () => {
       it('should find session by provided Id', async () => {
-        mockSessionRepository.findById.mockResolvedValue(
-          sessionMockDomainObject,
-        )
+        mockSessionRepository.findById.mockResolvedValue(sessionMockDomainObject)
         const result = await sessionService.findById(sessionMockDomainObject.id)
         expect(result).toEqual(sessionMockDomainObject)
-        expect(mockSessionRepository.findById).toHaveBeenCalledWith(
-          sessionMockDomainObject.id,
-        )
+        expect(mockSessionRepository.findById).toHaveBeenCalledWith(sessionMockDomainObject.id)
       })
     })
     describe('deleteById()', () => {
       it('should delete session by provided sessionId', async () => {
         mockSessionRepository.deleteById.mockResolvedValue(true)
         await sessionService.deleteById(sessionMockDomainObject.id)
-        expect(mockSessionRepository.deleteById).toHaveBeenCalledWith(
-          sessionMockDomainObject.id,
-        )
+        expect(mockSessionRepository.deleteById).toHaveBeenCalledWith(sessionMockDomainObject.id)
       })
     })
     describe('deleteByUserId()', () => {
@@ -66,9 +60,7 @@ describe('SessionService', () => {
         const conditions = { userId: User['id'] }
         mockSessionRepository.deleteByUserId.mockResolvedValue(true)
         await sessionService.deleteByUserId(conditions)
-        expect(mockSessionRepository.deleteByUserId).toHaveBeenCalledWith(
-          conditions,
-        )
+        expect(mockSessionRepository.deleteByUserId).toHaveBeenCalledWith(conditions)
       })
     })
     describe('create()', () => {

@@ -5,8 +5,8 @@ import { User } from '../../users/domain/user.domain'
 export function createDecorator() {
   return applyDecorators(
     ApiCreatedResponse({
-      type: User,
-    }),
+      type: User
+    })
   )
 }
 
@@ -15,7 +15,7 @@ export function deleteDecorator() {
     ApiParam({
       name: 'id',
       type: String,
-      required: true,
-    }),
+      required: true
+    })
   )
 }

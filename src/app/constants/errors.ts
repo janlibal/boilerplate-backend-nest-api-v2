@@ -2,13 +2,13 @@ export const badRequestSignInErrors = [
   { message: 'Email must be in proper format' },
   { message: 'Email must be a string' },
   { message: 'Email cannot be empty' },
-  { message: 'Password cannot be empty' },
+  { message: 'Password cannot be empty' }
 ]
 export const unprocessableErrors = [
   { message: 'hasToLoginViaProvider:apple' },
   { message: 'missingPassword' },
   { message: 'roleIdMissing' },
-  { message: 'statusIdMissing' },
+  { message: 'statusIdMissing' }
 ]
 export const badRequestSignUpErrors = [
   { message: 'Firstname has to be defined' },
@@ -26,6 +26,6 @@ export const badRequestSignUpErrors = [
   { message: 'Password is too weak' },
   { message: 'Password can contain 20 characters at the most' },
   { message: 'Password must contain at least 6 characters' },
-  { message: 'Password must be a string' },
+  { message: 'Password must be a string' }
 ]
 export const conflictErrors = [{ message: 'fake@email.com already exists' }]

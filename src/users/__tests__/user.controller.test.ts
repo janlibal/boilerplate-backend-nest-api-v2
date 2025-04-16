@@ -5,7 +5,7 @@ import { UserService } from '../user.service'
 import { userMockDomainObject, userObject } from './mock/user.data'
 
 const mockUserService = {
-  create: vi.fn(),
+  create: vi.fn()
 }
 
 describe('UserController', () => {
@@ -17,9 +17,9 @@ describe('UserController', () => {
         UserController,
         {
           provide: UserService,
-          useValue: mockUserService,
-        },
-      ],
+          useValue: mockUserService
+        }
+      ]
     }).compile()
 
     userController = module.get<UserController>(UserController)

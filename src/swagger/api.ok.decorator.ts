@@ -1,10 +1,5 @@
 import { applyDecorators, Type } from '@nestjs/common'
-import {
-  ApiExtraModels,
-  ApiResponse,
-  ApiResponseOptions,
-  getSchemaPath,
-} from '@nestjs/swagger'
+import { ApiExtraModels, ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger'
 
 export const ApiOk = <TModel extends Type<unknown>>(
   model: TModel,
@@ -12,7 +7,7 @@ export const ApiOk = <TModel extends Type<unknown>>(
   path: string,
   status: number,
   description?: string,
-  options?: ApiResponseOptions,
+  options?: ApiResponseOptions
 ) => {
   return applyDecorators(
     ApiExtraModels(model),
@@ -29,10 +24,10 @@ export const ApiOk = <TModel extends Type<unknown>>(
           timestamp: new Date().toISOString(),
           result: {
             type: type,
-            $ref: getSchemaPath(model),
-          },
-        },
-      },
-    }),
+            $ref: getSchemaPath(model)
+          }
+        }
+      }
+    })
   )
 }

@@ -7,6 +7,6 @@ import { UserPersistenceModule } from './infrastructure/user.infrastructure.modu
   imports: [UserPersistenceModule],
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService, UserPersistenceModule],
+  exports: [UserService, UserPersistenceModule]
 })
 export class UserModule {}

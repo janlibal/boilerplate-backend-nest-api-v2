@@ -6,9 +6,9 @@ export default class UnauthorizedError extends HttpException {
       {
         title: 'Unauthorized',
         status: HttpStatus.UNAUTHORIZED,
-        detail: message,
+        detail: message
       },
-      HttpStatus.UNAUTHORIZED,
+      HttpStatus.UNAUTHORIZED
     )
   }
 }

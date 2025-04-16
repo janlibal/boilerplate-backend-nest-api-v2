@@ -35,6 +35,6 @@ export default registerAs<SwaggerConfig>('swagger', () => {
     title: process.env.TITLE || 'Nestjs Prisma Starter',
     description: process.env.DESCRIPTION || 'The nestjs API description',
     version: process.env.VERSION || '1.5',
-    path: process.env.SWAGGER_PATH || `${API_PREFIX}/swagger`,
+    path: process.env.SWAGGER_PATH || `${API_PREFIX}/swagger`
   }
 })

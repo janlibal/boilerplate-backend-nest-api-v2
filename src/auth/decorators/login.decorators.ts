@@ -5,61 +5,61 @@ import {
   InternalError,
   SuccessResponse,
   UnauthorizedError,
-  UnprocessableEntityError,
+  UnprocessableEntityError
 } from '../../swagger/all.errors.decorators'
 import { LoginResponseDto } from '../dto/login.response.dto'
 import { loginPath } from '../constants/paths'
 import {
   badRequestSignInErrors,
   unauthorizedErrors,
-  unprocessableErrors,
+  unprocessableErrors
 } from '../constants/errors'
 import {
   badRequestResponses,
   internalErrorResponses,
   unauthorizedResponses,
-  unprocessableResponses,
+  unprocessableResponses
 } from '../../swagger/constants/decorator.responses'
 
 export function loginDecorators() {
   return applyDecorators(
     ApiOperation({
       summary: 'Logs in User',
-      description: 'Returns user data with token, refresh token and expiration',
+      description: 'Returns user data with token, refresh token and expiration'
     }),
     SuccessResponse(
       LoginResponseDto,
       'object',
       loginPath,
       HttpStatus.OK,
-      'Returns user object when logged in',
+      'Returns user object when logged in'
     ),
     BadRequestError(
       badRequestResponses.title,
       loginPath,
       badRequestResponses.detail,
       badRequestSignInErrors,
-      badRequestResponses.description,
+      badRequestResponses.description
     ),
     UnauthorizedError(
       unauthorizedResponses.title,
       loginPath,
       unauthorizedResponses.detail,
       unauthorizedErrors,
-      unauthorizedResponses.description,
+      unauthorizedResponses.description
     ),
     UnprocessableEntityError(
       unprocessableResponses.title,
       loginPath,
       unprocessableResponses.detail,
       unprocessableErrors,
-      unprocessableResponses.description,
+      unprocessableResponses.description
     ),
     InternalError(
       internalErrorResponses.title,
       loginPath,
       internalErrorResponses.detail,
-      internalErrorResponses.description,
-    ),
+      internalErrorResponses.description
+    )
   )
 }

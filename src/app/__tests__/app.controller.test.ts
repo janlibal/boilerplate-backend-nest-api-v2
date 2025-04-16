@@ -1,18 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { vi, describe, beforeEach, it, expect } from 'vitest'
 import { AppService } from '../app.service'
-import { AppRepository } from '../app.reposiroty'
-import { mockEnvData, mockEnv } from './mock/env-data'
+import { mockEnvData } from './mock/env-data'
 import { AppController } from '../app.controller'
 
 // Mock Prisma Service
 const mockAppService = {
-  compileData: vi.fn(),
+  compileData: vi.fn()
 }
 
 describe('AppService', () => {
   let appController: AppController
-  let appService: AppService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,13 +18,12 @@ describe('AppService', () => {
         AppController,
         {
           provide: AppService,
-          useValue: mockAppService,
-        },
-      ],
+          useValue: mockAppService
+        }
+      ]
     }).compile()
 
     appController = module.get<AppController>(AppController)
-    appService = module.get<AppService>(AppService)
   })
 
   afterEach(() => {
