@@ -73,12 +73,12 @@ async function bootstrap() {
       })
     )
 
-    /*const frontEnd = configService.getOrThrow('app.frontendDomain', {
+    const frontEnd = configService.getOrThrow('app.frontendDomain', {
       infer: true
-    })*/
+    })
 
     app.enableCors({
-      origin: '*', //frontEnd,
+      origin: frontEnd,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       credentials: true
     })
