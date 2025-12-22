@@ -2,10 +2,10 @@ name: E2E Tests
 on:
   push:
     branches:
-      - main
+      - unknown
   pull_request:
     branches:
-      - main
+      - unknown
 jobs:
   changes_checker:
     runs-on: ubuntu-latest
