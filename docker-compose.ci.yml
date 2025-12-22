@@ -1,15 +1,29 @@
 services:
   api:
+    container_name: app-ci
     build:
       context: .
       dockerfile: relational.e2e.Dockerfile
+    image: app-ci:latest
     env_file:
       - .env
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-X", "POST", "-H", "Content-Type: application/json", "--data", '{"query":"{__typename}"}', "http://localhost:80/api/v1/graphql"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     depends_on:
-      - postgres
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     networks:
       - api-network
-
+    labels:
+      - "com.janlibal=app-prod"
+      - "environment=prod"
   postgres:
     container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
@@ -24,36 +38,57 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       #POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+    volumes:
+      - postgres:/var/lib/postgresql/data
     networks:
       - api-network
-    #restart: unless-stopped
-    #volumes:
-    #  - postgres:/var/lib/postgresql/data
-
+    labels:
+      - "com.janlibal=app-prod"
+      - "environment=prod"
   redis:
-    image: redis:latest
     container_name: redis
+    image: redis:latest
     env_file:
       - .env
     command: redis-server --requirepass root
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
-    restart: unless-stopped   
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "root", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     volumes:
       - redis:/data
     networks:
       - api-network
-    #environment:
+    environment:
     #  - ALLOW_EMPTY_PASSWORD=yes
-    #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
+      - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
+    labels:
+      - "com.janlibal=app-prod"
+      - "environment=prod"
 
 volumes:
-#  postgres:
-#    name: boilerplate-db
+  postgres:
+    name: ci-db
+    labels:
+      purpose: database
+      environment: ci
   redis:
+    name: redis
+    labels:
+      purpose: in-mem-cache
+      environment: ci
     driver: local
-
 networks:
   api-network:
+    name: backend-ci-network
     driver: bridge
-  
