@@ -2,7 +2,7 @@ name: nestjs-postgres-redis
 services:
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
-  # to  `host: "postgres"` that value is mapped on the network to the 
+  # to  `host: "postgres"` that value is mapped on the network to the
   # address of this container.
   postgres:
     container_name: nest-postgres
@@ -16,10 +16,18 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       #POSTGRES_DB: ${DB_NAME}
       POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres:/var/lib/postgresql/data
     networks:
       - api-network
+    labels:
+      - "com.janlibal=app-dev"
+      - "environment=dev"
   # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
   pgadmin-compose:
     container_name: nest-pgadmin
@@ -33,7 +41,8 @@ services:
     ports:
       - ${PGADMIN_PORT}:80
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - api-network
   redis:
@@ -44,22 +53,42 @@ services:
     command: redis-server --requirepass root
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
-    restart: unless-stopped   
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "root", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
     volumes:
       - redis:/data
     networks:
       - api-network
-    #environment:
-    #  - ALLOW_EMPTY_PASSWORD=yes
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
     #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
-    
+    labels:
+      - "com.janlibal=app-dev"
+      - "environment=dev"
+
 volumes:
   postgres:
-    name: boilerplate-db
+    name: dev-db
+    labels:
+      purpose: database
+      environment: dev
   redis:
+    name: redis
+    labels:
+      purpose: in-mem-cache
+      environment: dev
     driver: local
+  pgadmin-data:
+    name: pgadmin
+    labels:
+      purpose: pgadmin-data
+      environment: dev
 
 networks:
   api-network:
+    name: backend-dev-network
     driver: bridge
-      
