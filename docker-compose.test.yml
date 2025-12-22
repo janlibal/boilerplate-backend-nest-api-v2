@@ -2,7 +2,7 @@ name: second-nest-api-test
 services:
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
-  # to  `host: "postgres"` that value is mapped on the network to the 
+  # to  `host: "postgres"` that value is mapped on the network to the
   # address of this container.
   api:
     container_name: app-test
@@ -17,9 +17,16 @@ services:
       - ./src:/usr/src/app/src
       - ./test:/usr/src/app/test
     depends_on:
-      - postgres
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: "no"
     networks:
       - api-network
+    labels:
+      - "com.janlibal=app-test"
+      - "environment=test"
   postgres:
     container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
@@ -30,11 +37,19 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       #POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
-    #restart: unless-stopped
-    #volumes:
-    #  - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+    volumes:
+      - postgres:/var/lib/postgresql/data
     networks:
       - api-network
+    labels:
+      - "com.janlibal=app-test"
+      - "environment=test"
   # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
   #pgadmin-compose:
   #  container_name: nest-pgadmin
@@ -48,27 +63,42 @@ services:
   #  depends_on:
   #    - postgres
   redis:
-    image: redis:latest
     container_name: redis
+    image: redis:latest
     command: redis-server --requirepass root
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
-    restart: unless-stopped   
+    restart: "no"
     volumes:
       - redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "root", "ping", "--raw"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
     networks:
       - api-network
-    #environment:
-    #  - ALLOW_EMPTY_PASSWORD=yes
-    #  - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
-    
+    labels:
+      - "com.janlibal=app-test"
+      - "environment=test"
+
 volumes:
-#  postgres:
-#    name: boilerplate-db
+  postgres:
+    name: test-db
+    labels:
+      purpose: database
+      environment: test
   redis:
+    name: test-redis
+    labels:
+      purpose: in-mem-cache
+      environment: test
     driver: local
 
 networks:
   api-network:
+    name: backend-test-network
     driver: bridge
-      
