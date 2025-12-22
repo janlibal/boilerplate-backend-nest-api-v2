@@ -3,6 +3,10 @@
 /node_modules
 /build
 
+# ENV files
+.env
+.env.*
+
 # Logs
 logs
 *.log
@@ -11,9 +15,6 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# Database
-# src/database/prisma.schema
 
 # OS
 .DS_Store
@@ -37,14 +38,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# dotenv environment variable files
-# add files
-.env
-#.env.development.local
-#.env.test.local
-#.env.production.local
-#.env.local
 
 # temp directory
 .temp
