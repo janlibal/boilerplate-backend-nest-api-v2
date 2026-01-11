@@ -1,11 +1,11 @@
-name: nestjs-postgres-redis
+name: backend-dev
 services:
   # This is the configuration for our PostgreSQL database container
   # Note the `postgres` name is important, in out Node app when we refer
   # to  `host: "postgres"` that value is mapped on the network to the
   # address of this container.
   postgres:
-    container_name: nest-postgres
+    container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
     env_file:
       - src/config/env/.env.dev
@@ -30,7 +30,7 @@ services:
       - "environment=dev"
   # PostgreSQL pgAdmin panel accessible at http://localhost:16543/
   pgadmin-compose:
-    container_name: nest-pgadmin
+    container_name: pgadmin
     image: dpage/pgadmin4
     env_file:
       - src/config/env/.env.dev
@@ -43,6 +43,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     networks:
       - api-network
   redis:
