@@ -21,6 +21,6 @@
     "esModuleInterop": true,
     "types": ["node", "vitest/globals"],
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
-  "exclude": ["node_modules"]   
+  "include": ["src/**/*.ts", "test/**/*.ts",  "prisma/seeds/seed.ts"],
+  "exclude": ["node_modules"]
 }
