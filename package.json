@@ -1,5 +1,5 @@
 {
-  "name": "nest-second-project",
+  "name": "backend-nest-api-v2",
   "version": "0.0.1",
   "description": "Nestjs Boilerplate API",
   "private": true,
@@ -52,6 +52,8 @@
     "start:prod": "node dist/src/main",
     "db:up": "docker compose -f docker-compose.db.yml --env-file src/config/env/.env.dev up -d",
     "db:down": "docker compose -f docker-compose.db.yml down",
+    "dev:up": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d",
+    "dev:down": "docker compose -f docker-compose.yml -f docker-compose.dev.yml down",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint-staged": "lint-staged",
     "test": "vitest run -c ./vitest.config.unit.mjs",
