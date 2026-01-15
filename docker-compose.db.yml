@@ -8,7 +8,7 @@ services:
     container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
     env_file:
-      - src/config/env/.env.dev
+      - .env
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -33,7 +33,7 @@ services:
     container_name: pgadmin
     image: dpage/pgadmin4
     env_file:
-      - src/config/env/.env.dev
+      - .env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
@@ -51,7 +51,7 @@ services:
     image: redis:latest
     container_name: redis
     env_file:
-      - src/config/env/.env.dev
+      - .env
     command: redis-server --requirepass root
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
@@ -74,12 +74,12 @@ services:
 
 volumes:
   postgres:
-    name: dev-db
+    name: postgres-dev
     labels:
       purpose: database
       environment: dev
   redis:
-    name: redis
+    name: redis-dev
     labels:
       purpose: in-mem-cache
       environment: dev
