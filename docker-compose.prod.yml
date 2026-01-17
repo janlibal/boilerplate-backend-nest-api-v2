@@ -1,28 +1,17 @@
-name: second-nest-api
+name: backend-prod
 services:
-  # This is the configuration for our PostgreSQL database container
-  # Note the `postgres` name is important, in out Node app when we refer
-  # to  `host: "postgres"` that value is mapped on the network to the
-  # address of this container.
   api:
-    container_name: application
-    image: "ghcr.io/janlibal/boilerplate-backend-nest-api-v2:latest"
+    image: "ghcr.io/janlibal/nestjs-graphql:latest"
+    container_name: app
     ports:
       - ${APP_PORT}:${APP_PORT}
     restart: unless-stopped
-    depends_on:
-      redis:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
-    networks:
-      - api-network
     labels:
       - "com.janlibal=app-prod"
       - "environment=prod"
   postgres:
-    container_name: postgres
     image: janlibal/pg-multipledb # postgres:16.3-alpine
+    container_name: postgres
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -31,17 +20,8 @@ services:
       #POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_MULTIPLE_DATABASES: ${MULTIPLE_DATABASES}
     restart: unless-stopped
-    #env_file:
-    #  - .env
     volumes:
       - postgres:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - api-network
     labels:
       - "com.janlibal=app-prod"
       - "environment=prod"
@@ -54,34 +34,22 @@ services:
     restart: unless-stopped
     volumes:
       - redis:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "-a", "root", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-    networks:
-      - api-network
-    labels:
-      - "com.janlibal=app-prod"
-      - "environment=prod"
     environment:
     #  - ALLOW_EMPTY_PASSWORD=yes
       - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
+    labels:
+      - "com.janlibal=app-prod"
+      - "environment=prod"
 
 volumes:
   postgres:
-    name: prod-db
+    name: postgres-prod
     labels:
       purpose: database
       environment: prod
   redis:
-    name: redis
+    name: redis-prod
     labels:
       purpose: in-mem-cache
       environment: ci
     driver: local
-
-networks:
-  api-network:
-    name: backend-prod-network
-    driver: bridge
