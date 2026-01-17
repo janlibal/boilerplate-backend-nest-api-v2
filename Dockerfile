@@ -1,29 +1,78 @@
-FROM node:22.11.0-alpine
-LABEL maintainer="jan.libal@yahoo.com"
-LABEL build_date="2024-11-26"
-
-RUN apk add --no-cache bash
-#RUN yarn global add @nestjs/cli typescript ts-node
-
-ARG NODE_ENV="prod"
-ENV NODE_ENV="${NODE_ENV}"
-
-COPY package*.json /tmp/app/
-RUN cd /tmp/app && yarn install
-
-COPY . /usr/src/app
-RUN cp -a /tmp/app/node_modules /usr/src/app
-COPY ./wait-for-it.sh /opt/wait-for-it.sh
-RUN chmod +x /opt/wait-for-it.sh
-COPY ./startup.relational.dev.sh /opt/startup.relational.dev.sh
-RUN chmod +x /opt/startup.relational.dev.sh
-RUN sed -i 's/\r//g' /opt/wait-for-it.sh
-RUN sed -i 's/\r//g' /opt/startup.relational.dev.sh
+FROM node:23.11.0-alpine AS deps
+LABEL com.janlibal.image.stage="deps" \
+      com.janlibal.image.title="backend-nest-api-v2" \
+      com.janlibal.image.created="2025-05-01" \
+      com.janlibal.image.authors="Jan Libal <jan.libal@yahoo.com>"
 
 WORKDIR /usr/src/app
-RUN if [ ! -f .env ]; then cp env-example-relational .env; fi
-RUN yarn run prisma:generate
 
-RUN yarn run rebuild
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
-CMD ["/opt/startup.relational.dev.sh"]
+RUN \
+  if [ -f package-lock.json ]; then npm ci; \
+  elif [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+FROM node:23.11.0-alpine AS builder
+LABEL com.janlibal.image.stage="builder" \
+      com.janlibal.image.title="backend-nest-api-v2" \
+      com.janlibal.image.created="2025-05-01" \
+      com.janlibal.image.authors="Jan Libal <jan.libal@yahoo.com>"
+
+RUN apk add --no-cache bash
+
+WORKDIR /usr/src/app
+
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=deps /usr/src/app/package.json ./package.json
+
+COPY . .
+
+RUN \
+  if [ -f package-lock.json ]; then npm run prisma:generate && npm run rebuild; \
+  elif [ -f yarn.lock ]; then yarn run prisma:generate && yarn run rebuild; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run prisma:generate && pnpm run rebuild; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+RUN \
+  if [ -f package-lock.json ]; then npm ci --omit=dev && npm cache clean --force; \
+  elif [ -f yarn.lock ]; then yarn install --frozen-lockfile --production; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile --prod; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+FROM node:23.11.0-alpine AS runner
+LABEL com.janlibal.image.stage="runner" \
+      com.janlibal.image.title="backend-nest-api-v2" \
+      com.janlibal.image.created="2025-05-01" \
+      com.janlibal.image.authors="Jan Libal <jan.libal@yahoo.com>"
+
+WORKDIR /usr/src/app
+
+USER root
+
+RUN apk add --no-cache bash
+
+COPY --from=builder --chown=node:node /usr/src/app/dist ./dist
+COPY --from=builder --chown=node:node /usr/src/app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /usr/src/app/package.json ./package.json
+COPY --from=builder --chown=node:node /usr/src/app/yarn.lock ./yarn.lock
+
+COPY --chown=node:node ./wait-for-it.sh /opt/wait-for-it.sh
+COPY --chown=node:node ./startup.prod.sh /opt/startup.prod.sh
+
+RUN chmod +x /opt/wait-for-it.sh /opt/startup.prod.sh && \
+sed -i 's/\r//g' /opt/wait-for-it.sh /opt/startup.prod.sh
+
+ARG ENV_FILE_CONTENT
+RUN echo "$ENV_FILE_CONTENT" | base64 -d > .env && chown node:node .env
+
+RUN chown -R node:node /usr/src/app/*
+
+USER node
+
+CMD ["/opt/startup.prod.sh"]
