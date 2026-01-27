@@ -14,7 +14,7 @@ export class SessionPersistence {
     const newEntity = await this.prismaService.session.create({
       data: persistenceEntity
     })
-    return await SessionMapper.toDomain(newEntity)
+    return SessionMapper.toDomain(newEntity)
   }
 
   async deleteById(id: Session['id']): Promise<void> {
@@ -26,7 +26,7 @@ export class SessionPersistence {
       include: { user: true },
       where: { id: id }
     })
-    return entity ? await SessionMapper.toDomain(entity) : null
+    return entity ? SessionMapper.toDomain(entity) : null
   }
 
   async deleteByUserId(conditions: { userId: User['id'] }): Promise<void> {
@@ -55,7 +55,7 @@ export class SessionPersistence {
       where: { id: sessionToUpdate.id },
       data: payload
     })
-    return await SessionMapper.toDomain(newEntity)
+    return SessionMapper.toDomain(newEntity)
     /*return await this.prismaService.session.update({
       include: {
         user: true,
