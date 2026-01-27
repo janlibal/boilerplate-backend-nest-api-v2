@@ -92,7 +92,7 @@ describe('SessionPersistence', () => {
 
     describe('create()', () => {
       it('should create session', async () => {
-        const persistenceModel = await SessionMapper.toPersistence(sessionObject)
+        const persistenceModel = SessionMapper.toPersistence(sessionObject)
 
         vi.spyOn(prismaService.session, 'create').mockResolvedValue(sessionMockEntityObject)
 

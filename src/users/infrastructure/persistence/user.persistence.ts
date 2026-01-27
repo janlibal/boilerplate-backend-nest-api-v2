@@ -12,7 +12,7 @@ export class UserPersistence {
     const entity = await this.prismaService.user.findUnique({
       where: { id: String(id) }
     })
-    return entity ? await UserMapper.toDomain(entity) : null
+    return entity ? UserMapper.toDomain(entity) : null
   }
 
   /*async findMany(): Promise<User[]> {
@@ -24,7 +24,7 @@ export class UserPersistence {
     const entity = await this.prismaService.user.findUnique({
       where: { email }
     })
-    return entity ? await UserMapper.toDomain(entity) : null
+    return entity ? UserMapper.toDomain(entity) : null
   }
 
   async create(clonedPayload: User): Promise<User> {
@@ -32,7 +32,7 @@ export class UserPersistence {
     const newEntity = await this.prismaService.user.create({
       data: persistenceModel
     })
-    return await UserMapper.toDomain(newEntity)
+    return UserMapper.toDomain(newEntity)
   }
 
   async remove(id: User['id']): Promise<void> {

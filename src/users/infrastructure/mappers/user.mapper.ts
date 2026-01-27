@@ -5,7 +5,7 @@ import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
 import { AuthProvidersEnum } from '../../../auth/auth.providers.enum'
 
 export class UserMapper {
-  static async toDomain(raw: UserEntity): Promise<User> {
+  static toDomain(raw: UserEntity): User {
     let status: Status | undefined = undefined
     status = new Status()
     status = { id: Number(raw.statusId) }
@@ -27,7 +27,7 @@ export class UserMapper {
     return domainEntity
   }
 
-  static async toPersistence(data: User): Promise<Omit<UserEntity, 'id'>> {
+  static toPersistence(data: User): Omit<UserEntity, 'id'> {
     const persistenceEntity: Omit<UserEntity, 'id'> = {
       firstName: data.firstName,
       lastName: data.lastName,
