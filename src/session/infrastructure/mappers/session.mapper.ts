@@ -1,5 +1,5 @@
-import { Session as SessionEntity } from '@prisma/client'
-import { Session } from 'src/session/domain/session.domain'
+import { SessionEntity } from '../../entities/session.entity'
+import { Session } from '../../domain/session.domain'
 
 export class SessionMapper {
   static toPersistence(data: Session): SessionEntity {
