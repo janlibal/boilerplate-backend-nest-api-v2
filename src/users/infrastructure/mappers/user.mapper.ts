@@ -1,7 +1,8 @@
 import { User } from '../../../users/domain/user.domain'
 import { Status } from '../../../statuses/domain/status.domain'
 import { Role } from '../../../roles/domain/role.domain'
-import { User as UserEntity, ProviderEnum as Provider } from '@prisma/client'
+import { UserEntity } from '../../entities/user.entity'
+import { ProviderEntity as Provider } from '../../entities/provider.entity'
 import { AuthProvidersEnum } from '../../../auth/auth.providers.enum'
 
 export class UserMapper {
