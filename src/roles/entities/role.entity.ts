@@ -1,4 +1,3 @@
-/*export class RoleEntity{
-  id: number
-  name?: string
-}*/
+import { Role as PrismaRole } from '@prisma/client'
+
+export type RoleEntity = PrismaRole
